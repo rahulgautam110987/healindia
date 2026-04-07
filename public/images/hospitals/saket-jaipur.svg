@@ -1,7 +1,91 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
-  <rect width="200" height="100" rx="6" fill="#0B1628"/>
-  <text x="100" y="42" text-anchor="middle" font-family="Georgia, serif" font-size="26" font-weight="700" fill="#C9A84C">Saket</text>
-  <text x="100" y="62" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.5)" letter-spacing="2">MULTISPECIALITY</text>
-  <line x1="60" y1="72" x2="140" y2="72" stroke="#C9A84C" stroke-width="1" opacity="0.4"/>
-  <text x="100" y="85" text-anchor="middle" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,0.35)" letter-spacing="1">JAIPUR · MANSAROVAR</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0B1628"/>
+      <stop offset="100%" stop-color="#162744"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#C9A84C"/>
+      <stop offset="100%" stop-color="#E8C367"/>
+    </linearGradient>
+    <linearGradient id="bldg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2c4d70"/>
+      <stop offset="100%" stop-color="#1a3050"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="280" rx="8" fill="url(#sky)"/>
+  <rect x="0" y="218" width="400" height="62" fill="#0d1a2e"/>
+  <rect x="0" y="218" width="400" height="2" fill="#C9A84C" opacity="0.3"/>
+  <!-- Main building -->
+  <rect x="90" y="95" width="220" height="123" rx="3" fill="url(#bldg)" stroke="#3a6aa8" stroke-width="0.5"/>
+  <!-- Windows -->
+  <g fill="#4a8acc" opacity="0.55">
+    <rect x="105" y="110" width="15" height="12" rx="1"/>
+    <rect x="126" y="110" width="15" height="12" rx="1"/>
+    <rect x="147" y="110" width="15" height="12" rx="1"/>
+    <rect x="168" y="110" width="15" height="12" rx="1"/>
+    <rect x="218" y="110" width="15" height="12" rx="1"/>
+    <rect x="239" y="110" width="15" height="12" rx="1"/>
+    <rect x="260" y="110" width="15" height="12" rx="1"/>
+    <rect x="281" y="110" width="15" height="12" rx="1"/>
+    <rect x="105" y="132" width="15" height="12" rx="1"/>
+    <rect x="126" y="132" width="15" height="12" rx="1"/>
+    <rect x="147" y="132" width="15" height="12" rx="1"/>
+    <rect x="168" y="132" width="15" height="12" rx="1"/>
+    <rect x="218" y="132" width="15" height="12" rx="1"/>
+    <rect x="239" y="132" width="15" height="12" rx="1"/>
+    <rect x="260" y="132" width="15" height="12" rx="1"/>
+    <rect x="281" y="132" width="15" height="12" rx="1"/>
+    <rect x="105" y="154" width="15" height="12" rx="1"/>
+    <rect x="126" y="154" width="15" height="12" rx="1"/>
+    <rect x="147" y="154" width="15" height="12" rx="1"/>
+    <rect x="168" y="154" width="15" height="12" rx="1"/>
+    <rect x="218" y="154" width="15" height="12" rx="1"/>
+    <rect x="239" y="154" width="15" height="12" rx="1"/>
+    <rect x="260" y="154" width="15" height="12" rx="1"/>
+    <rect x="281" y="154" width="15" height="12" rx="1"/>
+    <rect x="105" y="176" width="15" height="12" rx="1"/>
+    <rect x="126" y="176" width="15" height="12" rx="1"/>
+    <rect x="147" y="176" width="15" height="12" rx="1"/>
+    <rect x="168" y="176" width="15" height="12" rx="1"/>
+    <rect x="218" y="176" width="15" height="12" rx="1"/>
+    <rect x="239" y="176" width="15" height="12" rx="1"/>
+    <rect x="260" y="176" width="15" height="12" rx="1"/>
+    <rect x="281" y="176" width="15" height="12" rx="1"/>
+  </g>
+  <!-- Central entrance feature -->
+  <rect x="186" y="90" width="28" height="128" rx="2" fill="#1e3d64"/>
+  <g fill="#5a9ad5" opacity="0.5">
+    <rect x="191" y="105" width="8" height="7" rx="1"/>
+    <rect x="201" y="105" width="8" height="7" rx="1"/>
+    <rect x="191" y="120" width="8" height="7" rx="1"/>
+    <rect x="201" y="120" width="8" height="7" rx="1"/>
+  </g>
+  <!-- Cross -->
+  <rect x="196" y="74" width="8" height="18" rx="1" fill="#C9A84C"/>
+  <rect x="192" y="79" width="16" height="8" rx="1" fill="#C9A84C"/>
+  <!-- Entrance -->
+  <rect x="189" y="200" width="22" height="18" rx="2" fill="#0d1a2e" stroke="#C9A84C" stroke-width="0.8"/>
+  <!-- Emergency wing -->
+  <rect x="30" y="160" width="60" height="58" rx="2" fill="#1a3050" stroke="#2a5580" stroke-width="0.5"/>
+  <g fill="#4a8acc" opacity="0.4">
+    <rect x="38" y="170" width="10" height="8" rx="1"/>
+    <rect x="53" y="170" width="10" height="8" rx="1"/>
+    <rect x="68" y="170" width="10" height="8" rx="1"/>
+    <rect x="38" y="186" width="10" height="8" rx="1"/>
+    <rect x="53" y="186" width="10" height="8" rx="1"/>
+    <rect x="68" y="186" width="10" height="8" rx="1"/>
+    <rect x="38" y="202" width="10" height="8" rx="1"/>
+    <rect x="53" y="202" width="10" height="8" rx="1"/>
+  </g>
+  <!-- Emergency label -->
+  <rect x="32" y="150" width="56" height="10" rx="1" fill="#d44" opacity="0.3"/>
+  <text x="60" y="158" text-anchor="middle" font-size="6" fill="#ff8888" font-weight="700" letter-spacing="1">EMERGENCY</text>
+  <!-- Trees -->
+  <circle cx="345" cy="205" r="12" fill="#1a4030" opacity="0.6"/>
+  <rect x="343" y="210" width="4" height="8" fill="#2a3528"/>
+  <circle cx="370" cy="210" r="8" fill="#1a4030" opacity="0.5"/>
+  <!-- Text -->
+  <text x="200" y="246" text-anchor="middle" font-family="Georgia, 'Playfair Display', serif" font-size="21" font-weight="700" fill="url(#gold)">Saket Hospital</text>
+  <text x="200" y="264" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="9" fill="rgba(255,255,255,0.45)" letter-spacing="3">MANSAROVAR · JAIPUR</text>
 </svg>

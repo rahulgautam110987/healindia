@@ -1,7 +1,99 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
-  <rect width="200" height="100" rx="6" fill="#0B1628"/>
-  <text x="100" y="42" text-anchor="middle" font-family="Georgia, serif" font-size="26" font-weight="700" fill="#C9A84C">Max Saket</text>
-  <text x="100" y="62" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.5)" letter-spacing="2">SUPER SPECIALITY</text>
-  <line x1="60" y1="72" x2="140" y2="72" stroke="#C9A84C" stroke-width="1" opacity="0.4"/>
-  <text x="100" y="85" text-anchor="middle" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,0.35)" letter-spacing="1">NEW DELHI</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0B1628"/>
+      <stop offset="100%" stop-color="#162744"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#C9A84C"/>
+      <stop offset="100%" stop-color="#E8C367"/>
+    </linearGradient>
+    <linearGradient id="bldg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a4e76"/>
+      <stop offset="100%" stop-color="#1b3356"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="280" rx="8" fill="url(#sky)"/>
+  <rect x="0" y="218" width="400" height="62" fill="#0d1a2e"/>
+  <rect x="0" y="218" width="400" height="2" fill="#C9A84C" opacity="0.3"/>
+  <!-- East Block (tall) -->
+  <rect x="70" y="60" width="130" height="158" rx="3" fill="url(#bldg)" stroke="#3a6aa8" stroke-width="0.5"/>
+  <g fill="#4a8acc" opacity="0.55">
+    <rect x="82" y="75" width="14" height="11" rx="1"/>
+    <rect x="102" y="75" width="14" height="11" rx="1"/>
+    <rect x="122" y="75" width="14" height="11" rx="1"/>
+    <rect x="142" y="75" width="14" height="11" rx="1"/>
+    <rect x="162" y="75" width="14" height="11" rx="1"/>
+    <rect x="82" y="95" width="14" height="11" rx="1"/>
+    <rect x="102" y="95" width="14" height="11" rx="1"/>
+    <rect x="122" y="95" width="14" height="11" rx="1"/>
+    <rect x="142" y="95" width="14" height="11" rx="1"/>
+    <rect x="162" y="95" width="14" height="11" rx="1"/>
+    <rect x="82" y="115" width="14" height="11" rx="1"/>
+    <rect x="102" y="115" width="14" height="11" rx="1"/>
+    <rect x="122" y="115" width="14" height="11" rx="1"/>
+    <rect x="142" y="115" width="14" height="11" rx="1"/>
+    <rect x="162" y="115" width="14" height="11" rx="1"/>
+    <rect x="82" y="135" width="14" height="11" rx="1"/>
+    <rect x="102" y="135" width="14" height="11" rx="1"/>
+    <rect x="122" y="135" width="14" height="11" rx="1"/>
+    <rect x="142" y="135" width="14" height="11" rx="1"/>
+    <rect x="162" y="135" width="14" height="11" rx="1"/>
+    <rect x="82" y="155" width="14" height="11" rx="1"/>
+    <rect x="102" y="155" width="14" height="11" rx="1"/>
+    <rect x="122" y="155" width="14" height="11" rx="1"/>
+    <rect x="142" y="155" width="14" height="11" rx="1"/>
+    <rect x="162" y="155" width="14" height="11" rx="1"/>
+    <rect x="82" y="175" width="14" height="11" rx="1"/>
+    <rect x="102" y="175" width="14" height="11" rx="1"/>
+    <rect x="122" y="175" width="14" height="11" rx="1"/>
+    <rect x="142" y="175" width="14" height="11" rx="1"/>
+    <rect x="162" y="175" width="14" height="11" rx="1"/>
+  </g>
+  <!-- West Block -->
+  <rect x="200" y="100" width="130" height="118" rx="3" fill="#1d3a5e" stroke="#2a5580" stroke-width="0.5"/>
+  <g fill="#4a8acc" opacity="0.45">
+    <rect x="212" y="115" width="14" height="11" rx="1"/>
+    <rect x="232" y="115" width="14" height="11" rx="1"/>
+    <rect x="252" y="115" width="14" height="11" rx="1"/>
+    <rect x="272" y="115" width="14" height="11" rx="1"/>
+    <rect x="292" y="115" width="14" height="11" rx="1"/>
+    <rect x="212" y="135" width="14" height="11" rx="1"/>
+    <rect x="232" y="135" width="14" height="11" rx="1"/>
+    <rect x="252" y="135" width="14" height="11" rx="1"/>
+    <rect x="272" y="135" width="14" height="11" rx="1"/>
+    <rect x="292" y="135" width="14" height="11" rx="1"/>
+    <rect x="212" y="155" width="14" height="11" rx="1"/>
+    <rect x="232" y="155" width="14" height="11" rx="1"/>
+    <rect x="252" y="155" width="14" height="11" rx="1"/>
+    <rect x="272" y="155" width="14" height="11" rx="1"/>
+    <rect x="292" y="155" width="14" height="11" rx="1"/>
+    <rect x="212" y="175" width="14" height="11" rx="1"/>
+    <rect x="232" y="175" width="14" height="11" rx="1"/>
+    <rect x="252" y="175" width="14" height="11" rx="1"/>
+    <rect x="272" y="175" width="14" height="11" rx="1"/>
+    <rect x="292" y="175" width="14" height="11" rx="1"/>
+  </g>
+  <!-- Connector bridge between blocks -->
+  <rect x="195" y="135" width="10" height="30" rx="1" fill="#244a70" stroke="#3a6aa8" stroke-width="0.3"/>
+  <!-- Cross on East block -->
+  <rect x="130" y="42" width="10" height="22" rx="1" fill="#C9A84C"/>
+  <rect x="125" y="48" width="20" height="10" rx="1" fill="#C9A84C"/>
+  <!-- Entrance East -->
+  <rect x="120" y="200" width="30" height="18" rx="2" fill="#0d1a2e" stroke="#C9A84C" stroke-width="0.8"/>
+  <!-- Entrance West -->
+  <rect x="252" y="200" width="26" height="18" rx="2" fill="#0d1a2e" stroke="#C9A84C" stroke-width="0.6"/>
+  <!-- Parking area dots -->
+  <g fill="#C9A84C" opacity="0.15">
+    <rect x="40" y="200" width="20" height="8" rx="1"/>
+    <rect x="40" y="210" width="20" height="8" rx="1"/>
+    <rect x="350" y="200" width="20" height="8" rx="1"/>
+    <rect x="350" y="210" width="20" height="8" rx="1"/>
+  </g>
+  <!-- Trees -->
+  <circle cx="35" cy="204" r="11" fill="#1a4030" opacity="0.6"/>
+  <circle cx="375" cy="206" r="9" fill="#1a4030" opacity="0.6"/>
+  <!-- Text -->
+  <text x="200" y="246" text-anchor="middle" font-family="Georgia, 'Playfair Display', serif" font-size="20" font-weight="700" fill="url(#gold)">Max Super Speciality</text>
+  <text x="200" y="264" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="9" fill="rgba(255,255,255,0.45)" letter-spacing="3">HOSPITAL · SAKET · NEW DELHI</text>
 </svg>

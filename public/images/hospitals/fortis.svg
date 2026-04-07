@@ -1,7 +1,99 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
-  <rect width="200" height="100" rx="6" fill="#0B1628"/>
-  <text x="100" y="42" text-anchor="middle" font-family="Georgia, serif" font-size="28" font-weight="700" fill="#C9A84C">Fortis</text>
-  <text x="100" y="62" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,0.5)" letter-spacing="2">ESCORTS HOSPITAL</text>
-  <line x1="60" y1="72" x2="140" y2="72" stroke="#C9A84C" stroke-width="1" opacity="0.4"/>
-  <text x="100" y="85" text-anchor="middle" font-family="sans-serif" font-size="8" fill="rgba(255,255,255,0.35)" letter-spacing="1">JAIPUR</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0B1628"/>
+      <stop offset="100%" stop-color="#162744"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#C9A84C"/>
+      <stop offset="100%" stop-color="#E8C367"/>
+    </linearGradient>
+    <linearGradient id="bldg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2d4f72"/>
+      <stop offset="100%" stop-color="#1b3352"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="280" rx="8" fill="url(#sky)"/>
+  <rect x="0" y="218" width="400" height="62" fill="#0d1a2e"/>
+  <rect x="0" y="218" width="400" height="2" fill="#C9A84C" opacity="0.3"/>
+  <!-- Sprawling campus layout -->
+  <!-- Main block -->
+  <rect x="100" y="90" width="200" height="128" rx="3" fill="url(#bldg)" stroke="#3a6aa8" stroke-width="0.5"/>
+  <!-- Windows main -->
+  <g fill="#4a8acc" opacity="0.55">
+    <rect x="115" y="105" width="16" height="12" rx="1"/>
+    <rect x="138" y="105" width="16" height="12" rx="1"/>
+    <rect x="161" y="105" width="16" height="12" rx="1"/>
+    <rect x="223" y="105" width="16" height="12" rx="1"/>
+    <rect x="246" y="105" width="16" height="12" rx="1"/>
+    <rect x="269" y="105" width="16" height="12" rx="1"/>
+    <rect x="115" y="128" width="16" height="12" rx="1"/>
+    <rect x="138" y="128" width="16" height="12" rx="1"/>
+    <rect x="161" y="128" width="16" height="12" rx="1"/>
+    <rect x="223" y="128" width="16" height="12" rx="1"/>
+    <rect x="246" y="128" width="16" height="12" rx="1"/>
+    <rect x="269" y="128" width="16" height="12" rx="1"/>
+    <rect x="115" y="151" width="16" height="12" rx="1"/>
+    <rect x="138" y="151" width="16" height="12" rx="1"/>
+    <rect x="161" y="151" width="16" height="12" rx="1"/>
+    <rect x="223" y="151" width="16" height="12" rx="1"/>
+    <rect x="246" y="151" width="16" height="12" rx="1"/>
+    <rect x="269" y="151" width="16" height="12" rx="1"/>
+    <rect x="115" y="174" width="16" height="12" rx="1"/>
+    <rect x="138" y="174" width="16" height="12" rx="1"/>
+    <rect x="161" y="174" width="16" height="12" rx="1"/>
+    <rect x="223" y="174" width="16" height="12" rx="1"/>
+    <rect x="246" y="174" width="16" height="12" rx="1"/>
+    <rect x="269" y="174" width="16" height="12" rx="1"/>
+  </g>
+  <!-- Central entrance feature -->
+  <rect x="184" y="85" width="32" height="133" rx="2" fill="#1e3d64"/>
+  <g fill="#5a9ad5" opacity="0.5">
+    <rect x="189" y="95" width="10" height="8" rx="1"/>
+    <rect x="201" y="95" width="10" height="8" rx="1"/>
+    <rect x="189" y="110" width="10" height="8" rx="1"/>
+    <rect x="201" y="110" width="10" height="8" rx="1"/>
+  </g>
+  <!-- Cross -->
+  <rect x="196" y="128" width="8" height="18" rx="1" fill="#C9A84C"/>
+  <rect x="192" y="133" width="16" height="8" rx="1" fill="#C9A84C"/>
+  <!-- Entrance -->
+  <rect x="188" y="198" width="24" height="20" rx="2" fill="#0d1a2e" stroke="#C9A84C" stroke-width="0.8"/>
+  <!-- Left annex -->
+  <rect x="30" y="145" width="70" height="73" rx="2" fill="#1a3050" stroke="#2a5580" stroke-width="0.5"/>
+  <g fill="#4a8acc" opacity="0.4">
+    <rect x="40" y="155" width="11" height="9" rx="1"/>
+    <rect x="56" y="155" width="11" height="9" rx="1"/>
+    <rect x="72" y="155" width="11" height="9" rx="1"/>
+    <rect x="87" y="155" width="11" height="9" rx="1"/>
+    <rect x="40" y="172" width="11" height="9" rx="1"/>
+    <rect x="56" y="172" width="11" height="9" rx="1"/>
+    <rect x="72" y="172" width="11" height="9" rx="1"/>
+    <rect x="87" y="172" width="11" height="9" rx="1"/>
+    <rect x="40" y="189" width="11" height="9" rx="1"/>
+    <rect x="56" y="189" width="11" height="9" rx="1"/>
+    <rect x="72" y="189" width="11" height="9" rx="1"/>
+    <rect x="87" y="189" width="11" height="9" rx="1"/>
+  </g>
+  <!-- Right annex -->
+  <rect x="300" y="145" width="70" height="73" rx="2" fill="#1a3050" stroke="#2a5580" stroke-width="0.5"/>
+  <g fill="#4a8acc" opacity="0.4">
+    <rect x="310" y="155" width="11" height="9" rx="1"/>
+    <rect x="326" y="155" width="11" height="9" rx="1"/>
+    <rect x="342" y="155" width="11" height="9" rx="1"/>
+    <rect x="310" y="172" width="11" height="9" rx="1"/>
+    <rect x="326" y="172" width="11" height="9" rx="1"/>
+    <rect x="342" y="172" width="11" height="9" rx="1"/>
+    <rect x="310" y="189" width="11" height="9" rx="1"/>
+    <rect x="326" y="189" width="11" height="9" rx="1"/>
+    <rect x="342" y="189" width="11" height="9" rx="1"/>
+  </g>
+  <!-- Driveway -->
+  <path d="M200 218 L200 230 L160 250 M200 230 L240 250" stroke="#C9A84C" stroke-width="0.5" fill="none" opacity="0.3"/>
+  <!-- Trees -->
+  <circle cx="22" cy="208" r="10" fill="#1a4030" opacity="0.6"/>
+  <circle cx="378" cy="208" r="10" fill="#1a4030" opacity="0.6"/>
+  <!-- Text -->
+  <text x="200" y="248" text-anchor="middle" font-family="Georgia, 'Playfair Display', serif" font-size="19" font-weight="700" fill="url(#gold)">Fortis Escorts</text>
+  <text x="200" y="266" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="9" fill="rgba(255,255,255,0.45)" letter-spacing="3">HOSPITAL · JAIPUR</text>
 </svg>
