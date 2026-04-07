@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Dashboard — BharatHeals</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css?v=20260405b">
+<style>
+  .dash-wrap { max-width:1140px; margin:0 auto; padding:2rem 1.5rem; }
+  .dash-hero { background:linear-gradient(135deg,#0a1628 0%,#0f2240 50%,#0a1628 100%); border-radius:24px; padding:3rem; margin-top:5rem; margin-bottom:2rem; position:relative; overflow:hidden; }
+  .dash-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 50% at 70% 30%,rgba(198,163,91,0.1),transparent 60%); pointer-events:none; }
+  .dash-hero-inner { position:relative; z-index:1; display:flex; align-items:center; gap:2rem; }
+  .dash-avatar { width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg,var(--gold),#e8c367); display:flex; align-items:center; justify-content:center; font-size:1.8rem; font-weight:800; color:var(--navy); flex-shrink:0; border:3px solid rgba(198,163,91,0.4); }
+  .dash-avatar img { width:100%; height:100%; border-radius:50%; object-fit:cover; }
+  .dash-user-info h1 { font-family:var(--heading); font-size:1.6rem; color:#fff; margin:0 0 0.3rem; }
+  .dash-user-info p { color:rgba(255,255,255,0.5); font-size:0.82rem; margin:0; }
+  .dash-user-info .dash-badge { display:inline-block; background:rgba(198,163,91,0.2); color:var(--gold); font-size:0.68rem; font-weight:700; padding:3px 12px; border-radius:20px; letter-spacing:0.08em; text-transform:uppercase; margin-top:0.5rem; }
+
+  .dash-grid { display:grid; grid-template-columns:2fr 1fr; gap:2rem; }
+  @media(max-width:768px) { .dash-grid { grid-template-columns:1fr; } }
+
+  .dash-card { background:#fff; border:1px solid rgba(0,0,0,0.06); border-radius:20px; padding:2rem; margin-bottom:1.5rem; transition:all 0.3s ease; }
+  .dash-card:hover { box-shadow:0 12px 40px rgba(0,0,0,0.06); }
+  .dash-card h3 { font-family:var(--heading); font-size:1.1rem; color:var(--navy); margin:0 0 1.2rem; display:flex; align-items:center; gap:8px; }
+  .dash-card h3 span { font-size:1.2rem; }
+
+  .journey-timeline { position:relative; padding-left:2rem; }
+  .journey-timeline::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; background:linear-gradient(180deg,var(--gold),rgba(198,163,91,0.2)); border-radius:2px; }
+  .journey-step { position:relative; padding-bottom:1.5rem; }
+  .journey-step:last-child { padding-bottom:0; }
+  .journey-dot { position:absolute; left:-2rem; top:2px; width:18px; height:18px; border-radius:50%; border:2px solid var(--gold); background:#fff; display:flex; align-items:center; justify-content:center; z-index:1; }
+  .journey-dot.done { background:var(--gold); }
+  .journey-dot.done::after { content:'\2713'; color:#fff; font-size:10px; font-weight:900; }
+  .journey-dot.active { background:#fff; box-shadow:0 0 0 4px rgba(198,163,91,0.3); }
+  .journey-dot.active::after { content:''; width:8px; height:8px; border-radius:50%; background:var(--gold); }
+  .journey-step h4 { font-size:0.88rem; margin:0 0 0.2rem; color:var(--text-dark); }
+  .journey-step p { font-size:0.78rem; color:var(--text-mid); margin:0; }
+  .journey-step .step-tag { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; padding:2px 8px; border-radius:10px; display:inline-block; margin-top:0.3rem; }
+  .step-tag.complete { background:rgba(34,197,94,0.1); color:#16a34a; }
+  .step-tag.current { background:rgba(198,163,91,0.15); color:var(--gold); }
+  .step-tag.upcoming { background:rgba(0,0,0,0.04); color:var(--text-mid); }
+
+  .doc-list { list-style:none; padding:0; margin:0; }
+  .doc-list li { display:flex; align-items:center; gap:12px; padding:0.8rem 0; border-bottom:1px solid rgba(0,0,0,0.04); }
+  .doc-list li:last-child { border-bottom:none; }
+  .doc-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+  .doc-icon.pdf { background:rgba(239,68,68,0.1); }
+  .doc-icon.img { background:rgba(59,130,246,0.1); }
+  .doc-icon.report { background:rgba(34,197,94,0.1); }
+  .doc-info { flex:1; }
+  .doc-info .doc-name { font-size:0.82rem; font-weight:600; color:var(--text-dark); }
+  .doc-info .doc-meta { font-size:0.7rem; color:var(--text-mid); }
+
+  .quick-action { display:flex; align-items:center; gap:12px; padding:0.9rem 1.2rem; border-radius:14px; background:rgba(198,163,91,0.06); border:1px solid rgba(198,163,91,0.15); margin-bottom:0.8rem; cursor:pointer; transition:all 0.25s; text-decoration:none; color:inherit; }
+  .quick-action:hover { background:rgba(198,163,91,0.15); transform:translateX(4px); border-color:rgba(198,163,91,0.3); }
+  .quick-action .qa-icon { width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg,rgba(198,163,91,0.2),rgba(198,163,91,0.08)); display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+  .quick-action .qa-text h4 { font-size:0.85rem; margin:0; color:var(--text-dark); }
+  .quick-action .qa-text p { font-size:0.72rem; margin:0; color:var(--text-mid); }
+
+  .appt-item { display:flex; gap:1rem; padding:1rem 0; border-bottom:1px solid rgba(0,0,0,0.04); }
+  .appt-item:last-child { border-bottom:none; }
+  .appt-date { width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg,var(--gold),#e8c367); display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--navy); flex-shrink:0; }
+  .appt-date .appt-day { font-size:1.1rem; font-weight:800; line-height:1; }
+  .appt-date .appt-mon { font-size:0.6rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:700; }
+  .appt-info h4 { font-size:0.85rem; margin:0 0 0.2rem; color:var(--text-dark); }
+  .appt-info p { font-size:0.75rem; color:var(--text-mid); margin:0; }
+
+  .dash-not-logged { text-align:center; padding:6rem 2rem; margin-top:5rem; }
+  .dash-not-logged h2 { font-family:var(--heading); font-size:1.8rem; margin-bottom:1rem; }
+  .dash-not-logged p { color:var(--text-mid); margin-bottom:2rem; }
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="/" class="nav-logo">Bharat<span>Heals</span></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about.html">About Us</a></li>
+    <li><a href="/#specialties">Treatments</a></li>
+    <li><a href="/compare-cost.html">Compare Costs</a></li>
+    <li><a href="/chat.html">AI Agent</a></li>
+    <li><a href="/plan-journey.html">Plan Journey</a></li>
+    <li><a href="/doctors.html">Doctors</a></li>
+    <li><a href="/hospitals.html">Hospitals</a></li>
+    <li><a href="/team.html">Team</a></li>
+    <li><a href="javascript:void(0)" class="nav-cta" onclick="openConsultModal()">Free Consultation</a></li>
+    <li><a href="/login.html">Account</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMobile()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-menu" onclick="toggleMobile()">&times;</button>
+  <a href="/" onclick="toggleMobile()">Home</a>
+  <a href="/about.html" onclick="toggleMobile()">About Us</a>
+  <a href="/#specialties" onclick="toggleMobile()">Treatments</a>
+  <a href="/compare-cost.html" onclick="toggleMobile()">Compare Costs</a>
+  <a href="/chat.html" onclick="toggleMobile()">AI Agent</a>
+  <a href="/plan-journey.html" onclick="toggleMobile()">Plan Journey</a>
+  <a href="/doctors.html" onclick="toggleMobile()">Doctors</a>
+  <a href="/hospitals.html" onclick="toggleMobile()">Hospitals</a>
+  <a href="/team.html" onclick="toggleMobile()">Team</a>
+  <a href="javascript:void(0)" onclick="toggleMobile(); openConsultModal();" style="color:var(--gold);">Free Consultation</a>
+  <a href="/login.html" onclick="toggleMobile()">Account</a>
+</div>
+
+<div id="dashContent"></div>
+
+<div class="modal-overlay" id="consultModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Book a <em>Free Consultation</em></h2>
+      <p>Our expert medical consultant will guide you through everything — treatment, costs, hospital selection, and travel.</p>
+      <button class="modal-close" onclick="closeConsultModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="consultForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consName">Full Name *</label>
+            <input type="text" id="consName" name="name" required placeholder="John Smith">
+          </div>
+          <div class="form-group">
+            <label for="consEmail">Email *</label>
+            <input type="email" id="consEmail" name="email" required placeholder="john@example.com">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consPhone">Phone / WhatsApp</label>
+            <input type="tel" id="consPhone" name="phone" placeholder="+1 555 000 0000">
+          </div>
+          <div class="form-group">
+            <label for="consCountry">City, Country</label>
+            <input type="text" id="consCountry" name="country" placeholder="Your City, Country">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="consTreatment">Treatment / Specialty</label>
+            <select id="consTreatment" name="treatment">
+              <option value="">Select a treatment...</option>
+              <option value="Hair Transplant">Hair Transplant</option>
+              <option value="Dental Treatment">Dental Treatment</option>
+              <option value="Cosmetic Surgery">Cosmetic Surgery</option>
+              <option value="Bariatric Surgery">Bariatric Surgery</option>
+              <option value="LASIK & Eye Care">LASIK & Eye Care</option>
+              <option value="Spine & Neuro">Spine & Neuro</option>
+              <option value="Cancer Treatment">Cancer Treatment</option>
+              <option value="Organ Transplant">Organ Transplant</option>
+              <option value="Fertility & IVF">Fertility & IVF</option>
+              <option value="Surrogacy">Surrogacy</option>
+              <option value="Ayurveda & Wellness">Ayurveda & Wellness</option>
+              <option value="Executive Health Check">Executive Health Check</option>
+              <option value="Second Opinion">Second Opinion</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consDate">Preferred Consultation Date</label>
+            <input type="date" id="consDate" name="preferred_date">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="consMessage">Tell us about your condition</label>
+            <textarea id="consMessage" name="message" placeholder="Brief description of your medical needs, any diagnosis or reports you have..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="modal-submit" id="consultSubmitBtn">Book My Free Consultation &rarr;</button>
+      </form>
+      <div class="form-success" id="consultSuccess">
+        <div class="check-circle">&#10003;</div>
+        <h3>Consultation Booked!</h3>
+        <p>Our medical consultant will contact you within 24 hours.</p>
+      </div>
+      <p class="modal-note">&#128274; 100% confidential. No spam. Our consultant will reach out within 24 hours.</p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/js/app.js?v=20260405b"></script>
+<script src="/js/ai-widget.js?v=20260405b"></script>
+<script>
+(function(){
+  var user = window.getAuthUser && window.getAuthUser();
+  var container = document.getElementById('dashContent');
+
+  if (!user) {
+    container.innerHTML = '<div class="dash-not-logged"><h2>Welcome to Your Dashboard</h2><p>Please sign in to access your personalised medical journey dashboard.</p><a href="/login.html" class="btn-primary" style="text-decoration:none;">Sign In / Create Account &rarr;</a></div>';
+    return;
+  }
+
+  var firstName = user.name ? user.name.split(' ')[0] : 'Patient';
+  var initials = (user.name || 'U').split(' ').map(function(w){return w[0];}).join('').substring(0,2).toUpperCase();
+  var avatarHTML = user.avatar
+    ? '<img src="' + user.avatar + '" alt="' + firstName + '">'
+    : initials;
+
+  container.innerHTML = '<div class="dash-wrap">'
+    + '<div class="dash-hero"><div class="dash-hero-inner">'
+    + '<div class="dash-avatar">' + avatarHTML + '</div>'
+    + '<div class="dash-user-info">'
+    + '<h1>Welcome back, ' + firstName + '</h1>'
+    + '<p>' + (user.email || '') + (user.country ? ' &middot; ' + user.country : '') + '</p>'
+    + '<span class="dash-badge">Platinum Member</span>'
+    + '</div></div></div>'
+
+    + '<div class="dash-grid">'
+
+    + '<div>'
+
+    + '<div class="dash-card"><h3><span>&#128205;</span> Your Medical Journey</h3>'
+    + '<div class="journey-timeline">'
+    + '<div class="journey-step"><div class="journey-dot done"></div><h4>Free Consultation</h4><p>Initial assessment and treatment plan created.</p><span class="step-tag complete">Completed</span></div>'
+    + '<div class="journey-step"><div class="journey-dot done"></div><h4>Doctor & Hospital Matched</h4><p>Matched with specialist and JCI hospital.</p><span class="step-tag complete">Completed</span></div>'
+    + '<div class="journey-step"><div class="journey-dot active"></div><h4>Visa & Travel Planning</h4><p>e-Medical Visa application in progress. Flights being coordinated.</p><span class="step-tag current">In Progress</span></div>'
+    + '<div class="journey-step"><div class="journey-dot"></div><h4>Treatment in India</h4><p>Scheduled procedure at partner hospital.</p><span class="step-tag upcoming">Upcoming</span></div>'
+    + '<div class="journey-step"><div class="journey-dot"></div><h4>Recovery & Follow-Up</h4><p>Post-treatment care and telemedicine access.</p><span class="step-tag upcoming">Upcoming</span></div>'
+    + '</div></div>'
+
+    + '<div class="dash-card"><h3><span>&#128197;</span> Upcoming Appointments</h3>'
+    + '<div class="appt-item"><div class="appt-date"><div class="appt-day">12</div><div class="appt-mon">Apr</div></div><div class="appt-info"><h4>Telemedicine Consultation</h4><p>Video call with Dr. Anita Mehta &middot; 2:00 PM IST</p></div></div>'
+    + '<div class="appt-item"><div class="appt-date"><div class="appt-day">20</div><div class="appt-mon">Apr</div></div><div class="appt-info"><h4>Visa Document Review</h4><p>David Chen &middot; Document verification call</p></div></div>'
+    + '<div class="appt-item"><div class="appt-date"><div class="appt-day">28</div><div class="appt-mon">Apr</div></div><div class="appt-info"><h4>Arrival in Delhi</h4><p>VIP airport meet & greet &middot; Transfer to hotel</p></div></div>'
+    + '</div>'
+
+    + '<div class="dash-card"><h3><span>&#128196;</span> My Documents</h3>'
+    + '<ul class="doc-list">'
+    + '<li><div class="doc-icon pdf">&#128196;</div><div class="doc-info"><div class="doc-name">Treatment Plan — Hair Transplant FUE.pdf</div><div class="doc-meta">Generated 3 Apr 2026 &middot; AI-powered plan</div></div></li>'
+    + '<li><div class="doc-icon report">&#128203;</div><div class="doc-info"><div class="doc-name">Blood Work Results.pdf</div><div class="doc-meta">Uploaded 1 Apr 2026 &middot; Pre-op assessment</div></div></li>'
+    + '<li><div class="doc-icon img">&#128247;</div><div class="doc-info"><div class="doc-name">Medical Visa — Invitation Letter.pdf</div><div class="doc-meta">Generated 31 Mar 2026 &middot; Apollo Hospital</div></div></li>'
+    + '<li><div class="doc-icon pdf">&#128196;</div><div class="doc-info"><div class="doc-name">Travel Insurance Policy.pdf</div><div class="doc-meta">Uploaded 28 Mar 2026 &middot; Comprehensive coverage</div></div></li>'
+    + '<li><div class="doc-icon report">&#128203;</div><div class="doc-info"><div class="doc-name">Cost Estimate — Platinum Package.pdf</div><div class="doc-meta">Generated 25 Mar 2026 &middot; All-inclusive</div></div></li>'
+    + '</ul></div>'
+
+    + '</div>'
+
+    + '<div>'
+
+    + '<div class="dash-card"><h3><span>&#9889;</span> Quick Actions</h3>'
+    + '<a href="/chat.html" class="quick-action"><div class="qa-icon">&#129302;</div><div class="qa-text"><h4>Chat with AI Agent</h4><p>Instant answers about your treatment</p></div></a>'
+    + '<a href="javascript:void(0)" onclick="openConsultModal()" class="quick-action"><div class="qa-icon">&#128222;</div><div class="qa-text"><h4>Book Consultation</h4><p>Speak to your care coordinator</p></div></a>'
+    + '<a href="/plan-journey.html" class="quick-action"><div class="qa-icon">&#128506;</div><div class="qa-text"><h4>Plan My Journey</h4><p>AI-powered travel planner</p></div></a>'
+    + '<a href="/compare-cost.html" class="quick-action"><div class="qa-icon">&#128178;</div><div class="qa-text"><h4>Compare Treatment Costs</h4><p>Side-by-side global comparison</p></div></a>'
+    + '<a href="/doctors.html" class="quick-action"><div class="qa-icon">&#129489;&#8205;&#9877;&#65039;</div><div class="qa-text"><h4>Browse Doctors</h4><p>Find your specialist</p></div></a>'
+    + '</div>'
+
+    + '<div class="dash-card"><h3><span>&#128230;</span> Your Package</h3>'
+    + '<div style="text-align:center;padding:1rem 0;">'
+    + '<div style="font-size:2rem;margin-bottom:0.5rem;">&#128081;</div>'
+    + '<h4 style="font-family:var(--heading);font-size:1.1rem;margin:0 0 0.3rem;background:linear-gradient(135deg,var(--gold),#e8c367);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Platinum Package</h4>'
+    + '<p style="font-size:0.75rem;color:var(--text-mid);margin:0 0 1rem;">All-inclusive premium care</p>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;text-align:center;">'
+    + '<div style="background:rgba(198,163,91,0.06);padding:0.6rem;border-radius:10px;"><div style="font-size:0.95rem;font-weight:700;color:var(--navy);">5-Star</div><div style="font-size:0.65rem;color:var(--text-mid);">Hotel</div></div>'
+    + '<div style="background:rgba(198,163,91,0.06);padding:0.6rem;border-radius:10px;"><div style="font-size:0.95rem;font-weight:700;color:var(--navy);">VIP</div><div style="font-size:0.65rem;color:var(--text-mid);">Transfers</div></div>'
+    + '<div style="background:rgba(198,163,91,0.06);padding:0.6rem;border-radius:10px;"><div style="font-size:0.95rem;font-weight:700;color:var(--navy);">12 Mo</div><div style="font-size:0.65rem;color:var(--text-mid);">Follow-up</div></div>'
+    + '<div style="background:rgba(198,163,91,0.06);padding:0.6rem;border-radius:10px;"><div style="font-size:0.95rem;font-weight:700;color:var(--navy);">24/7</div><div style="font-size:0.65rem;color:var(--text-mid);">Support</div></div>'
+    + '</div>'
+    + '</div></div>'
+
+    + '<div class="dash-card"><h3><span>&#128100;</span> Your Coordinator</h3>'
+    + '<div style="text-align:center;padding:0.5rem 0;">'
+    + '<div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8c367);display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:800;color:var(--navy);margin:0 auto 0.8rem;">SM</div>'
+    + '<h4 style="font-size:0.95rem;margin:0 0 0.2rem;">Sarah Mitchell</h4>'
+    + '<p style="font-size:0.72rem;color:var(--gold);margin:0 0 0.8rem;">Senior Consultant</p>'
+    + '<div style="display:flex;gap:0.5rem;justify-content:center;">'
+    + '<a href="https://wa.me/919999999999" target="_blank" style="padding:0.5rem 1rem;border-radius:10px;background:rgba(37,211,102,0.1);color:#25d366;font-size:0.75rem;font-weight:600;text-decoration:none;">WhatsApp</a>'
+    + '<a href="mailto:sarah@bharatheals.com" style="padding:0.5rem 1rem;border-radius:10px;background:rgba(198,163,91,0.1);color:var(--gold);font-size:0.75rem;font-weight:600;text-decoration:none;">Email</a>'
+    + '</div>'
+    + '</div></div>'
+
+    + '</div>'
+    + '</div>'
+    + '</div>';
+})();
+</script>
+</body>
+</html>

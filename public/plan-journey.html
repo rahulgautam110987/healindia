@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Your Journey — BharatHeals</title>
+<meta name="description" content="Plan your medical journey to India in three steps: tell us about yourself, your treatment, and review your personalised itinerary.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css?v=20260405b">
+<style>
+  .pj-page { padding-top: 72px; min-height: 100vh; background: linear-gradient(180deg, var(--ivory), var(--cream)); }
+  .pj-hero {
+    background: var(--navy);
+    color: #fff;
+    padding: 3rem 5% 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .pj-hero::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(201,168,76,0.12), transparent);
+    pointer-events: none;
+  }
+  .pj-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 400;
+    position: relative; z-index: 1;
+  }
+  .pj-hero h1 em { color: var(--gold-light); font-style: italic; }
+  .pj-hero p { margin-top: 0.75rem; font-size: 0.88rem; color: rgba(255,255,255,0.65); max-width: 520px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; }
+  .pj-wrap { max-width: 720px; margin: -1.5rem auto 0; padding: 0 5% 4rem; position: relative; z-index: 2; }
+  .pj-card {
+    background: #fff;
+    border: 1px solid rgba(11,22,40,0.08);
+    border-radius: 4px;
+    box-shadow: 0 16px 48px rgba(11,22,40,0.08);
+    padding: 2rem 1.75rem;
+  }
+  .pj-steps {
+    display: flex; justify-content: space-between; margin-bottom: 2rem;
+    position: relative;
+  }
+  .pj-steps::before {
+    content: ''; position: absolute; top: 14px; left: 12%; right: 12%; height: 2px;
+    background: rgba(11,22,40,0.1); z-index: 0;
+  }
+  .pj-step-dot {
+    position: relative; z-index: 1; text-align: center; flex: 1;
+    font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-mid);
+  }
+  .pj-step-dot span {
+    display: block; width: 30px; height: 30px; line-height: 30px; margin: 0 auto 0.5rem;
+    border-radius: 50%; background: var(--cream); border: 2px solid rgba(11,22,40,0.12);
+    font-weight: 600; color: var(--text-mid);
+  }
+  .pj-step-dot.active span { background: var(--navy); border-color: var(--navy); color: var(--gold); }
+  .pj-step-dot.done span { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+  .pj-panel { display: none; }
+  .pj-panel.active { display: block; animation: pjFade 0.35s ease; }
+  @keyframes pjFade { from { opacity: 0; } to { opacity: 1; } }
+  .pj-panel h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--navy); margin-bottom: 1.25rem; font-weight: 400; }
+  .pj-form-grid { display: grid; gap: 1rem; }
+  @media (min-width: 560px) {
+    .pj-form-grid.two { grid-template-columns: 1fr 1fr; }
+  }
+  .pj-form-grid label { display: block; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-mid); margin-bottom: 0.35rem; }
+  .pj-form-grid input, .pj-form-grid select, .pj-form-grid textarea {
+    width: 100%; padding: 0.75rem 1rem; border: 1px solid rgba(11,22,40,0.12);
+    border-radius: 4px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+  }
+  .pj-form-grid textarea { min-height: 100px; resize: vertical; }
+  .pj-form-grid input:focus, .pj-form-grid select:focus, .pj-form-grid textarea:focus {
+    outline: none; border-color: var(--gold);
+  }
+  .treatment-picks { display: grid; gap: 0.5rem; }
+  @media (min-width: 500px) { .treatment-picks { grid-template-columns: 1fr 1fr; } }
+  .treatment-pick {
+    display: flex; align-items: center; gap: 0.65rem;
+    padding: 0.75rem 1rem; border: 1px solid rgba(11,22,40,0.12);
+    border-radius: 4px; cursor: pointer; transition: all 0.2s;
+    font-size: 0.85rem;
+  }
+  .treatment-pick:hover { border-color: var(--gold); }
+  .treatment-pick input { width: auto; accent-color: var(--gold); }
+  .treatment-pick:has(input:checked) { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+  .pj-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: space-between; margin-top: 1.75rem; }
+  .pj-actions-right { display: flex; gap: 0.65rem; }
+  .pj-review-row { display: flex; justify-content: space-between; padding: 0.65rem 0; border-bottom: 1px solid rgba(11,22,40,0.06); font-size: 0.88rem; }
+  .pj-review-row span:first-child { color: var(--text-mid); }
+  .pj-result { display: none; }
+  .pj-result.active { display: block; }
+  .pj-result-hero {
+    text-align: center; margin-bottom: 2rem;
+  }
+  .pj-result-hero h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--navy); }
+  .pj-stat-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 2rem;
+  }
+  .pj-stat {
+    background: var(--navy); color: #fff; padding: 1.1rem; border-radius: 4px; text-align: center;
+    border: 1px solid rgba(201,168,76,0.25);
+  }
+  .pj-stat .num { font-size: 1.25rem; color: var(--gold-light); font-weight: 600; }
+  .pj-stat .lbl { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75; margin-top: 0.25rem; }
+  .pj-detail-block {
+    background: #fff; border: 1px solid rgba(11,22,40,0.08); padding: 1.25rem; border-radius: 4px; margin-bottom: 1.25rem;
+  }
+  .pj-detail-block h3 { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+  .pj-timeline { margin: 2rem 0; }
+  .pj-timeline h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 1.25rem; color: var(--navy); }
+  .pj-tl-track {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: space-between;
+    position: relative;
+  }
+  @media (min-width: 768px) {
+    .pj-tl-track::before {
+      content: ''; position: absolute; top: 22px; left: 8%; right: 8%; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--navy)); opacity: 0.35;
+    }
+  }
+  .pj-tl-node {
+    flex: 1; min-width: 100px; max-width: 140px; text-align: center; position: relative; z-index: 1;
+  }
+  .pj-tl-node .dot {
+    width: 44px; height: 44px; margin: 0 auto 0.5rem; border-radius: 50%;
+    background: var(--ivory); border: 3px solid var(--gold); display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+  .pj-tl-node .label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); }
+  .pj-tl-node .sub { font-size: 0.72rem; color: var(--text-mid); margin-top: 0.25rem; line-height: 1.35; }
+  .pj-consultant {
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    padding: 2rem 1.5rem; background: linear-gradient(160deg, var(--navy), var(--deep));
+    color: #fff; border-radius: 4px; border: 1px solid rgba(201,168,76,0.3);
+    margin: 2rem 0;
+  }
+  .pj-consultant-photo {
+    width: 88px; height: 88px; border-radius: 50%; background: rgba(255,255,255,0.1);
+    border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--gold-light); margin-bottom: 1rem;
+  }
+  .pj-consultant h4 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 400; }
+  .pj-consultant .title { font-size: 0.8rem; color: var(--gold-light); margin: 0.35rem 0 0.5rem; }
+  .pj-consultant .specs { font-size: 0.75rem; opacity: 0.75; margin-bottom: 1rem; }
+  .pj-cta-row { display: flex; flex-wrap: wrap; gap: 0.65rem; justify-content: center; margin-top: 1.25rem; }
+  .pj-note { font-size: 0.82rem; color: var(--text-mid); text-align: center; margin-top: 1.5rem; line-height: 1.5; }
+  .pj-note em { color: var(--navy); font-style: normal; font-weight: 500; }
+  .pj-back { background: none; border: none; color: var(--rust); cursor: pointer; font-size: 0.8rem; text-decoration: underline; font-family: 'DM Sans', sans-serif; }
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="/" class="nav-logo">Bharat<span>Heals</span></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about.html">About Us</a></li>
+    <li><a href="/#specialties">Treatments</a></li>
+    <li><a href="/compare-cost.html">Compare Costs</a></li>
+    <li><a href="/chat.html">AI Agent</a></li>
+    <li><a href="/plan-journey.html">Plan Journey</a></li>
+    <li><a href="/doctors.html">Doctors</a></li>
+    <li><a href="/hospitals.html">Hospitals</a></li>
+    <li><a href="/team.html">Team</a></li>
+    <li><a href="javascript:void(0)" class="nav-cta" onclick="openConsultModal()">Free Consultation</a></li>
+    <li><a href="/login.html">Account</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMobile()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-menu" onclick="toggleMobile()">&times;</button>
+  <a href="/" onclick="toggleMobile()">Home</a>
+  <a href="/about.html" onclick="toggleMobile()">About Us</a>
+  <a href="/#specialties" onclick="toggleMobile()">Treatments</a>
+  <a href="/compare-cost.html" onclick="toggleMobile()">Compare Costs</a>
+  <a href="/chat.html" onclick="toggleMobile()">AI Agent</a>
+  <a href="/plan-journey.html" onclick="toggleMobile()">Plan Journey</a>
+  <a href="/doctors.html" onclick="toggleMobile()">Doctors</a>
+  <a href="/hospitals.html" onclick="toggleMobile()">Hospitals</a>
+  <a href="/team.html" onclick="toggleMobile()">Team</a>
+  <a href="javascript:void(0)" onclick="toggleMobile(); openConsultModal();" style="color:var(--gold);">Free Consultation</a>
+  <a href="/login.html" onclick="toggleMobile()">Account</a>
+</div>
+
+<div class="pj-page">
+  <section class="pj-hero">
+    <h1>Plan Your Medical Journey <em>to India</em></h1>
+    <p>Tell us about your goals in three short steps. We will match you with indicative costs, a leading hospital network, and the right consultant.</p>
+  </section>
+
+  <div class="pj-wrap">
+    <div class="pj-card" id="wizardCard">
+      <div class="pj-steps" id="stepIndicators">
+        <div class="pj-step-dot active" data-step="1"><span>1</span>Info</div>
+        <div class="pj-step-dot" data-step="2"><span>2</span>Treatment</div>
+        <div class="pj-step-dot" data-step="3"><span>3</span>Review</div>
+      </div>
+
+      <form id="journeyForm">
+        <div class="pj-panel active" data-panel="1">
+          <h2>Personal information</h2>
+          <div class="pj-form-grid two">
+            <div>
+              <label for="pjName">Full name *</label>
+              <input type="text" id="pjName" name="name" required placeholder="Jane Doe" autocomplete="name">
+            </div>
+            <div>
+              <label for="pjEmail">Email *</label>
+              <input type="email" id="pjEmail" name="email" required placeholder="jane@example.com" autocomplete="email">
+            </div>
+            <div>
+              <label for="pjPhone">Phone / WhatsApp</label>
+              <input type="tel" id="pjPhone" name="phone" placeholder="+1 555 000 0000" autocomplete="tel">
+            </div>
+            <div>
+              <label for="pjCountry">Country *</label>
+              <select id="pjCountry" name="country" required autocomplete="country">
+                <option value="" selected disabled>Select country</option>
+                <option value="United States">United States</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Canada">Canada</option>
+                <option value="Australia">Australia</option>
+                <option value="New Zealand">New Zealand</option>
+                <option value="Singapore">Singapore</option>
+                <option value="United Arab Emirates">United Arab Emirates</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="pj-panel" data-panel="2">
+          <h2>Treatment & preferences</h2>
+          <label style="margin-bottom:0.65rem;">Select treatment *</label>
+          <div class="treatment-picks">
+            <label class="treatment-pick"><input type="radio" name="treatment" value="Hair Transplant Surgery" required> Hair transplant</label>
+            <label class="treatment-pick"><input type="radio" name="treatment" value="Dental Implants"> Dental treatment</label>
+            <label class="treatment-pick"><input type="radio" name="treatment" value="Cosmetic Surgery"> Cosmetic surgery</label>
+            <label class="treatment-pick"><input type="radio" name="treatment" value="IVF (In-Vitro Fertilization)"> Fertility / IVF</label>
+            <label class="treatment-pick" style="grid-column: 1 / -1;"><input type="radio" name="treatment" value="Surrogacy"> Surrogacy</label>
+          </div>
+          <div class="pj-form-grid" style="margin-top:1.25rem;">
+            <div>
+              <label for="pjCondition">Describe your condition or goals</label>
+              <textarea id="pjCondition" name="condition" placeholder="Brief summary for our team (optional for this step)"></textarea>
+            </div>
+            <div class="two" style="display:grid; grid-template-columns:1fr; gap:1rem;">
+              <div>
+                <label for="pjTimeline">Preferred timeline</label>
+                <select id="pjTimeline" name="timeline">
+                  <option value="Within 1 month">Within 1 month</option>
+                  <option value="1-3 months" selected>1–3 months</option>
+                  <option value="3-6 months">3–6 months</option>
+                  <option value="Flexible">Flexible / exploring</option>
+                </select>
+              </div>
+              <div>
+                <label for="pjBudget">Budget range (USD)</label>
+                <select id="pjBudget" name="budget_range">
+                  <option value="Under $3,000">Under $3,000</option>
+                  <option value="$3,000 - $8,000" selected>$3,000 – $8,000</option>
+                  <option value="$8,000 - $15,000">$8,000 – $15,000</option>
+                  <option value="$15,000+">$15,000+</option>
+                </select>
+              </div>
+              <div>
+                <label for="pjTravelDate">Target travel date (optional)</label>
+                <input type="date" id="pjTravelDate" name="travel_date">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pj-panel" data-panel="3">
+          <h2>Review & submit</h2>
+          <div id="reviewBox"></div>
+        </div>
+
+        <div class="pj-actions">
+          <button type="button" class="pj-back" id="btnBack" style="visibility:hidden;">← Back</button>
+          <div class="pj-actions-right">
+            <button type="button" class="btn-outline-dark" id="btnNext">Continue</button>
+            <button type="submit" class="btn-primary" id="btnSubmit" style="display:none;">Generate my plan</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="pj-card pj-result" id="resultCard">
+      <div class="pj-result-hero">
+        <h2>Your journey plan</h2>
+        <p style="color:var(--text-mid); font-size:0.88rem; margin-top:0.5rem;">Reference ID: <span id="planIdDisplay"></span></p>
+      </div>
+      <div class="pj-stat-grid">
+        <div class="pj-stat"><div class="num" id="rsIndia"></div><div class="lbl">Est. India ($)</div></div>
+        <div class="pj-stat"><div class="num" id="rsAu"></div><div class="lbl">Reference market</div></div>
+        <div class="pj-stat"><div class="num" id="rsSave"></div><div class="lbl">Approx. savings</div></div>
+      </div>
+      <div class="pj-detail-block">
+        <h3>Treatment & clinical match</h3>
+        <p id="rsTreatment" style="font-size:0.95rem; margin-bottom:0.5rem;"></p>
+        <p style="font-size:0.85rem; color:var(--text-mid);"><strong style="color:var(--navy);">Hospital:</strong> <span id="rsHospital"></span></p>
+        <p style="font-size:0.85rem; color:var(--text-mid); margin-top:0.35rem;"><strong style="color:var(--navy);">Doctor:</strong> <span id="rsDoctor"></span></p>
+        <p style="font-size:0.85rem; color:var(--text-mid); margin-top:0.35rem;"><strong style="color:var(--navy);">Stay:</strong> <span id="rsStay"></span> · <strong style="color:var(--navy);">Recovery:</strong> <span id="rsRecovery"></span></p>
+      </div>
+
+      <div class="pj-timeline">
+        <h3>Your journey timeline</h3>
+        <div class="pj-tl-track">
+          <div class="pj-tl-node"><div class="dot">✈</div><div class="label">Pre-trip</div><div class="sub">Visa, flights, consultation</div></div>
+          <div class="pj-tl-node"><div class="dot">🏨</div><div class="label">Arrival</div><div class="sub">Airport pickup, check-in</div></div>
+          <div class="pj-tl-node"><div class="dot">🏥</div><div class="label">Treatment</div><div class="sub">Procedure & inpatient care</div></div>
+          <div class="pj-tl-node"><div class="dot">🌿</div><div class="label">Recovery</div><div class="sub">Healing & follow-up visits</div></div>
+          <div class="pj-tl-node"><div class="dot">🏠</div><div class="label">Return</div><div class="sub">Discharge & telemedicine</div></div>
+        </div>
+      </div>
+
+      <div class="pj-consultant" id="consultantCard">
+        <div class="pj-consultant-photo" id="consultantInitials">SM</div>
+        <h4 id="consultantName">Sarah Mitchell</h4>
+        <div class="title" id="consultantTitle">Senior Medical Tourism Consultant</div>
+        <div class="specs" id="consultantSpecs">Hair, Cosmetic</div>
+        <div class="pj-cta-row">
+          <button type="button" class="btn-primary" id="btnBookConsult">Book Consultation</button>
+          <button type="button" class="btn-outline" id="btnPdfJourney">Download PDF</button>
+        </div>
+      </div>
+
+      <p class="pj-note" id="accuracyNote"></p>
+      <div style="text-align:center; margin-top:1.5rem;">
+        <a href="/chat.html" class="btn-outline-dark" style="display:inline-block;">Refine with AI chat</a>
+        <button type="button" class="pj-back" id="btnStartOver" style="display:block; margin:1rem auto 0;">Plan another journey</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="consultModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Book a <em>Free Consultation</em></h2>
+      <p>Our expert medical consultant will guide you through everything — treatment, costs in your currency, hospital, travel.</p>
+      <button class="modal-close" onclick="closeConsultModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="consultForm">
+        <input type="hidden" id="consConsultant" name="consultant" value="">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consName">Full Name *</label>
+            <input type="text" id="consName" name="name" required placeholder="John Smith">
+          </div>
+          <div class="form-group">
+            <label for="consEmail">Email *</label>
+            <input type="email" id="consEmail" name="email" required placeholder="john@example.com">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consPhone">Phone / WhatsApp</label>
+            <input type="tel" id="consPhone" name="phone" placeholder="+1 555 000 0000">
+          </div>
+          <div class="form-group">
+            <label for="consCountry">City, Country</label>
+            <input type="text" id="consCountry" name="country" placeholder="City, country">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="consTreatment">Treatment / Specialty</label>
+            <select id="consTreatment" name="treatment">
+              <option value="">Select a treatment...</option>
+              <option value="Hair Transplant">Hair Transplant</option>
+              <option value="Dental Treatment">Dental Treatment</option>
+              <option value="Cosmetic Surgery">Cosmetic Surgery</option>
+              <option value="Fertility & IVF">Fertility & IVF</option>
+              <option value="Bariatric Surgery">Bariatric Surgery</option>
+              <option value="LASIK & Eye Care">LASIK & Eye Care</option>
+              <option value="Spine & Neuro">Spine & Neuro</option>
+              <option value="Cancer Treatment">Cancer Treatment</option>
+              <option value="Organ Transplant">Organ Transplant</option>
+              <option value="Surrogacy">Surrogacy</option>
+              <option value="Ayurveda & Wellness">Ayurveda & Wellness</option>
+              <option value="Executive Health Check">Executive Health Check</option>
+              <option value="Second Opinion">Second Opinion</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consDate">Preferred Consultation Date</label>
+            <input type="date" id="consDate" name="preferred_date">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="consMessage">Tell us about your condition</label>
+            <textarea id="consMessage" name="message" placeholder="Brief description of your medical needs, any diagnosis or reports you have..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="modal-submit" id="consultSubmitBtn">Book My Free Consultation &rarr;</button>
+      </form>
+      <div class="form-success" id="consultSuccess">
+        <div class="check-circle">&#10003;</div>
+        <h3>Consultation Booked!</h3>
+        <p>Our medical consultant will contact you within 24 hours via your preferred method to discuss treatment options, hospital selection, and costs in your preferred currency.</p>
+      </div>
+      <p class="modal-note">&#128274; 100% confidential. No spam. Our consultant will reach out within 24 hours.</p>
+    </div>
+  </div>
+</div>
+
+<div class="whatsapp-widget">
+  <div class="whatsapp-tooltip">Chat with us on WhatsApp</div>
+  <a href="https://wa.me/919999999999?text=Hi%20BharatHeals%2C%20I%27m%20interested%20in%20medical%20treatment%20in%20India." target="_blank" rel="noopener" class="whatsapp-btn" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.128 6.744 3.046 9.378L1.054 31.29l6.118-1.958A15.92 15.92 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.302 22.602c-.39 1.1-1.932 2.014-3.164 2.28-.844.18-1.946.324-5.656-1.216-4.748-1.968-7.804-6.792-8.038-7.108-.226-.316-1.878-2.502-1.878-4.772 0-2.27 1.188-3.386 1.61-3.85.39-.428 1.024-.624 1.63-.624.196 0 .374.01.532.018.468.02.702.048 1.012.784.386.922 1.328 3.236 1.444 3.47.118.234.236.55.078.866-.15.324-.282.526-.516.81-.234.284-.458.502-.692.77-.216.246-.458.51-.196.998.262.484 1.166 1.922 2.502 3.114 1.72 1.534 3.168 2.01 3.618 2.234.352.176.77.148 1.044-.136.352-.362.786-.964 1.228-1.558.314-.424.712-.476 1.098-.314.39.156 2.468 1.164 2.892 1.376.424.214.706.318.81.498.104.18.104 1.044-.286 2.144z"/></svg>
+  </a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<script src="/js/app.js?v=20260405b"></script>
+<script>
+(function () {
+  'use strict';
+
+  var CONSULTANT_META = {
+    'Sarah Mitchell': { title: 'Senior Medical Tourism Consultant', specs: 'Hair, Cosmetic', initials: 'SM' },
+    'James Wong': { title: 'International Patient Coordinator', specs: 'Dental, IVF, Fertility Law', initials: 'JW' },
+    'Dr. Priya Nair': { title: 'Medical Advisor', specs: 'IVF, Surrogacy Law, Cosmetic', initials: 'PN' },
+    'David Chen': { title: 'Travel & Logistics Coordinator', specs: 'Hair, Dental', initials: 'DC' }
+  };
+
+  var step = 1;
+  var lastPlan = null;
+  var lastPlanId = null;
+  var formDataCache = {};
+
+  var wizardCard = document.getElementById('wizardCard');
+  var resultCard = document.getElementById('resultCard');
+  var btnNext = document.getElementById('btnNext');
+  var btnBack = document.getElementById('btnBack');
+  var btnSubmit = document.getElementById('btnSubmit');
+  var journeyForm = document.getElementById('journeyForm');
+
+  function setStep(n) {
+    step = n;
+    document.querySelectorAll('.pj-step-dot').forEach(function (d) {
+      var s = parseInt(d.getAttribute('data-step'), 10);
+      d.classList.remove('active', 'done');
+      if (s < n) d.classList.add('done');
+      if (s === n) d.classList.add('active');
+    });
+    document.querySelectorAll('.pj-panel').forEach(function (p) {
+      p.classList.toggle('active', parseInt(p.getAttribute('data-panel'), 10) === n);
+    });
+    btnBack.style.visibility = n > 1 ? 'visible' : 'hidden';
+    btnNext.style.display = n === 3 ? 'none' : 'inline-block';
+    btnSubmit.style.display = n === 3 ? 'inline-block' : 'none';
+    if (n === 3) renderReview();
+  }
+
+  function gatherForm() {
+    var fd = new FormData(journeyForm);
+    var o = {};
+    fd.forEach(function (v, k) { o[k] = v; });
+    o.treatment = journeyForm.querySelector('input[name="treatment"]:checked');
+    o.treatment = o.treatment ? o.treatment.value : '';
+    return o;
+  }
+
+  function renderReview() {
+    var d = gatherForm();
+    formDataCache = d;
+    var html = '';
+    function row(a, b) { return '<div class="pj-review-row"><span>' + a + '</span><span>' + b + '</span></div>'; }
+    html += row('Name', d.name || '—');
+    html += row('Email', d.email || '—');
+    html += row('Phone', d.phone || '—');
+    html += row('Country', d.country || '—');
+    html += row('Treatment', d.treatment || '—');
+    html += row('Timeline', d.timeline || '—');
+    html += row('Budget', d.budget_range || '—');
+    html += row('Travel date', d.travel_date || 'Flexible');
+    if (d.condition) html += row('Notes', d.condition.length > 60 ? d.condition.slice(0, 60) + '…' : d.condition);
+    document.getElementById('reviewBox').innerHTML = html;
+  }
+
+  function fmtMoney(n) {
+    if (n == null || isNaN(n)) return '—';
+    return '$' + Number(n).toLocaleString('en-US');
+  }
+
+  function mapTreatmentSelect(name) {
+    if (!name) return '';
+    var n = name.toLowerCase();
+    if (n.indexOf('hair') !== -1) return 'Hair Transplant';
+    if (n.indexOf('dental') !== -1) return 'Dental Treatment';
+    if (n.indexOf('cosmetic') !== -1) return 'Other';
+    if (n.indexOf('ivf') !== -1 || n.indexOf('fertilization') !== -1) return 'Fertility & IVF';
+    if (n.indexOf('surrogacy') !== -1) return 'Fertility & IVF';
+    return 'Other';
+  }
+
+  function showResults(data) {
+    lastPlan = data.plan;
+    lastPlanId = data.plan_id;
+    var p = data.plan;
+    document.getElementById('planIdDisplay').textContent = data.plan_id;
+    document.getElementById('rsIndia').textContent = fmtMoney(p.estimatedCost);
+    document.getElementById('rsAu').textContent = fmtMoney(p.auCost);
+    document.getElementById('rsSave').textContent = (p.savings != null ? p.savings : '—') + (typeof p.savings === 'number' ? '%' : '');
+    document.getElementById('rsTreatment').textContent = p.treatment || '';
+    document.getElementById('rsHospital').textContent = p.hospital || '';
+    document.getElementById('rsDoctor').textContent = p.doctor || '';
+    document.getElementById('rsStay').textContent = p.stay || '';
+    document.getElementById('rsRecovery').textContent = p.recovery || '';
+
+    var cname = p.consultant || 'Sarah Mitchell';
+    var meta = CONSULTANT_META[cname] || { title: 'Medical Tourism Consultant', specs: '', initials: cname.split(' ').map(function (x) { return x[0]; }).join('').slice(0, 2).toUpperCase() };
+    document.getElementById('consultantName').textContent = cname;
+    document.getElementById('consultantTitle').textContent = meta.title;
+    document.getElementById('consultantSpecs').textContent = meta.specs;
+    document.getElementById('consultantInitials').textContent = meta.initials;
+
+    document.getElementById('accuracyNote').innerHTML =
+      'For a more accurate plan, book a <em>free consultation</em> with <strong>' + cname + '</strong> — they will refine hospitals, doctors, and all-inclusive pricing in your currency.';
+
+    wizardCard.style.display = 'none';
+    resultCard.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function downloadJourneyPdf() {
+    if (!window.jspdf || !lastPlan) {
+      showToast('Plan not ready.', 'error');
+      return;
+    }
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    var m = 16;
+    var W = doc.internal.pageSize.getWidth();
+    var H = doc.internal.pageSize.getHeight();
+    var contentW = W - m * 2;
+    var y = 0;
+    var NAVY = [11, 22, 40];
+    var GOLD = [201, 168, 76];
+    var GOLD_LIGHT = [232, 201, 122];
+    var IVORY = [247, 243, 236];
+    var WHITE = [255, 255, 255];
+    var MID = [74, 74, 106];
+    var DARK = [30, 30, 50];
+
+    function ensureSpace(need) { if (y + need > H - 20) { addFooter(); doc.addPage(); y = 16; } }
+    function sectionHead(title) {
+      ensureSpace(14);
+      y += 3;
+      doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
+      doc.setLineWidth(0.5);
+      doc.line(m, y, W - m, y);
+      y += 6;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
+      doc.text(title.toUpperCase(), m, y);
+      y += 5;
+      doc.setTextColor(DARK[0], DARK[1], DARK[2]);
+    }
+    function infoRow(label, value) {
+      ensureSpace(6);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(MID[0], MID[1], MID[2]);
+      doc.text(label, m + 2, y);
+      doc.setTextColor(DARK[0], DARK[1], DARK[2]);
+      doc.setFont('helvetica', 'bold');
+      doc.text(String(value || '\u2014'), m + 52, y);
+      doc.setFont('helvetica', 'normal');
+      y += 5.5;
+    }
+
+    // — Header banner —
+    doc.setFillColor(NAVY[0], NAVY[1], NAVY[2]);
+    doc.rect(0, 0, W, 38, 'F');
+    doc.setFillColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.rect(0, 38, W, 2, 'F');
+    doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
+    doc.setFontSize(22);
+    doc.setFont('helvetica', 'bold');
+    doc.text('BharatHeals', m, 16);
+    doc.setFontSize(9);
+    doc.setTextColor(WHITE[0], WHITE[1], WHITE[2]);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Your Personal Medical Journey Plan', m, 23);
+    doc.setFontSize(8);
+    doc.setTextColor(GOLD_LIGHT[0], GOLD_LIGHT[1], GOLD_LIGHT[2]);
+    doc.text('www.bharatheals.com', m, 29);
+    var today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    doc.text('Ref: ' + (lastPlanId || 'N/A') + '  |  ' + today, W - m, 29, { align: 'right' });
+    y = 48;
+
+    // — Patient Information —
+    sectionHead('Patient Information');
+    infoRow('Name:', formDataCache.name);
+    infoRow('Email:', formDataCache.email);
+    if (formDataCache.phone) infoRow('Phone:', formDataCache.phone);
+    infoRow('Country:', formDataCache.country);
+    infoRow('Timeline:', formDataCache.timeline || 'Flexible');
+    infoRow('Budget:', formDataCache.budget_range);
+    if (formDataCache.travel_date) infoRow('Travel Date:', formDataCache.travel_date);
+
+    // — Treatment Plan —
+    sectionHead('Treatment Plan');
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(NAVY[0], NAVY[1], NAVY[2]);
+    doc.text(String(lastPlan.treatment || ''), m + 2, y);
+    y += 7;
+    if (formDataCache.condition) {
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(MID[0], MID[1], MID[2]);
+      var condLines = doc.splitTextToSize('Patient notes: ' + formDataCache.condition, contentW - 4);
+      ensureSpace(condLines.length * 4 + 2);
+      doc.text(condLines, m + 2, y);
+      y += condLines.length * 4 + 3;
+    }
+
+    // — Cost Estimate (table-like) —
+    sectionHead('Cost Estimate (USD, Indicative)');
+    ensureSpace(26);
+    doc.setFillColor(IVORY[0], IVORY[1], IVORY[2]);
+    doc.roundedRect(m, y - 1, contentW, 22, 2, 2, 'F');
+    var colW = contentW / 3;
+    var boxes = [
+      { label: 'India (from)', value: fmtMoney(lastPlan.estimatedCost), color: GOLD },
+      { label: 'Reference Market', value: fmtMoney(lastPlan.auCost), color: MID },
+      { label: 'Approx. Savings', value: (lastPlan.savings != null ? lastPlan.savings + '%' : '\u2014'), color: [46, 125, 91] }
+    ];
+    boxes.forEach(function (b, i) {
+      var cx = m + colW * i + colW / 2;
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(b.color[0], b.color[1], b.color[2]);
+      doc.text(b.value, cx, y + 9, { align: 'center' });
+      doc.setFontSize(7);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(MID[0], MID[1], MID[2]);
+      doc.text(b.label.toUpperCase(), cx, y + 16, { align: 'center' });
+    });
+    y += 26;
+
+    // — Hospital & Doctor —
+    sectionHead('Hospital & Doctor');
+    infoRow('Hospital:', lastPlan.hospital);
+    infoRow('Doctor:', lastPlan.doctor);
+    infoRow('Estimated Stay:', lastPlan.stay);
+    infoRow('Recovery:', lastPlan.recovery);
+
+    // — Journey Timeline —
+    sectionHead('Journey Timeline');
+    ensureSpace(22);
+    var steps = [
+      { icon: '1', label: 'Pre-Trip', desc: 'Visa, flights, remote consultation' },
+      { icon: '2', label: 'Arrival', desc: 'Airport pickup, hotel check-in' },
+      { icon: '3', label: 'Treatment', desc: 'Procedure at partner hospital' },
+      { icon: '4', label: 'Recovery', desc: 'Nursing support & follow-ups' },
+      { icon: '5', label: 'Return', desc: 'Discharge & telemedicine' }
+    ];
+    var stepW = contentW / 5;
+    steps.forEach(function (s, i) {
+      var cx = m + stepW * i + stepW / 2;
+      doc.setFillColor(NAVY[0], NAVY[1], NAVY[2]);
+      doc.circle(cx, y + 4, 4, 'F');
+      doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
+      doc.setFontSize(8);
+      doc.setFont('helvetica', 'bold');
+      doc.text(s.icon, cx, y + 5.5, { align: 'center' });
+      doc.setTextColor(NAVY[0], NAVY[1], NAVY[2]);
+      doc.setFontSize(7.5);
+      doc.text(s.label, cx, y + 12, { align: 'center' });
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(MID[0], MID[1], MID[2]);
+      doc.setFontSize(6.5);
+      var descLines = doc.splitTextToSize(s.desc, stepW - 4);
+      doc.text(descLines, cx, y + 16, { align: 'center' });
+    });
+    if (steps.length > 1) {
+      doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
+      doc.setLineWidth(0.3);
+      doc.line(m + stepW / 2 + 5, y + 4, m + stepW * (steps.length - 1) + stepW / 2 - 5, y + 4);
+    }
+    y += 26;
+
+    // — Consultant —
+    sectionHead('Your Consultant');
+    var cname = lastPlan.consultant || 'Sarah Mitchell';
+    var cmeta = CONSULTANT_META[cname] || { title: 'Medical Tourism Consultant', specs: '' };
+    infoRow('Name:', cname);
+    infoRow('Role:', cmeta.title);
+    if (cmeta.specs) infoRow('Specialties:', cmeta.specs);
+    y += 2;
+
+    // — Packages —
+    if (lastPlan.packages && lastPlan.packages.length) {
+      sectionHead('Recommended Packages');
+      lastPlan.packages.slice(0, 4).forEach(function (pkg) {
+        ensureSpace(7);
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(NAVY[0], NAVY[1], NAVY[2]);
+        doc.text((pkg.name || ''), m + 2, y);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(GOLD[0], GOLD[1], GOLD[2]);
+        var price = pkg.price != null ? '$' + pkg.price : '';
+        doc.text(price, W - m, y, { align: 'right' });
+        y += 4;
+        if (pkg.detail) {
+          doc.setFontSize(7.5);
+          doc.setTextColor(MID[0], MID[1], MID[2]);
+          doc.text(pkg.detail, m + 2, y);
+          y += 4;
+        }
+        y += 1;
+      });
+    }
+
+    function addFooter() {
+      var fy = H - 14;
+      doc.setDrawColor(GOLD[0], GOLD[1], GOLD[2]);
+      doc.setLineWidth(0.3);
+      doc.line(m, fy, W - m, fy);
+      fy += 3;
+      doc.setFontSize(6.5);
+      doc.setTextColor(MID[0], MID[1], MID[2]);
+      doc.setFont('helvetica', 'normal');
+      doc.text('BharatHeals  |  www.bharatheals.com  |  hello@bharatheals.com  |  WhatsApp: +91 99999 99999', m, fy);
+      fy += 3.5;
+      var disc = doc.splitTextToSize(
+        'Disclaimer: This is an indicative plan only and does not constitute medical advice. All costs are approximate and subject to change. ' +
+        'Final treatment plans, pricing, and medical decisions must be confirmed with your treating physician and BharatHeals consultant.',
+        contentW
+      );
+      doc.text(disc, m, fy);
+    }
+
+    addFooter();
+    doc.save('BharatHeals-Journey-Plan.pdf');
+    showToast('PDF downloaded.', 'success');
+  }
+
+  btnNext.addEventListener('click', function () {
+    if (step === 1) {
+      if (!journeyForm.pjName.value.trim() || !journeyForm.pjEmail.value.trim() || !journeyForm.pjCountry.value.trim()) {
+        showToast('Please complete required fields.', 'error');
+        return;
+      }
+      setStep(2);
+      return;
+    }
+    if (step === 2) {
+      var picked = journeyForm.querySelector('input[name="treatment"]:checked');
+      if (!picked) {
+        showToast('Please select a treatment.', 'error');
+        return;
+      }
+      setStep(3);
+    }
+  });
+
+  btnBack.addEventListener('click', function () {
+    if (step > 1) setStep(step - 1);
+  });
+
+  journeyForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var d = gatherForm();
+    if (!d.name || !d.email || !d.treatment) {
+      showToast('Name, email, and treatment are required.', 'error');
+      return;
+    }
+    btnSubmit.disabled = true;
+    btnSubmit.textContent = 'Generating…';
+    fetch('/api/journey/plan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: d.name,
+        email: d.email,
+        treatment: d.treatment,
+        country: d.country,
+        budget: d.budget_range,
+        travel_date: d.travel_date || null
+      })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'Generate my plan';
+        if (!res.success) {
+          showToast(res.error || 'Request failed.', 'error');
+          return;
+        }
+        showResults(res);
+        showToast('Your journey plan is ready.', 'success');
+      })
+      .catch(function () {
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'Generate my plan';
+        showToast('Network error.', 'error');
+      });
+  });
+
+  document.getElementById('btnPdfJourney').addEventListener('click', downloadJourneyPdf);
+
+  document.getElementById('btnBookConsult').addEventListener('click', function () {
+    if (!lastPlan) return;
+    document.getElementById('consName').value = formDataCache.name || '';
+    document.getElementById('consEmail').value = formDataCache.email || '';
+    document.getElementById('consPhone').value = formDataCache.phone || '';
+    document.getElementById('consCountry').value = formDataCache.country || '';
+    document.getElementById('consTreatment').value = mapTreatmentSelect(lastPlan.treatment);
+    document.getElementById('consMessage').value = formDataCache.condition ? ('Journey planner: ' + formDataCache.condition) : 'I used the journey planner and would like to discuss my options.';
+    openConsultModal(mapTreatmentSelect(lastPlan.treatment));
+    var h = document.getElementById('consConsultant');
+    if (h) h.value = lastPlan.consultant || '';
+  });
+
+  var origOpen = window.openConsultModal;
+  window.openConsultModal = function (treatment) {
+    var h = document.getElementById('consConsultant');
+    if (h && arguments.length < 2) h.value = '';
+    origOpen(treatment);
+  };
+
+  document.getElementById('btnStartOver').addEventListener('click', function () {
+    resultCard.classList.remove('active');
+    wizardCard.style.display = '';
+    journeyForm.reset();
+    document.getElementById('pjCountry').selectedIndex = 0;
+    setStep(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  setStep(1);
+})();
+</script>
+<script src="/js/ai-widget.js?v=20260405b"></script>
+</body>
+</html>

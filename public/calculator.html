@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cost Calculator — BharatHeals | See Your Savings</title>
+<meta name="description" content="Calculate how much you can save on medical treatment in India. Compare typical high-cost market prices with Indian hospital costs across 14+ procedures.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css?v=20260405b">
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="/" class="nav-logo">Bharat<span>Heals</span></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about.html">About Us</a></li>
+    <li><a href="/#specialties">Treatments</a></li>
+    <li><a href="/compare-cost.html">Compare Costs</a></li>
+    <li><a href="/chat.html">AI Agent</a></li>
+    <li><a href="/plan-journey.html">Plan Journey</a></li>
+    <li><a href="/doctors.html">Doctors</a></li>
+    <li><a href="/hospitals.html">Hospitals</a></li>
+    <li><a href="/team.html">Team</a></li>
+    <li><a href="javascript:void(0)" class="nav-cta" onclick="openConsultModal()">Free Consultation</a></li>
+    <li><a href="/login.html">Account</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMobile()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-menu" onclick="toggleMobile()">&times;</button>
+  <a href="/" onclick="toggleMobile()">Home</a>
+  <a href="/about.html" onclick="toggleMobile()">About Us</a>
+  <a href="/#specialties" onclick="toggleMobile()">Treatments</a>
+  <a href="/compare-cost.html" onclick="toggleMobile()">Compare Costs</a>
+  <a href="/chat.html" onclick="toggleMobile()">AI Agent</a>
+  <a href="/plan-journey.html" onclick="toggleMobile()">Plan Journey</a>
+  <a href="/doctors.html" onclick="toggleMobile()">Doctors</a>
+  <a href="/hospitals.html" onclick="toggleMobile()">Hospitals</a>
+  <a href="/team.html" onclick="toggleMobile()">Team</a>
+  <a href="javascript:void(0)" onclick="toggleMobile(); openConsultModal();" style="color:var(--gold);">Free Consultation</a>
+  <a href="/login.html" onclick="toggleMobile()">Account</a>
+</div>
+
+<div class="calc-page-hero">
+  <h1>Medical Cost <em>Calculator</em></h1>
+  <p>See exactly how much you could save by getting treatment in India. All prices shown in your preferred currency.</p>
+</div>
+
+<section style="background:#fff; padding: 4rem 5%;">
+  <div class="calc-full section-inner">
+    <div class="calc-full-widget">
+      <div class="calc-row">
+        <div class="calc-group">
+          <label for="calcTreatment">Select Treatment</label>
+          <select id="calcTreatment">
+            <option value="">Choose a procedure...</option>
+            <optgroup label="Hair Transplant">
+              <option value="hair-fue-2000">FUE Hair Transplant — 2000 Grafts</option>
+              <option value="hair-fue-3000">FUE Hair Transplant — 3000 Grafts</option>
+              <option value="hair-dhi-3500">DHI Hair Transplant — 3500 Grafts</option>
+            </optgroup>
+            <optgroup label="Dental">
+              <option value="dental-implant">Single Dental Implant (Titanium + Crown)</option>
+              <option value="dental-veneer">Porcelain Veneer (per tooth)</option>
+              <option value="dental-allon4">All-on-4 Dental Implants (full arch)</option>
+              <option value="dental-fullmouth">Full Mouth Rehabilitation</option>
+            </optgroup>
+            <optgroup label="Cardiac">
+              <option value="cardiac-bypass">Heart Bypass Surgery (CABG)</option>
+            </optgroup>
+            <optgroup label="Orthopedics">
+              <option value="knee-replace">Knee Replacement</option>
+              <option value="hip-replace">Hip Replacement</option>
+            </optgroup>
+            <optgroup label="Fertility">
+              <option value="ivf">IVF Treatment (single cycle)</option>
+            </optgroup>
+            <optgroup label="Eye Care">
+              <option value="lasik">LASIK Eye Surgery (both eyes)</option>
+            </optgroup>
+            <optgroup label="Transplants">
+              <option value="liver-transplant">Liver Transplant</option>
+              <option value="kidney-transplant">Kidney Transplant</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="calc-group">
+          <label for="calcCurrency">Currency</label>
+          <select id="calcCurrency">
+            <option value="aud">AUD</option>
+            <option value="usd" selected>USD ($)</option>
+            <option value="gbp">GBP (&pound;)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="calc-result" id="calcResult" style="display:none;">
+        <div class="calc-savings" id="calcSavings">$0</div>
+        <div class="calc-savings-label" id="calcPct">estimated savings</div>
+        <div class="calc-breakdown">
+          <div class="calc-breakdown-item">
+            <div class="price" id="calcHome">$0</div>
+            <div class="label">Typical home / ref. market</div>
+          </div>
+          <div class="calc-breakdown-item">
+            <div class="price" id="calcIndia" style="color:var(--gold);">$0</div>
+            <div class="label">In India</div>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem;">
+          <button class="btn-primary" onclick="openConsultModal(document.getElementById('calcTreatment').selectedOptions[0].text)">Get Personalised Quote &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--navy); margin:3rem 0 1.5rem; text-align:center;">Full Cost Comparison Table (indicative $)</h3>
+    <div style="overflow-x:auto;">
+      <table class="calc-comparison-table">
+        <thead>
+          <tr>
+            <th>Procedure</th>
+            <th>Typical ref.</th>
+            <th>USA</th>
+            <th>UK</th>
+            <th>India</th>
+            <th>You Save</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>FUE Hair Transplant (2000 grafts)</td><td>$12,000</td><td>$15,400</td><td>$12,300</td><td class="highlight-cell">$1,200</td><td class="highlight-cell">90%</td></tr>
+          <tr><td>FUE Hair Transplant (3000 grafts)</td><td>$16,000</td><td>$23,100</td><td>$15,400</td><td class="highlight-cell">$1,500</td><td class="highlight-cell">91%</td></tr>
+          <tr><td>DHI Hair Transplant (3500 grafts)</td><td>$20,000</td><td>$27,700</td><td>$21,500</td><td class="highlight-cell">$2,200</td><td class="highlight-cell">89%</td></tr>
+          <tr><td>Single Dental Implant</td><td>$5,500</td><td>$7,700</td><td>$4,600</td><td class="highlight-cell">$500</td><td class="highlight-cell">91%</td></tr>
+          <tr><td>Porcelain Veneer (per tooth)</td><td>$2,000</td><td>$2,770</td><td>$1,850</td><td class="highlight-cell">$250</td><td class="highlight-cell">88%</td></tr>
+          <tr><td>All-on-4 Dental Implants</td><td>$25,000</td><td>$36,900</td><td>$27,700</td><td class="highlight-cell">$3,500</td><td class="highlight-cell">86%</td></tr>
+          <tr><td>Full Mouth Rehabilitation</td><td>$35,000</td><td>$46,200</td><td>$33,850</td><td class="highlight-cell">$5,000</td><td class="highlight-cell">86%</td></tr>
+          <tr><td>Heart Bypass (CABG)</td><td>$80,000</td><td>$184,600</td><td>$76,900</td><td class="highlight-cell">$7,000</td><td class="highlight-cell">91%</td></tr>
+          <tr><td>Knee Replacement</td><td>$35,000</td><td>$61,500</td><td>$27,700</td><td class="highlight-cell">$5,500</td><td class="highlight-cell">84%</td></tr>
+          <tr><td>Hip Replacement</td><td>$38,000</td><td>$61,500</td><td>$27,700</td><td class="highlight-cell">$5,500</td><td class="highlight-cell">86%</td></tr>
+          <tr><td>IVF Treatment (single cycle)</td><td>$12,000</td><td>$23,100</td><td>$12,300</td><td class="highlight-cell">$2,500</td><td class="highlight-cell">79%</td></tr>
+          <tr><td>LASIK (both eyes)</td><td>$4,000</td><td>$6,900</td><td>$4,600</td><td class="highlight-cell">$800</td><td class="highlight-cell">80%</td></tr>
+          <tr><td>Liver Transplant</td><td>$150,000</td><td>$461,500</td><td>$184,600</td><td class="highlight-cell">$30,000</td><td class="highlight-cell">80%</td></tr>
+          <tr><td>Kidney Transplant</td><td>$80,000</td><td>$230,800</td><td>$92,300</td><td class="highlight-cell">$12,000</td><td class="highlight-cell">85%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.72rem; color:var(--text-mid); margin-top:1rem; text-align:center;">Indicative figures based on 2025-26 market data. Actual costs depend on hospital, surgeon, and case complexity. USD/GBP converted at approximate rates.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="consult-banner">
+  <div class="consult-inner">
+    <div class="consult-text">
+      <h3>Want a <em>personalised quote?</em></h3>
+      <p>Book a free consultation and our medical advisor will send you a detailed cost breakdown for your specific case — in your preferred currency.</p>
+    </div>
+    <button class="consult-btn" onclick="openConsultModal()">Get My Free Quote &rarr;</button>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom">
+      <span>&copy; 2026 BharatHeals. All rights reserved.</span>
+      <div class="accred-logos">
+        <span class="accred-badge">JCI Partner</span>
+        <span class="accred-badge">NABH Accredited</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="consultModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Get a <em>Free Quote</em></h2>
+      <p>Our consultant will provide a detailed cost estimate for your specific case in your preferred currency.</p>
+      <button class="modal-close" onclick="closeConsultModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="consultForm">
+        <div class="form-row">
+          <div class="form-group"><label for="consName">Full Name *</label><input type="text" id="consName" name="name" required placeholder="John Smith"></div>
+          <div class="form-group"><label for="consEmail">Email *</label><input type="email" id="consEmail" name="email" required placeholder="john@example.com"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label for="consPhone">Phone / WhatsApp</label><input type="tel" id="consPhone" name="phone" placeholder="+1 555 000 0000"></div>
+          <div class="form-group"><label for="consCountry">City, Country</label><input type="text" id="consCountry" name="country" placeholder="City, country"></div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="consTreatment">Treatment</label>
+            <select id="consTreatment" name="treatment">
+              <option value="">Select a treatment...</option>
+              <option value="Hair Transplant">Hair Transplant</option>
+              <option value="Dental Treatment">Dental Treatment</option>
+              <option value="Cosmetic Surgery">Cosmetic Surgery</option>
+              <option value="Fertility & IVF">Fertility & IVF</option>
+              <option value="Bariatric Surgery">Bariatric Surgery</option>
+              <option value="LASIK & Eye Care">LASIK & Eye Care</option>
+              <option value="Spine & Neuro">Spine & Neuro</option>
+              <option value="Cancer Treatment">Cancer Treatment</option>
+              <option value="Organ Transplant">Organ Transplant</option>
+              <option value="Surrogacy">Surrogacy</option>
+              <option value="Ayurveda & Wellness">Ayurveda & Wellness</option>
+              <option value="Executive Health Check">Executive Health Check</option>
+              <option value="Second Opinion">Second Opinion</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group"><label for="consMessage">Details</label><textarea id="consMessage" name="message" placeholder="Describe your needs..."></textarea></div>
+        </div>
+        <button type="submit" class="modal-submit" id="consultSubmitBtn">Get My Free Quote &rarr;</button>
+      </form>
+      <div class="form-success" id="consultSuccess">
+        <div class="check-circle">&#10003;</div>
+        <h3>Quote Requested!</h3>
+        <p>Our team will send you a personalised cost estimate within 24 hours.</p>
+      </div>
+      <p class="modal-note">&#128274; 100% confidential. No spam.</p>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="/js/app.js?v=20260405b"></script>
+<script src="/js/ai-widget.js?v=20260405b"></script>
+</body>
+</html>

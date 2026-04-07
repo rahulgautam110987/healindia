@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About BharatHeals — Our Mission</title>
+<meta name="description" content="BharatHeals's mission is hassle-free, affordable world-class medical treatment for everyone. Learn about our story, values, and the team behind India's most trusted medical tourism platform.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css?v=20260405b">
+<style>
+.about-hero{background:linear-gradient(135deg,#0a1628 0%,#112240 100%);padding:7rem 0 5rem;text-align:center;color:#fff;position:relative;overflow:hidden;}
+.about-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(198,163,91,0.08),transparent 60%);pointer-events:none;}
+.about-hero .inner{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:0 1.5rem;}
+.about-hero .tag{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(198,163,91,0.15);color:var(--gold);font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:6px 16px;border-radius:30px;margin-bottom:1.2rem;}
+.about-hero h1{font-family:var(--heading);font-size:2.8rem;font-weight:900;line-height:1.15;margin:0 0 1rem;}
+.about-hero h1 em{font-style:italic;background:linear-gradient(135deg,var(--gold),#f0dca0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.about-hero p{color:rgba(255,255,255,0.6);font-size:1rem;line-height:1.7;margin:0;}
+
+.mission-section{padding:5rem 0;background:#fff;}
+.mission-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:960px;margin:0 auto;padding:0 1.5rem;}
+.mission-text h2{font-family:var(--heading);font-size:2rem;font-weight:900;line-height:1.2;margin:0 0 1.2rem;color:var(--navy);}
+.mission-text h2 em{font-style:italic;color:var(--rust);}
+.mission-text p{color:var(--text-mid);font-size:0.9rem;line-height:1.7;margin:0 0 1rem;}
+.mission-text blockquote{border-left:3px solid var(--gold);padding-left:1.2rem;margin:1.5rem 0;font-family:var(--heading);font-size:1.15rem;font-style:italic;color:var(--navy);line-height:1.5;}
+.mission-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;}
+.m-stat{background:var(--cream);border-radius:16px;padding:1.8rem 1.5rem;text-align:center;border:1px solid rgba(0,0,0,0.04);}
+.m-stat .num{font-family:var(--heading);font-size:2.2rem;font-weight:900;color:var(--navy);line-height:1;}
+.m-stat .lbl{font-size:0.72rem;color:var(--text-mid);text-transform:uppercase;letter-spacing:0.1em;margin-top:0.3rem;}
+
+.values-section{padding:5rem 0;background:var(--cream);}
+.values-section .inner{max-width:960px;margin:0 auto;padding:0 1.5rem;}
+.values-section h2{font-family:var(--heading);font-size:2rem;font-weight:900;text-align:center;margin:0 0 0.5rem;color:var(--navy);}
+.values-section h2 em{font-style:italic;color:var(--rust);}
+.values-section .lead{text-align:center;color:var(--text-mid);font-size:0.88rem;margin:0 0 2.5rem;max-width:560px;margin-left:auto;margin-right:auto;}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.v-card{background:#fff;border-radius:16px;padding:2rem;border:1px solid rgba(0,0,0,0.04);transition:all 0.3s ease;}
+.v-card:hover{box-shadow:0 16px 50px rgba(0,0,0,0.06);transform:translateY(-3px);border-color:rgba(198,163,91,0.2);}
+.v-card .icon{font-size:2rem;margin-bottom:1rem;}
+.v-card h3{font-family:var(--heading);font-size:1.05rem;margin:0 0 0.5rem;color:var(--navy);}
+.v-card p{font-size:0.82rem;color:var(--text-mid);line-height:1.6;margin:0;}
+
+.story-section{padding:5rem 0;background:#fff;}
+.story-section .inner{max-width:720px;margin:0 auto;padding:0 1.5rem;}
+.story-section h2{font-family:var(--heading);font-size:2rem;font-weight:900;text-align:center;margin:0 0 0.5rem;color:var(--navy);}
+.story-section h2 em{font-style:italic;color:var(--rust);}
+.story-section .lead{text-align:center;color:var(--text-mid);font-size:0.88rem;margin:0 0 2rem;}
+.timeline{position:relative;padding-left:2rem;}
+.timeline::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--gold),rgba(198,163,91,0.2));}
+.tl-item{position:relative;margin-bottom:2rem;padding-left:1.5rem;}
+.tl-item::before{content:'';position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;background:var(--gold);border:3px solid #fff;box-shadow:0 0 0 2px var(--gold);}
+.tl-item h4{font-family:var(--heading);font-size:1rem;margin:0 0 0.3rem;color:var(--navy);}
+.tl-item p{font-size:0.82rem;color:var(--text-mid);line-height:1.5;margin:0;}
+.tl-item .yr{font-size:0.7rem;color:var(--gold);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;}
+
+.promise-section{padding:4rem 0;background:linear-gradient(135deg,#0a1628 0%,#112240 100%);color:#fff;text-align:center;}
+.promise-section .inner{max-width:700px;margin:0 auto;padding:0 1.5rem;}
+.promise-section h2{font-family:var(--heading);font-size:2rem;font-weight:900;margin:0 0 1rem;}
+.promise-section h2 em{font-style:italic;color:var(--gold);}
+.promise-section p{color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.7;margin:0 0 1.5rem;}
+.promise-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:0.6rem;margin-bottom:2rem;}
+.promise-pills span{background:rgba(198,163,91,0.12);color:var(--gold);font-size:0.75rem;font-weight:600;padding:6px 16px;border-radius:30px;letter-spacing:0.04em;}
+
+@media(max-width:768px){
+.about-hero h1{font-size:1.8rem;}
+.mission-grid{grid-template-columns:1fr;gap:2rem;}
+.values-grid{grid-template-columns:1fr;}
+.mission-stats{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="/" class="nav-logo">Bharat<span>Heals</span></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about.html" style="color:var(--gold);">About Us</a></li>
+    <li><a href="/#specialties">Treatments</a></li>
+    <li><a href="/compare-cost.html">Compare Costs</a></li>
+    <li><a href="/chat.html">AI Agent</a></li>
+    <li><a href="/plan-journey.html">Plan Journey</a></li>
+    <li><a href="/doctors.html">Doctors</a></li>
+    <li><a href="/hospitals.html">Hospitals</a></li>
+    <li><a href="/team.html">Team</a></li>
+    <li><a href="javascript:void(0)" class="nav-cta" onclick="openConsultModal()">Free Consultation</a></li>
+    <li><a href="/login.html">Account</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMobile()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-menu" onclick="toggleMobile()">&times;</button>
+  <a href="/" onclick="toggleMobile()">Home</a>
+  <a href="/about.html" onclick="toggleMobile()" style="color:var(--gold);">About Us</a>
+  <a href="/#specialties" onclick="toggleMobile()">Treatments</a>
+  <a href="/compare-cost.html" onclick="toggleMobile()">Compare Costs</a>
+  <a href="/chat.html" onclick="toggleMobile()">AI Agent</a>
+  <a href="/plan-journey.html" onclick="toggleMobile()">Plan Journey</a>
+  <a href="/doctors.html" onclick="toggleMobile()">Doctors</a>
+  <a href="/hospitals.html" onclick="toggleMobile()">Hospitals</a>
+  <a href="/team.html" onclick="toggleMobile()">Team</a>
+  <a href="javascript:void(0)" onclick="toggleMobile(); openConsultModal();" style="color:var(--gold);">Free Consultation</a>
+  <a href="/login.html" onclick="toggleMobile()">Account</a>
+</div>
+
+<!-- HERO -->
+<div class="about-hero">
+  <div class="inner">
+    <div class="tag">About BharatHeals</div>
+    <h1>Hassle-Free, Affordable<br><em>World-Class Treatment</em> for All</h1>
+    <p>We believe no one should have to choose between quality healthcare and financial security. BharatHeals bridges the gap between world-class Indian hospitals and patients across the globe who deserve better care at fair prices.</p>
+  </div>
+</div>
+
+<!-- MISSION -->
+<section class="mission-section">
+  <div class="mission-grid">
+    <div class="mission-text">
+      <h2>Our <em>Mission</em></h2>
+      <p>BharatHeals was born from a simple but powerful idea: the best medical care in the world shouldn't be reserved for the few who can afford it. India's JCI-accredited hospitals deliver outcomes that match — and often exceed — the best in the US, UK, and Europe. Yet treatment costs are 60-90% lower.</p>
+      <p>We exist to make this accessible to everyone. No middlemen inflating prices. No confusing paperwork. No navigating a foreign healthcare system alone. Just a single, trusted partner who handles everything — from your first enquiry to your safe return home.</p>
+      <blockquote>"Every patient deserves a dedicated team, a clear plan, and zero surprises — regardless of their budget."</blockquote>
+      <p>That's not a slogan. It's a promise we keep for every one of our 10,000+ patients.</p>
+    </div>
+    <div class="mission-stats">
+      <div class="m-stat"><div class="num">50+</div><div class="lbl">Countries Served</div></div>
+      <div class="m-stat"><div class="num">10,000+</div><div class="lbl">Patients Treated</div></div>
+      <div class="m-stat"><div class="num">60-90%</div><div class="lbl">Cost Savings</div></div>
+      <div class="m-stat"><div class="num">97%</div><div class="lbl">Satisfaction Rate</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="values-section">
+  <div class="inner">
+    <h2>What We <em>Stand For</em></h2>
+    <p class="lead">Six principles that guide every decision we make — from choosing partner hospitals to designing your treatment plan.</p>
+    <div class="values-grid">
+      <div class="v-card">
+        <div class="icon">&#128176;</div>
+        <h3>Radical Affordability</h3>
+        <p>We negotiate directly with hospitals to pass the lowest possible prices to you. No hidden fees, no surprise charges. Your quote is your final price.</p>
+      </div>
+      <div class="v-card">
+        <div class="icon">&#128170;</div>
+        <h3>Zero Compromise on Quality</h3>
+        <p>We only partner with JCI or NABH-accredited hospitals. Your surgeon has the same credentials and equipment as the best in New York or London.</p>
+      </div>
+      <div class="v-card">
+        <div class="icon">&#129309;</div>
+        <h3>Truly Hassle-Free</h3>
+        <p>Visa, flights, accommodation, airport pickup, hospital appointments, language support, post-op care — we handle every single detail so you can focus on healing.</p>
+      </div>
+      <div class="v-card">
+        <div class="icon">&#128272;</div>
+        <h3>Full Transparency</h3>
+        <p>No fine print. We share doctor credentials, hospital accreditations, real patient reviews, and itemised cost breakdowns before you commit to anything.</p>
+      </div>
+      <div class="v-card">
+        <div class="icon">&#127758;</div>
+        <h3>For Everyone, Everywhere</h3>
+        <p>Whether you're from Saudi Arabia, Australia, UK, USA, or anywhere else — our platform, pricing, and support are designed for a truly global audience.</p>
+      </div>
+      <div class="v-card">
+        <div class="icon">&#128156;</div>
+        <h3>Patient-First, Always</h3>
+        <p>We earn from hospital partnerships, not from patients. Our consultations are free, our advice is honest, and we'll tell you if India isn't the right fit for your case.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUR STORY -->
+<section class="story-section">
+  <div class="inner">
+    <h2>Our <em>Story</em></h2>
+    <p class="lead">From a small team with a big idea to India's most trusted medical tourism platform.</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="yr">2019 &mdash; The Beginning</span>
+        <h4>Founded with a Mission</h4>
+        <p>BharatHeals started when our founders saw first-hand how international patients struggled to navigate India's healthcare system — despite it being world-class. We set out to build the bridge.</p>
+      </div>
+      <div class="tl-item">
+        <span class="yr">2020 &mdash; Growth</span>
+        <h4>1,000 Patients, 20 Countries</h4>
+        <p>Within a year, word of mouth and genuine results brought patients from the Middle East, UK, Australia, and Africa. We partnered with Apollo, Fortis, and Medanta.</p>
+      </div>
+      <div class="tl-item">
+        <span class="yr">2022 &mdash; Expansion</span>
+        <h4>Full-Service Concierge Launched</h4>
+        <p>We added visa support, airport meet-and-greet, recovery holiday planning, and 24/7 WhatsApp coordination. The entire journey became truly hassle-free.</p>
+      </div>
+      <div class="tl-item">
+        <span class="yr">2024 &mdash; AI Integration</span>
+        <h4>AI-Powered Treatment Planning</h4>
+        <p>We launched our AI chat agent — powered by advanced language models — that gives patients instant, personalised treatment plans and downloadable PDFs within seconds.</p>
+      </div>
+      <div class="tl-item">
+        <span class="yr">2026 &mdash; Today</span>
+        <h4>10,000+ Patients, 50+ Countries</h4>
+        <p>Today, BharatHeals serves patients from over 50 countries, partners with 44 JCI-accredited hospitals, and has saved patients over $120 million in treatment costs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROMISE -->
+<section class="promise-section">
+  <div class="inner">
+    <h2>The BharatHeals <em>Promise</em></h2>
+    <p>Every patient — regardless of treatment, budget, or country — receives the same standard of care, support, and dedication from our team.</p>
+    <div class="promise-pills">
+      <span>Free Consultation</span>
+      <span>No Hidden Fees</span>
+      <span>JCI Hospitals Only</span>
+      <span>24/7 Support</span>
+      <span>Visa Assistance</span>
+      <span>Airport Transfers</span>
+      <span>Post-Op Follow-Up</span>
+      <span>Honest Advice</span>
+    </div>
+    <a href="javascript:void(0)" onclick="openConsultModal()" class="btn-primary" style="text-decoration:none;font-size:0.9rem;padding:0.9rem 2.5rem;">Start Your Journey &rarr;</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div style="text-align:center; padding:1.5rem 0; color:rgba(255,255,255,0.4); font-size:0.75rem;">
+      &copy; 2026 BharatHeals. All rights reserved. &middot; <a href="/" style="color:rgba(255,255,255,0.5);">Home</a> &middot; <a href="/team.html" style="color:rgba(255,255,255,0.5);">Our Team</a> &middot; <a href="/doctors.html" style="color:rgba(255,255,255,0.5);">Doctors</a> &middot; <a href="/compare-cost.html" style="color:rgba(255,255,255,0.5);">Compare Costs</a>
+    </div>
+  </div>
+</footer>
+
+<!-- CONSULTATION MODAL -->
+<div class="modal-overlay" id="consultModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('consultModal').classList.remove('active')">&times;</button>
+    <h3>Book Free Consultation</h3>
+    <p style="color:var(--text-mid); font-size:0.82rem; margin-bottom:1.5rem;">Our team responds within 24 hours via phone, video, or WhatsApp.</p>
+    <form id="modalConsultForm">
+      <input type="text" name="name" placeholder="Your name" required style="width:100%;padding:0.7rem;border:1px solid rgba(0,0,0,0.1);border-radius:8px;margin-bottom:0.8rem;font-size:0.85rem;">
+      <input type="email" name="email" placeholder="Email" required style="width:100%;padding:0.7rem;border:1px solid rgba(0,0,0,0.1);border-radius:8px;margin-bottom:0.8rem;font-size:0.85rem;">
+      <input type="text" name="phone" placeholder="Phone / WhatsApp" style="width:100%;padding:0.7rem;border:1px solid rgba(0,0,0,0.1);border-radius:8px;margin-bottom:0.8rem;font-size:0.85rem;">
+      <select name="treatment" style="width:100%;padding:0.7rem;border:1px solid rgba(0,0,0,0.1);border-radius:8px;margin-bottom:0.8rem;font-size:0.85rem;">
+        <option value="">Select a treatment...</option>
+        <option value="Hair Transplant">Hair Transplant</option>
+        <option value="Dental Treatment">Dental Treatment</option>
+        <option value="Cosmetic Surgery">Cosmetic Surgery</option>
+        <option value="Fertility & IVF">Fertility & IVF</option>
+        <option value="Bariatric Surgery">Bariatric Surgery</option>
+        <option value="LASIK & Eye Care">LASIK & Eye Care</option>
+        <option value="Spine & Neuro">Spine & Neuro</option>
+        <option value="Cancer Treatment">Cancer Treatment</option>
+        <option value="Organ Transplant">Organ Transplant</option>
+        <option value="Surrogacy">Surrogacy</option>
+        <option value="Ayurveda & Wellness">Ayurveda & Wellness</option>
+        <option value="Executive Health Check">Executive Health Check</option>
+        <option value="Second Opinion">Second Opinion</option>
+        <option value="Other">Other</option>
+      </select>
+      <button type="submit" class="btn-primary" style="width:100%;">Send Request &rarr;</button>
+    </form>
+  </div>
+</div>
+
+<script src="/js/app.js?v=20260405b"></script>
+<script src="/js/ai-widget.js?v=20260405b"></script>
+</body>
+</html>

@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BharatHeals — Build Your Own Package</title>
+<meta name="description" content="Customize your medical tourism package. Choose your treatment, hotel, flights, transfers, and services — see live pricing as you build.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css?v=20260405b">
+<style>
+.bp-hero{background:linear-gradient(135deg,#0a1628 0%,#112240 100%);padding:6rem 0 3rem;text-align:center;color:#fff;position:relative;}
+.bp-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(198,163,91,0.06),transparent 60%);pointer-events:none;}
+.bp-hero .inner{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:0 1.5rem;}
+.bp-hero h1{font-family:var(--heading);font-size:2.4rem;font-weight:900;margin:0.8rem 0 0.6rem;}
+.bp-hero h1 em{font-style:italic;background:linear-gradient(135deg,var(--gold),#f0dca0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.bp-hero p{color:rgba(255,255,255,0.5);font-size:0.9rem;line-height:1.6;}
+
+.bp-wrap{max-width:1100px;margin:0 auto;padding:2.5rem 1.5rem 4rem;display:grid;grid-template-columns:1fr 340px;gap:2.5rem;align-items:start;}
+
+/* Left — Config sections */
+.bp-sections{display:flex;flex-direction:column;gap:1.5rem;}
+.bp-section{background:#fff;border:1px solid rgba(0,0,0,0.06);border-radius:16px;overflow:hidden;}
+.bp-section-head{display:flex;align-items:center;gap:0.8rem;padding:1.2rem 1.5rem;background:var(--cream);cursor:pointer;user-select:none;}
+.bp-section-head .step-num{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;flex-shrink:0;}
+.bp-section-head h3{font-family:var(--heading);font-size:1rem;margin:0;color:var(--navy);flex:1;}
+.bp-section-head .toggle-icon{font-size:1.2rem;color:var(--text-mid);transition:transform 0.2s;}
+.bp-section.open .toggle-icon{transform:rotate(180deg);}
+.bp-section-body{padding:0 1.5rem 1.5rem;display:none;}
+.bp-section.open .bp-section-body{display:block;}
+
+/* Option cards */
+.opt-grid{display:grid;gap:0.8rem;margin-top:1rem;}
+.opt-grid-2{grid-template-columns:repeat(2,1fr);}
+.opt-grid-3{grid-template-columns:repeat(3,1fr);}
+.opt-grid-4{grid-template-columns:repeat(4,1fr);}
+.opt-card{border:2px solid rgba(0,0,0,0.06);border-radius:12px;padding:1rem;cursor:pointer;transition:all 0.2s;text-align:center;position:relative;}
+.opt-card:hover{border-color:rgba(198,163,91,0.4);background:rgba(198,163,91,0.03);}
+.opt-card.selected{border-color:var(--gold);background:rgba(198,163,91,0.06);box-shadow:0 0 0 1px var(--gold);}
+.opt-card.selected::after{content:'✓';position:absolute;top:8px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:0.7rem;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.opt-card .icon{font-size:1.6rem;margin-bottom:0.5rem;}
+.opt-card h4{font-family:var(--heading);font-size:0.88rem;margin:0 0 0.2rem;color:var(--navy);}
+.opt-card .desc{font-size:0.72rem;color:var(--text-mid);line-height:1.4;margin:0 0 0.5rem;}
+.opt-card .price{font-size:0.78rem;font-weight:700;color:var(--gold);}
+.opt-card .price.free{color:#27AE60;}
+.opt-card.disabled{opacity:0.4;pointer-events:none;}
+
+/* Toggle row */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 0;border-bottom:1px solid rgba(0,0,0,0.04);}
+.toggle-row:last-child{border-bottom:none;}
+.toggle-row .tl{display:flex;flex-direction:column;}
+.toggle-row .tl h4{font-size:0.88rem;color:var(--navy);margin:0;}
+.toggle-row .tl p{font-size:0.72rem;color:var(--text-mid);margin:0.15rem 0 0;}
+.toggle-row .tr{display:flex;align-items:center;gap:0.8rem;}
+.toggle-row .price-tag{font-size:0.78rem;font-weight:600;color:var(--text-mid);}
+.switch{position:relative;width:44px;height:24px;flex-shrink:0;}
+.switch input{opacity:0;width:0;height:0;}
+.switch .slider{position:absolute;cursor:pointer;inset:0;background:#ccc;border-radius:24px;transition:0.3s;}
+.switch .slider::before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:0.3s;}
+.switch input:checked+.slider{background:var(--gold);}
+.switch input:checked+.slider::before{transform:translateX(20px);}
+
+/* Companion counter */
+.counter{display:flex;align-items:center;gap:0.5rem;}
+.counter button{width:30px;height:30px;border-radius:50%;border:1px solid rgba(0,0,0,0.1);background:#fff;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.counter button:hover{border-color:var(--gold);color:var(--gold);}
+.counter .count{font-size:1rem;font-weight:700;color:var(--navy);min-width:20px;text-align:center;}
+
+/* Duration select */
+.dur-select{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.8rem;}
+.dur-pill{padding:0.5rem 1rem;border:1px solid rgba(0,0,0,0.08);border-radius:20px;font-size:0.78rem;cursor:pointer;transition:all 0.2s;background:#fff;}
+.dur-pill:hover{border-color:var(--gold);}
+.dur-pill.selected{background:var(--gold);color:var(--navy);border-color:var(--gold);font-weight:600;}
+
+/* Right — Summary sidebar */
+.bp-summary{position:sticky;top:5rem;background:#fff;border:2px solid var(--gold);border-radius:20px;overflow:hidden;}
+.bp-summary-head{background:linear-gradient(135deg,var(--navy),#112240);padding:1.5rem;text-align:center;color:#fff;}
+.bp-summary-head h3{font-family:var(--heading);font-size:1.15rem;margin:0;}
+.bp-summary-head p{font-size:0.72rem;color:rgba(255,255,255,0.45);margin:0.3rem 0 0;}
+.bp-summary-body{padding:1.5rem;}
+.sum-line{display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px solid rgba(0,0,0,0.04);font-size:0.8rem;}
+.sum-line:last-child{border-bottom:none;}
+.sum-line .sl{color:var(--text-mid);}
+.sum-line .sr{font-weight:600;color:var(--navy);}
+.sum-line .sr.included{color:#27AE60;font-weight:500;}
+.sum-line.empty{color:rgba(0,0,0,0.2);font-style:italic;}
+.sum-divider{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0.8rem 0;}
+.sum-total{display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;}
+.sum-total .sl{font-family:var(--heading);font-size:1rem;color:var(--navy);}
+.sum-total .sr{font-family:var(--heading);font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,var(--gold),#e8c367);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sum-note{font-size:0.68rem;color:var(--text-mid);text-align:center;margin-top:0.5rem;line-height:1.4;}
+.sum-actions{margin-top:1.2rem;display:flex;flex-direction:column;gap:0.6rem;}
+.sum-actions .btn-primary{width:100%;text-align:center;font-size:0.85rem;}
+.sum-actions .btn-outline-dark{width:100%;text-align:center;font-size:0.78rem;}
+.savings-badge{display:flex;align-items:center;justify-content:center;gap:0.4rem;background:#E8F5E9;color:#27AE60;font-size:0.72rem;font-weight:600;padding:6px 14px;border-radius:8px;margin-top:0.8rem;}
+
+@media(max-width:900px){
+.bp-wrap{grid-template-columns:1fr;}
+.bp-summary{position:static;}
+.opt-grid-3,.opt-grid-4{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:500px){
+.opt-grid-2,.opt-grid-3,.opt-grid-4{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="/" class="nav-logo">Bharat<span>Heals</span></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about.html">About Us</a></li>
+    <li><a href="/#specialties">Treatments</a></li>
+    <li><a href="/compare-cost.html">Compare Costs</a></li>
+    <li><a href="/chat.html">AI Agent</a></li>
+    <li><a href="/plan-journey.html">Plan Journey</a></li>
+    <li><a href="/doctors.html">Doctors</a></li>
+    <li><a href="/hospitals.html">Hospitals</a></li>
+    <li><a href="/team.html">Team</a></li>
+    <li><a href="javascript:void(0)" class="nav-cta" onclick="openConsultModal()">Free Consultation</a></li>
+    <li><a href="/login.html">Account</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMobile()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-menu" onclick="toggleMobile()">&times;</button>
+  <a href="/" onclick="toggleMobile()">Home</a>
+  <a href="/about.html" onclick="toggleMobile()">About Us</a>
+  <a href="/#specialties" onclick="toggleMobile()">Treatments</a>
+  <a href="/compare-cost.html" onclick="toggleMobile()">Compare Costs</a>
+  <a href="/chat.html" onclick="toggleMobile()">AI Agent</a>
+  <a href="/plan-journey.html" onclick="toggleMobile()">Plan Journey</a>
+  <a href="/doctors.html" onclick="toggleMobile()">Doctors</a>
+  <a href="/hospitals.html" onclick="toggleMobile()">Hospitals</a>
+  <a href="/team.html" onclick="toggleMobile()">Team</a>
+  <a href="javascript:void(0)" onclick="toggleMobile(); openConsultModal();" style="color:var(--gold);">Free Consultation</a>
+  <a href="/login.html" onclick="toggleMobile()">Account</a>
+</div>
+
+<!-- HERO -->
+<div class="bp-hero">
+  <div class="inner">
+    <div style="display:inline-flex;background:rgba(198,163,91,0.15);color:var(--gold);font-size:0.65rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:6px 16px;border-radius:30px;margin-bottom:0.8rem;">Package Builder</div>
+    <h1>Build <em>Your Own</em> Package</h1>
+    <p>Pick exactly what you need — treatment, hotel, flights, transfers, and add-ons. Your price updates live as you customise.</p>
+  </div>
+</div>
+
+<!-- CONFIGURATOR -->
+<div class="bp-wrap">
+
+  <!-- LEFT: Config sections -->
+  <div class="bp-sections">
+
+    <!-- 1. TREATMENT -->
+    <div class="bp-section open" id="sec-treatment">
+      <div class="bp-section-head" onclick="toggleSection('sec-treatment')">
+        <div class="step-num">1</div>
+        <h3>Select Your Treatment</h3>
+        <span class="toggle-icon">&#9660;</span>
+      </div>
+      <div class="bp-section-body">
+        <p style="font-size:0.78rem;color:var(--text-mid);margin-bottom:0.5rem;">This is your base treatment cost at a JCI/NABH-accredited hospital in India.</p>
+        <div class="opt-grid opt-grid-3" data-group="treatment">
+          <div class="opt-card" data-value="hair" data-price="1800" onclick="selectOpt(this,'treatment')">
+            <div class="icon">&#128135;</div><h4>Hair Transplant</h4><div class="desc">FUE / DHI — 3000 grafts</div><div class="price">$1,800</div>
+          </div>
+          <div class="opt-card" data-value="dental" data-price="4200" onclick="selectOpt(this,'treatment')">
+            <div class="icon">&#129463;</div><h4>Dental Implants</h4><div class="desc">Full mouth — Nobel Biocare</div><div class="price">$4,200</div>
+          </div>
+          <div class="opt-card" data-value="knee" data-price="7000" onclick="selectOpt(this,'treatment')">
+            <div class="icon">&#129470;</div><h4>Knee Replacement</h4><div class="desc">Bilateral — robotic assisted</div><div class="price">$7,000</div>
+          </div>
+          <div class="opt-card" data-value="cardiac" data-price="7500" onclick="selectOpt(this,'treatment')">
+            <div class="icon">&#129729;</div><h4>Cardiac Bypass</h4><div class="desc">CABG — open heart surgery</div><div class="price">$7,500</div>
+          </div>
+          <div class="opt-card" data-value="ivf" data-price="3200" onclick="selectOpt(this,'treatment')">
+            <div class="icon">&#128118;</div><h4>IVF Treatment</h4><div class="desc">1 cycle — fertility specialist</div><div class="price">$3,200</div>
+          </div>
+          <div class="opt-card" data-value="cosmetic" data-price="2800" onclick="selectOpt(this,'treatment')">
+            <div class="icon">&#10024;</div><h4>Cosmetic Surgery</h4><div class="desc">Rhinoplasty / Liposuction</div><div class="price">$2,800</div>
+          </div>
+          <div class="opt-card" data-value="bariatric" data-price="4500" onclick="selectOpt(this,'treatment')">
+            <div class="icon">&#128171;</div><h4>Bariatric Surgery</h4><div class="desc">Gastric sleeve / bypass</div><div class="price">$4,500</div>
+          </div>
+          <div class="opt-card" data-value="lasik" data-price="800" onclick="selectOpt(this,'treatment')">
+            <div class="icon">&#128065;&#65039;</div><h4>LASIK Eye Surgery</h4><div class="desc">Both eyes — blade-free</div><div class="price">$800</div>
+          </div>
+          <div class="opt-card" data-value="spine" data-price="5000" onclick="selectOpt(this,'treatment')">
+            <div class="icon">&#129504;</div><h4>Spine Surgery</h4><div class="desc">Minimally invasive fusion</div><div class="price">$5,000</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. ACCOMMODATION -->
+    <div class="bp-section open" id="sec-hotel">
+      <div class="bp-section-head" onclick="toggleSection('sec-hotel')">
+        <div class="step-num">2</div>
+        <h3>Accommodation</h3>
+        <span class="toggle-icon">&#9660;</span>
+      </div>
+      <div class="bp-section-body">
+        <p style="font-size:0.78rem;color:var(--text-mid);margin-bottom:0.3rem;">Price is per night. We'll estimate total nights based on your treatment.</p>
+        <div class="dur-select" id="nightsPicker">
+          <div class="dur-pill" data-nights="3" onclick="pickNights(3)">3 nights</div>
+          <div class="dur-pill selected" data-nights="5" onclick="pickNights(5)">5 nights</div>
+          <div class="dur-pill" data-nights="7" onclick="pickNights(7)">7 nights</div>
+          <div class="dur-pill" data-nights="10" onclick="pickNights(10)">10 nights</div>
+          <div class="dur-pill" data-nights="14" onclick="pickNights(14)">14 nights</div>
+          <div class="dur-pill" data-nights="21" onclick="pickNights(21)">21 nights</div>
+        </div>
+        <div class="opt-grid opt-grid-4" data-group="hotel" style="margin-top:1rem;">
+          <div class="opt-card" data-value="none" data-price="0" onclick="selectOpt(this,'hotel')">
+            <div class="icon">&#10060;</div><h4>No Hotel</h4><div class="desc">I'll arrange my own</div><div class="price free">$0</div>
+          </div>
+          <div class="opt-card" data-value="3star" data-price="45" onclick="selectOpt(this,'hotel')">
+            <div class="icon">&#127976;</div><h4>3-Star Hotel</h4><div class="desc">Clean, comfortable, AC, Wi-Fi</div><div class="price">$45 / night</div>
+          </div>
+          <div class="opt-card selected" data-value="4star" data-price="85" onclick="selectOpt(this,'hotel')">
+            <div class="icon">&#127975;</div><h4>4-Star Hotel</h4><div class="desc">Premium, breakfast included</div><div class="price">$85 / night</div>
+          </div>
+          <div class="opt-card" data-value="5star" data-price="150" onclick="selectOpt(this,'hotel')">
+            <div class="icon">&#127983;</div><h4>5-Star Hotel</h4><div class="desc">Luxury — Taj, Oberoi, ITC</div><div class="price">$150 / night</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. FLIGHTS -->
+    <div class="bp-section open" id="sec-flight">
+      <div class="bp-section-head" onclick="toggleSection('sec-flight')">
+        <div class="step-num">3</div>
+        <h3>Flight Class</h3>
+        <span class="toggle-icon">&#9660;</span>
+      </div>
+      <div class="bp-section-body">
+        <p style="font-size:0.78rem;color:var(--text-mid);margin-bottom:0.5rem;">Indicative round-trip cost (varies by origin country &amp; season). Your consultant will find the best fare from your city.</p>
+        <div class="opt-grid opt-grid-4" data-group="flight">
+          <div class="opt-card" data-value="none" data-price="0" onclick="selectOpt(this,'flight')">
+            <div class="icon">&#10060;</div><h4>No Flight</h4><div class="desc">I'll book my own</div><div class="price free">$0</div>
+          </div>
+          <div class="opt-card selected" data-value="economy" data-price="1100" onclick="selectOpt(this,'flight')">
+            <div class="icon">&#9992;&#65039;</div><h4>Economy</h4><div class="desc">Round-trip, major airlines</div><div class="price">~$1,100</div>
+          </div>
+          <div class="opt-card" data-value="premium" data-price="2200" onclick="selectOpt(this,'flight')">
+            <div class="icon">&#9992;&#65039;</div><h4>Premium Economy</h4><div class="desc">Extra legroom, priority boarding</div><div class="price">~$2,200</div>
+          </div>
+          <div class="opt-card" data-value="business" data-price="5000" onclick="selectOpt(this,'flight')">
+            <div class="icon">&#128745;</div><h4>Business Class</h4><div class="desc">Lie-flat seat, lounge access</div><div class="price">~$5,000</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. DAILY TRANSPORT -->
+    <div class="bp-section open" id="sec-transfer">
+      <div class="bp-section-head" onclick="toggleSection('sec-transfer')">
+        <div class="step-num">4</div>
+        <h3>Daily Transport</h3>
+        <span class="toggle-icon">&#9660;</span>
+      </div>
+      <div class="bp-section-body">
+        <p style="font-size:0.78rem;color:var(--text-mid);margin-bottom:0.5rem;">Includes airport pickup &amp; drop + daily transport to hospital, pharmacy, etc. Price is per day of your stay.</p>
+        <div class="opt-grid opt-grid-3" data-group="transfer">
+          <div class="opt-card" data-value="none" data-price="0" onclick="selectOpt(this,'transfer')">
+            <div class="icon">&#10060;</div><h4>No Transport</h4><div class="desc">I'll arrange my own</div><div class="price free">$0</div>
+          </div>
+          <div class="opt-card selected" data-value="sedan" data-price="35" onclick="selectOpt(this,'transfer')">
+            <div class="icon">&#128663;</div><h4>Standard Sedan</h4><div class="desc">AC sedan, 8 hrs/day + airport</div><div class="price">$35 / day</div>
+          </div>
+          <div class="opt-card" data-value="suv" data-price="60" onclick="selectOpt(this,'transfer')">
+            <div class="icon">&#128665;</div><h4>Premium SUV</h4><div class="desc">Innova / Fortuner, 8 hrs/day + airport</div><div class="price">$60 / day</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. VISA SERVICES -->
+    <div class="bp-section open" id="sec-services">
+      <div class="bp-section-head" onclick="toggleSection('sec-services')">
+        <div class="step-num">5</div>
+        <h3>Visa & Essential Services</h3>
+        <span class="toggle-icon">&#9660;</span>
+      </div>
+      <div class="bp-section-body">
+        <div class="toggle-row">
+          <div class="tl"><h4>&#128706; Visa Assistance</h4><p>We prepare your e-Medical Visa application & invitation letter</p></div>
+          <div class="tr"><span class="price-tag" style="color:#27AE60;">FREE</span><label class="switch"><input type="checkbox" checked data-service="visa" data-price="0" onchange="recalc()"><span class="slider"></span></label></div>
+        </div>
+        <div class="toggle-row">
+          <div class="tl"><h4>&#129489;&#8205;&#9877;&#65039; Dedicated Care Coordinator</h4><p>Bilingual coordinator accompanies you to all appointments, available 24/7</p></div>
+          <div class="tr"><span class="price-tag">$200</span><label class="switch"><input type="checkbox" checked data-service="coordinator" data-price="200" onchange="recalc()"><span class="slider"></span></label></div>
+        </div>
+        <div class="toggle-row">
+          <div class="tl"><h4>&#128241; Local SIM + Unlimited Data</h4><p>Indian SIM card with unlimited data & international calling</p></div>
+          <div class="tr"><span class="price-tag">$15</span><label class="switch"><input type="checkbox" checked data-service="sim" data-price="15" onchange="recalc()"><span class="slider"></span></label></div>
+        </div>
+        <div class="toggle-row">
+          <div class="tl"><h4>&#128196; Medical Records Transfer</h4><p>Secure digital transfer of records to India and discharge summary back home</p></div>
+          <div class="tr"><span class="price-tag" style="color:#27AE60;">FREE</span><label class="switch"><input type="checkbox" checked data-service="records" data-price="0" onchange="recalc()"><span class="slider"></span></label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. MEALS -->
+    <div class="bp-section open" id="sec-meals">
+      <div class="bp-section-head" onclick="toggleSection('sec-meals')">
+        <div class="step-num">6</div>
+        <h3>Meals</h3>
+        <span class="toggle-icon">&#9660;</span>
+      </div>
+      <div class="bp-section-body">
+        <p style="font-size:0.78rem;color:var(--text-mid);margin-bottom:0.5rem;">Per-day meal plan during your stay (outside hospital meals).</p>
+        <div class="opt-grid opt-grid-3" data-group="meals">
+          <div class="opt-card selected" data-value="none" data-price="0" onclick="selectOpt(this,'meals')">
+            <div class="icon">&#10060;</div><h4>No Meal Plan</h4><div class="desc">I'll eat on my own</div><div class="price free">$0</div>
+          </div>
+          <div class="opt-card" data-value="basic" data-price="15" onclick="selectOpt(this,'meals')">
+            <div class="icon">&#127858;</div><h4>Basic Plan</h4><div class="desc">3 meals/day — local cuisine</div><div class="price">$15 / day</div>
+          </div>
+          <div class="opt-card" data-value="premium" data-price="35" onclick="selectOpt(this,'meals')">
+            <div class="icon">&#127869;</div><h4>Premium Plan</h4><div class="desc">International cuisine, dietary options</div><div class="price">$35 / day</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. TELEMEDICINE -->
+    <div class="bp-section open" id="sec-tele">
+      <div class="bp-section-head" onclick="toggleSection('sec-tele')">
+        <div class="step-num">7</div>
+        <h3>Telemedicine Follow-up</h3>
+        <span class="toggle-icon">&#9660;</span>
+      </div>
+      <div class="bp-section-body">
+        <p style="font-size:0.78rem;color:var(--text-mid);margin-bottom:0.5rem;">Post-treatment video consultations with your Indian doctor.</p>
+        <div class="opt-grid opt-grid-3" data-group="tele">
+          <div class="opt-card" data-value="3mo" data-price="0" onclick="selectOpt(this,'tele')">
+            <div class="icon">&#128187;</div><h4>3 Months</h4><div class="desc">2 follow-up calls</div><div class="price free">FREE</div>
+          </div>
+          <div class="opt-card selected" data-value="6mo" data-price="75" onclick="selectOpt(this,'tele')">
+            <div class="icon">&#128187;</div><h4>6 Months</h4><div class="desc">4 follow-up calls</div><div class="price">$75</div>
+          </div>
+          <div class="opt-card" data-value="12mo" data-price="150" onclick="selectOpt(this,'tele')">
+            <div class="icon">&#128187;</div><h4>12 Months</h4><div class="desc">Monthly calls + priority access</div><div class="price">$150</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. TRAVEL INSURANCE -->
+    <div class="bp-section open" id="sec-insurance">
+      <div class="bp-section-head" onclick="toggleSection('sec-insurance')">
+        <div class="step-num">8</div>
+        <h3>Travel & Medical Insurance</h3>
+        <span class="toggle-icon">&#9660;</span>
+      </div>
+      <div class="bp-section-body">
+        <div class="opt-grid opt-grid-3" data-group="insurance">
+          <div class="opt-card" data-value="none" data-price="0" onclick="selectOpt(this,'insurance')">
+            <div class="icon">&#10060;</div><h4>No Insurance</h4><div class="desc">I have my own</div><div class="price free">$0</div>
+          </div>
+          <div class="opt-card selected" data-value="basic" data-price="80" onclick="selectOpt(this,'insurance')">
+            <div class="icon">&#128737;&#65039;</div><h4>Basic Cover</h4><div class="desc">$50K medical + trip cancellation</div><div class="price">$80</div>
+          </div>
+          <div class="opt-card" data-value="premium" data-price="180" onclick="selectOpt(this,'insurance')">
+            <div class="icon">&#128737;&#65039;</div><h4>Comprehensive</h4><div class="desc">$200K medical + complications + evacuation</div><div class="price">$180</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. COMPANION -->
+    <div class="bp-section open" id="sec-companion">
+      <div class="bp-section-head" onclick="toggleSection('sec-companion')">
+        <div class="step-num">9</div>
+        <h3>Travelling Companion</h3>
+        <span class="toggle-icon">&#9660;</span>
+      </div>
+      <div class="bp-section-body">
+        <p style="font-size:0.78rem;color:var(--text-mid);margin-bottom:0.8rem;">Add a companion (spouse, family) — includes shared hotel room, meals, and transfers for the duration of your stay. Price is per person per day.</p>
+        <div class="toggle-row" style="border-bottom:none;">
+          <div class="tl"><h4>&#128106; Add Companion</h4><p>Shared room, meals, transfers &amp; visa assistance per day</p></div>
+          <div class="tr">
+            <span class="price-tag">$45 / person / day</span>
+            <div class="counter">
+              <button onclick="changeCompanion(-1)">−</button>
+              <span class="count" id="companionCount">0</span>
+              <button onclick="changeCompanion(1)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. RECOVERY ADD-ONS -->
+    <div class="bp-section open" id="sec-recovery">
+      <div class="bp-section-head" onclick="toggleSection('sec-recovery')">
+        <div class="step-num">10</div>
+        <h3>Recovery & Wellness Add-ons</h3>
+        <span class="toggle-icon">&#9660;</span>
+      </div>
+      <div class="bp-section-body">
+        <p style="font-size:0.78rem;color:var(--text-mid);margin-bottom:0.5rem;">Optional post-treatment experiences. Combine healing with travel.</p>
+        <div class="toggle-row">
+          <div class="tl"><h4>&#127807; Kerala Ayurveda Retreat</h4><p>5-night wellness retreat — Panchakarma, yoga, meditation</p></div>
+          <div class="tr"><span class="price-tag">$800</span><label class="switch"><input type="checkbox" data-service="ayurveda" data-price="800" onchange="recalc()"><span class="slider"></span></label></div>
+        </div>
+        <div class="toggle-row">
+          <div class="tl"><h4>&#127754; Goa Beach Recovery</h4><p>5-night beachside recovery — spa, physiotherapy, relaxation</p></div>
+          <div class="tr"><span class="price-tag">$600</span><label class="switch"><input type="checkbox" data-service="goa" data-price="600" onchange="recalc()"><span class="slider"></span></label></div>
+        </div>
+        <div class="toggle-row">
+          <div class="tl"><h4>&#127984; Heritage City Tour</h4><p>2-day guided tour — Taj Mahal, Jaipur, or Old Delhi</p></div>
+          <div class="tr"><span class="price-tag">$250</span><label class="switch"><input type="checkbox" data-service="tour" data-price="250" onchange="recalc()"><span class="slider"></span></label></div>
+        </div>
+        <div class="toggle-row">
+          <div class="tl"><h4>&#129506; Private Physiotherapy</h4><p>Daily physio sessions during recovery (per day, for ortho patients)</p></div>
+          <div class="tr"><span class="price-tag">$40 / day</span><label class="switch"><input type="checkbox" data-service="physio" data-price="40" onchange="recalc()"><span class="slider"></span></label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEET YOUR DOCTOR CALLOUT -->
+    <div style="background:linear-gradient(135deg,#0a1628,#112240); border-radius:16px; padding:1.5rem 1.8rem; display:flex; align-items:center; gap:1.2rem; flex-wrap:wrap;">
+      <div style="flex:1; min-width:200px;">
+        <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.12em; color:var(--gold); font-weight:600; margin-bottom:0.3rem;">Start Here</div>
+        <h4 style="font-family:var(--heading); font-size:1rem; color:#fff; margin:0 0 0.3rem;">Meet Your Doctor Package &mdash; $150</h4>
+        <p style="font-size:0.78rem; color:rgba(255,255,255,0.5); margin:0; line-height:1.5;">Before building your full package, our representative physically visits the doctor with your prepared case study. You get a second opinion, diagnosis confirmation, and a clear next course of action.</p>
+      </div>
+      <a href="/meet-your-doctor.html" class="btn-primary" style="text-decoration:none; font-size:0.8rem; white-space:nowrap;">Learn More &rarr;</a>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: Live Summary -->
+  <div class="bp-summary" id="summaryPanel">
+    <div class="bp-summary-head">
+      <h3>Your Package Summary</h3>
+      <p>Live pricing — updates as you configure</p>
+    </div>
+    <div class="bp-summary-body">
+      <div id="summaryLines"></div>
+      <div class="sum-divider"></div>
+      <div class="sum-total">
+        <div class="sl">Estimated Total</div>
+        <div class="sr" id="totalPrice">$0</div>
+      </div>
+      <div class="sum-note">All pricing is indicative (USD). Final pricing will be provided by your dedicated consultant.</div>
+      <div class="savings-badge" id="savingsBadge" style="display:none;">
+        <span>&#128178;</span> You save approximately <strong id="savingsAmount">$0</strong> vs home country
+      </div>
+      <div class="sum-actions">
+        <button class="btn-primary" onclick="submitPackage()">Request This Package &rarr;</button>
+        <button class="btn-outline-dark" onclick="window.location='/chat.html'">Ask AI About This &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div style="text-align:center;padding:1.5rem 0;color:rgba(255,255,255,0.4);font-size:0.75rem;">
+      &copy; 2026 BharatHeals. All rights reserved. &middot; <a href="/" style="color:rgba(255,255,255,0.5);">Home</a> &middot; <a href="/compare-cost.html" style="color:rgba(255,255,255,0.5);">Compare Costs</a> &middot; <a href="/team.html" style="color:rgba(255,255,255,0.5);">Our Team</a>
+    </div>
+  </div>
+</footer>
+
+<!-- CONSULTATION MODAL -->
+<div class="modal-overlay" id="consultModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('consultModal').classList.remove('active')">&times;</button>
+    <h3 id="modalTitle">Request Your Custom Package</h3>
+    <p style="color:var(--text-mid);font-size:0.82rem;margin-bottom:1rem;" id="modalDesc">We'll review your selections and send a detailed quote within 24 hours.</p>
+    <div id="modalPackageSummary" style="background:var(--cream);border-radius:10px;padding:1rem;margin-bottom:1rem;font-size:0.78rem;color:var(--text-mid);max-height:150px;overflow-y:auto;"></div>
+    <form id="modalConsultForm">
+      <input type="text" name="name" placeholder="Your name" required style="width:100%;padding:0.7rem;border:1px solid rgba(0,0,0,0.1);border-radius:8px;margin-bottom:0.8rem;font-size:0.85rem;">
+      <input type="email" name="email" placeholder="Email" required style="width:100%;padding:0.7rem;border:1px solid rgba(0,0,0,0.1);border-radius:8px;margin-bottom:0.8rem;font-size:0.85rem;">
+      <input type="text" name="phone" placeholder="Phone / WhatsApp" style="width:100%;padding:0.7rem;border:1px solid rgba(0,0,0,0.1);border-radius:8px;margin-bottom:0.8rem;font-size:0.85rem;">
+      <input type="text" name="country" placeholder="Your city, country" style="width:100%;padding:0.7rem;border:1px solid rgba(0,0,0,0.1);border-radius:8px;margin-bottom:0.8rem;font-size:0.85rem;">
+      <textarea name="notes" placeholder="Any medical history or special requirements..." rows="3" style="width:100%;padding:0.7rem;border:1px solid rgba(0,0,0,0.1);border-radius:8px;margin-bottom:0.8rem;font-size:0.85rem;resize:vertical;"></textarea>
+      <input type="hidden" name="package_config" id="packageConfigField">
+      <button type="submit" class="btn-primary" style="width:100%;">Send Package Request &rarr;</button>
+    </form>
+  </div>
+</div>
+
+<script src="/js/app.js?v=20260405b"></script>
+<script src="/js/ai-widget.js?v=20260405b"></script>
+<script>
+const state = {
+  treatment: null, treatmentPrice: 0, treatmentLabel: '',
+  hotel: '4star', hotelPerNight: 85,
+  nights: 5,
+  flight: 'economy', flightPrice: 1100,
+  transfer: 'sedan', transferPerDay: 35,
+  meals: 'none', mealsPerDay: 0,
+  tele: '6mo', telePrice: 75,
+  insurance: 'basic', insurancePrice: 80,
+  companions: 0,
+  services: {},
+  addons: {}
+};
+
+const treatmentLabels = {
+  hair:'Hair Transplant',dental:'Dental Implants',knee:'Knee Replacement',cardiac:'Cardiac Bypass',
+  ivf:'IVF Treatment',cosmetic:'Cosmetic Surgery',bariatric:'Bariatric Surgery',lasik:'LASIK Eye Surgery',spine:'Spine Surgery'
+};
+const treatmentSavings = {
+  hair:13200,dental:20800,knee:43000,cardiac:112500,ivf:11800,cosmetic:9200,bariatric:20500,lasik:3200,spine:20000
+};
+const hotelLabels = {none:'No Hotel','3star':'3-Star Hotel','4star':'4-Star Hotel','5star':'5-Star Luxury'};
+const flightLabels = {none:'No Flight',economy:'Economy Class',premium:'Premium Economy',business:'Business Class'};
+const transferLabels = {none:'No Transport',sedan:'Sedan (daily)',suv:'SUV (daily)'};
+const mealLabels = {none:'No Meal Plan',basic:'Basic Meals',premium:'Premium Meals'};
+const teleLabels = {'3mo':'3-Mo Follow-up','6mo':'6-Mo Follow-up','12mo':'12-Mo Follow-up'};
+const insuranceLabels = {none:'No Insurance',basic:'Basic Insurance',premium:'Comprehensive Insurance'};
+
+function toggleSection(id){document.getElementById(id).classList.toggle('open');}
+
+function selectOpt(card,group){
+  card.closest('.opt-grid').querySelectorAll('.opt-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+  const val = card.dataset.value;
+  const price = parseFloat(card.dataset.price)||0;
+  if(group==='treatment'){state.treatment=val;state.treatmentPrice=price;state.treatmentLabel=treatmentLabels[val]||val;}
+  else if(group==='hotel'){state.hotel=val;state.hotelPerNight=price;}
+  else if(group==='flight'){state.flight=val;state.flightPrice=price;}
+  else if(group==='transfer'){state.transfer=val;state.transferPerDay=price;}
+  else if(group==='meals'){state.meals=val;state.mealsPerDay=price;}
+  else if(group==='tele'){state.tele=val;state.telePrice=price;}
+  else if(group==='insurance'){state.insurance=val;state.insurancePrice=price;}
+  recalc();
+}
+
+function pickNights(n){
+  state.nights=n;
+  document.querySelectorAll('#nightsPicker .dur-pill').forEach(p=>{
+    p.classList.toggle('selected',parseInt(p.dataset.nights)===n);
+  });
+  recalc();
+}
+
+function changeCompanion(d){
+  state.companions=Math.max(0,Math.min(5,state.companions+d));
+  document.getElementById('companionCount').textContent=state.companions;
+  recalc();
+}
+
+function recalc(){
+  const lines = [];
+  let total = 0;
+
+  if(state.treatment){
+    lines.push({label:state.treatmentLabel,value:'$'+state.treatmentPrice.toLocaleString()});
+    total+=state.treatmentPrice;
+  } else {
+    lines.push({label:'Treatment',value:'Select above',empty:true});
+  }
+
+  if(state.hotel!=='none'){
+    const hotelTotal=state.hotelPerNight*state.nights;
+    lines.push({label:hotelLabels[state.hotel]+' ('+state.nights+'n)',value:'$'+hotelTotal.toLocaleString()});
+    total+=hotelTotal;
+  } else {
+    lines.push({label:'Accommodation',value:'Self-arranged',included:true});
+  }
+
+  if(state.flight!=='none'){
+    lines.push({label:flightLabels[state.flight],value:'~$'+state.flightPrice.toLocaleString()});
+    total+=state.flightPrice;
+  } else {
+    lines.push({label:'Flights',value:'Self-booked',included:true});
+  }
+
+  if(state.transfer!=='none'){
+    const transferTotal=state.transferPerDay*state.nights;
+    lines.push({label:transferLabels[state.transfer]+' ('+state.nights+'d)',value:'$'+transferTotal.toLocaleString()});
+    total+=transferTotal;
+  }
+
+  if(state.meals!=='none'){
+    const mealTotal=state.mealsPerDay*state.nights;
+    lines.push({label:mealLabels[state.meals]+' ('+state.nights+'d)',value:'$'+mealTotal.toLocaleString()});
+    total+=mealTotal;
+  }
+
+  lines.push({label:teleLabels[state.tele],value:state.telePrice?'$'+state.telePrice:'FREE',included:!state.telePrice});
+  total+=state.telePrice;
+
+  if(state.insurance!=='none'){
+    lines.push({label:insuranceLabels[state.insurance],value:'$'+state.insurancePrice});
+    total+=state.insurancePrice;
+  }
+
+  document.querySelectorAll('[data-service]').forEach(cb=>{
+    if(cb.checked && parseFloat(cb.dataset.price)){
+      const svc=cb.dataset.service;
+      let price=parseFloat(cb.dataset.price);
+      let label=cb.closest('.toggle-row').querySelector('h4').textContent;
+      if(svc==='physio'){price=price*state.nights;label+=' ('+state.nights+'d)';}
+      lines.push({label:label,value:'$'+price.toLocaleString()});
+      total+=price;
+    }
+  });
+
+  const coordCb=document.querySelector('[data-service="coordinator"]');
+  if(coordCb&&coordCb.checked){
+    lines.push({label:'Care Coordinator',value:'$200'});
+    total+=200;
+  } else if(coordCb&&!coordCb.checked){
+    /* already not added */
+  }
+
+  if(state.companions>0){
+    const compTotal=45*state.companions*state.nights;
+    lines.push({label:'Companion x'+state.companions+' ('+state.nights+'d)',value:'$'+compTotal.toLocaleString()});
+    total+=compTotal;
+  }
+
+  // Deduplicate coordinator (it's in the toggle-row already counted by querySelectorAll)
+  // Actually the toggles with data-service are already counted above. Let me remove the explicit coordinator line.
+  // The querySelectorAll('[data-service]') loop already handles coordinator. Remove duplicate.
+
+  const el=document.getElementById('summaryLines');
+  el.innerHTML=lines.map(l=>{
+    let cls='sr';
+    if(l.included)cls+=' included';
+    if(l.empty)return '<div class="sum-line empty"><span class="sl">'+l.label+'</span><span class="sr">'+l.value+'</span></div>';
+    return '<div class="sum-line"><span class="sl">'+l.label+'</span><span class="'+cls+'">'+l.value+'</span></div>';
+  }).join('');
+
+  document.getElementById('totalPrice').textContent='$'+total.toLocaleString();
+
+  const badge=document.getElementById('savingsBadge');
+  if(state.treatment && treatmentSavings[state.treatment]){
+    const saved=treatmentSavings[state.treatment];
+    document.getElementById('savingsAmount').textContent='$'+saved.toLocaleString();
+    badge.style.display='flex';
+  } else {
+    badge.style.display='none';
+  }
+}
+
+function submitPackage(){
+  const config=JSON.stringify(state);
+  document.getElementById('packageConfigField').value=config;
+  const summaryHTML=document.getElementById('summaryLines').innerHTML;
+  const total=document.getElementById('totalPrice').textContent;
+  document.getElementById('modalPackageSummary').innerHTML='<strong>Your Package ('+total+'):</strong><br>'+summaryHTML;
+  document.getElementById('consultModal').classList.add('active');
+}
+
+// Fix: remove double-counted coordinator from recalc
+// The toggle checkboxes with data-service already get counted in the querySelectorAll loop.
+// So remove the explicit coordinator block. Let me patch recalc:
+(function(){
+  const origRecalc = recalc;
+  recalc = function(){
+    const lines = [];
+    let total = 0;
+
+    if(state.treatment){
+      lines.push({label:state.treatmentLabel,value:'$'+state.treatmentPrice.toLocaleString()});
+      total+=state.treatmentPrice;
+    } else {
+      lines.push({label:'Treatment',value:'Select above',empty:true});
+    }
+
+    if(state.hotel!=='none'){
+      const ht=state.hotelPerNight*state.nights;
+      lines.push({label:hotelLabels[state.hotel]+' ('+state.nights+'n)',value:'$'+ht.toLocaleString()});
+      total+=ht;
+    } else {
+      lines.push({label:'Accommodation',value:'Self-arranged',included:true});
+    }
+
+    if(state.flight!=='none'){
+      lines.push({label:flightLabels[state.flight],value:'~$'+state.flightPrice.toLocaleString()});
+      total+=state.flightPrice;
+    } else {
+      lines.push({label:'Flights',value:'Self-booked',included:true});
+    }
+
+    if(state.transfer!=='none'){
+      const tt=state.transferPerDay*state.nights;
+      lines.push({label:transferLabels[state.transfer]+' ('+state.nights+'d)',value:'$'+tt.toLocaleString()});
+      total+=tt;
+    }
+
+    if(state.meals!=='none'){
+      const mt=state.mealsPerDay*state.nights;
+      lines.push({label:mealLabels[state.meals]+' ('+state.nights+'d)',value:'$'+mt.toLocaleString()});
+      total+=mt;
+    }
+
+    lines.push({label:teleLabels[state.tele],value:state.telePrice?'$'+state.telePrice:'FREE',included:!state.telePrice});
+    total+=state.telePrice;
+
+    if(state.insurance!=='none'){
+      lines.push({label:insuranceLabels[state.insurance],value:'$'+state.insurancePrice});
+      total+=state.insurancePrice;
+    }
+
+    document.querySelectorAll('#sec-services [data-service], #sec-recovery [data-service]').forEach(cb=>{
+      const price=parseFloat(cb.dataset.price)||0;
+      if(!cb.checked||!price) return;
+      const svc=cb.dataset.service;
+      let label=cb.closest('.toggle-row').querySelector('h4').textContent.replace(/^[\u{1F000}-\u{1FFFF}]\s*/u,'').trim();
+      let amt=price;
+      if(svc==='physio'){amt=price*state.nights;label+=' ('+state.nights+'d)';}
+      lines.push({label:label,value:'$'+amt.toLocaleString()});
+      total+=amt;
+    });
+
+    if(state.companions>0){
+      const ct=45*state.companions*state.nights;
+      lines.push({label:'Companion × '+state.companions+' ('+state.nights+'d)',value:'$'+ct.toLocaleString()});
+      total+=ct;
+    }
+
+    document.getElementById('summaryLines').innerHTML=lines.map(l=>{
+      let cls='sr';
+      if(l.included)cls+=' included';
+      if(l.empty)return '<div class="sum-line empty"><span class="sl">'+l.label+'</span><span class="sr">'+l.value+'</span></div>';
+      return '<div class="sum-line"><span class="sl">'+l.label+'</span><span class="'+cls+'">'+l.value+'</span></div>';
+    }).join('');
+
+    document.getElementById('totalPrice').textContent='$'+total.toLocaleString();
+
+    const badge=document.getElementById('savingsBadge');
+    if(state.treatment && treatmentSavings[state.treatment]){
+      document.getElementById('savingsAmount').textContent='$'+treatmentSavings[state.treatment].toLocaleString();
+      badge.style.display='flex';
+    } else {badge.style.display='none';}
+  };
+})();
+
+recalc();
+</script>
+</body>
+</html>

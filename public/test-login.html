@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head><title>BharatHeals - Login Test</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'DM Sans', Arial, sans-serif; background:#f5f5f5; padding:40px; }
+  .card { max-width:500px; margin:0 auto; background:#fff; border-radius:16px; padding:32px; box-shadow:0 4px 20px rgba(0,0,0,0.1); }
+  h1 { color:#0a1628; margin-bottom:8px; }
+  p { color:#666; margin-bottom:24px; }
+  .status { padding:16px; border-radius:10px; margin-bottom:20px; font-weight:600; }
+  .status.logged-in { background:#dcfce7; color:#166534; border:2px solid #22c55e; }
+  .status.logged-out { background:#fef2f2; color:#991b1b; border:2px solid #ef4444; }
+  label { display:block; font-weight:600; margin-bottom:4px; color:#333; }
+  input, select { width:100%; padding:10px 14px; border:1.5px solid #ddd; border-radius:8px; margin-bottom:14px; font-size:14px; }
+  button { width:100%; padding:12px; border:none; border-radius:10px; font-size:15px; font-weight:700; cursor:pointer; margin-bottom:10px; }
+  .btn-signup { background:linear-gradient(135deg,#0a1628,#162a4a); color:#c6a35b; }
+  .btn-login { background:linear-gradient(135deg,#c6a35b,#e8c367); color:#0a1628; }
+  .btn-logout { background:#ef4444; color:#fff; }
+  .btn-home { background:#22c55e; color:#fff; }
+  .log { background:#f8f8f8; border:1px solid #eee; border-radius:8px; padding:12px; margin-top:16px; font-size:12px; font-family:monospace; max-height:200px; overflow-y:auto; white-space:pre-wrap; }
+  .divider { border-top:1px solid #eee; margin:20px 0; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>BharatHeals Login Test</h1>
+  <p>Use this page to test login. After login, click "Go to Homepage" to see your name.</p>
+
+  <div class="status" id="statusBox">Checking...</div>
+
+  <div id="loggedOutSection">
+    <h3 style="margin-bottom:12px;">Sign Up (New Account)</h3>
+    <label>Full Name</label>
+    <input type="text" id="name" value="Rahul Gautam" placeholder="Your name">
+    <label>Email</label>
+    <input type="email" id="email" value="rahul@bharatheals.com" placeholder="Email">
+    <label>Password</label>
+    <input type="password" id="password" value="test123">
+    <label>Country</label>
+    <select id="country"><option>India</option><option>Saudi Arabia</option><option>UAE</option><option>USA</option><option>UK</option></select>
+    <button class="btn-signup" onclick="doSignup()">Create Account & Login</button>
+
+    <div class="divider"></div>
+    <h3 style="margin-bottom:12px;">Or Login (Existing Account)</h3>
+    <label>Email</label>
+    <input type="email" id="loginEmail" value="rahul@bharatheals.com" placeholder="Email">
+    <label>Password</label>
+    <input type="password" id="loginPass" value="test123">
+    <button class="btn-login" onclick="doLogin()">Login</button>
+  </div>
+
+  <div id="loggedInSection" style="display:none;">
+    <button class="btn-home" onclick="window.location.href='/'">Go to Homepage (should show your name)</button>
+    <button class="btn-logout" onclick="doLogout()">Logout</button>
+  </div>
+
+  <div class="log" id="log"></div>
+</div>
+
+<script>
+function log(msg) {
+  var el = document.getElementById('log');
+  el.textContent += new Date().toLocaleTimeString() + ' | ' + msg + '\n';
+  el.scrollTop = el.scrollHeight;
+  console.log('[TEST]', msg);
+}
+
+function checkStatus() {
+  var box = document.getElementById('statusBox');
+  var token = localStorage.getItem('bharatheals_token');
+  var userStr = localStorage.getItem('bharatheals_user');
+  var user = null;
+  try { user = JSON.parse(userStr); } catch(e) {}
+
+  if (user && token) {
+    box.className = 'status logged-in';
+    box.innerHTML = 'LOGGED IN as <strong>' + user.name + '</strong> (' + user.email + ')';
+    document.getElementById('loggedOutSection').style.display = 'none';
+    document.getElementById('loggedInSection').style.display = 'block';
+    log('User found in localStorage: ' + user.name + ' / ' + user.email);
+  } else {
+    box.className = 'status logged-out';
+    box.textContent = 'NOT LOGGED IN';
+    document.getElementById('loggedOutSection').style.display = 'block';
+    document.getElementById('loggedInSection').style.display = 'none';
+    log('No user in localStorage');
+  }
+}
+
+function doSignup() {
+  var data = {
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    password: document.getElementById('password').value,
+    country: document.getElementById('country').value
+  };
+  log('Signing up: ' + data.name + ' / ' + data.email);
+  fetch('/api/auth/register', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      log('Response: ' + JSON.stringify(d));
+      if (d.success && d.token) {
+        localStorage.setItem('bharatheals_token', d.token);
+        localStorage.setItem('bharatheals_user', JSON.stringify(d.user));
+        localStorage.removeItem('bharatheals_welcomed');
+        log('SUCCESS! Token and user stored. Name: ' + d.user.name);
+        checkStatus();
+      } else if (d.error && d.error.includes('exists')) {
+        log('Account exists, trying login...');
+        doLogin();
+      } else {
+        log('ERROR: ' + (d.error || 'Unknown'));
+      }
+    })
+    .catch(function(e) { log('NETWORK ERROR: ' + e.message); });
+}
+
+function doLogin() {
+  var email = document.getElementById('loginEmail').value || document.getElementById('email').value;
+  var password = document.getElementById('loginPass').value || document.getElementById('password').value;
+  log('Logging in: ' + email);
+  fetch('/api/auth/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:email, password:password}) })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      log('Response: ' + JSON.stringify(d));
+      if (d.success && d.token) {
+        localStorage.setItem('bharatheals_token', d.token);
+        localStorage.setItem('bharatheals_user', JSON.stringify(d.user));
+        localStorage.removeItem('bharatheals_welcomed');
+        log('SUCCESS! Logged in as: ' + d.user.name);
+        checkStatus();
+      } else {
+        log('ERROR: ' + (d.error || 'Invalid credentials'));
+      }
+    })
+    .catch(function(e) { log('NETWORK ERROR: ' + e.message); });
+}
+
+function doLogout() {
+  localStorage.removeItem('bharatheals_token');
+  localStorage.removeItem('bharatheals_user');
+  localStorage.removeItem('bharatheals_welcomed');
+  log('Logged out. localStorage cleared.');
+  checkStatus();
+}
+
+checkStatus();
+</script>
+</body>
+</html>

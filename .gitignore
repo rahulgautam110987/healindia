@@ -1,0 +1,10 @@
+node_modules/
+data/*.db
+data/*.db-journal
+data/*.db-wal
+.env
+.DS_Store
+*.log
+business-docs/vo_cache/
+business-docs/__pycache__/
+data/*.db-shm

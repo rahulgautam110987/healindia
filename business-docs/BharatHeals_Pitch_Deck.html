@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BharatHeals — Hospital & Doctor Partnership Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--navy:#0a1628;--gold:#c6a35b;--gold-light:#f0dca0;--cream:#f9f6f0;--rust:#b8622e;--text:#333;--text-mid:#666;--heading:'Playfair Display',Georgia,serif;--body:'DM Sans','Segoe UI',sans-serif;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--body);background:#fff;color:var(--text);-webkit-font-smoothing:antialiased;}
+
+/* Navigation */
+.deck-nav{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;gap:0.5rem;background:rgba(10,22,40,0.95);padding:0.6rem 1.2rem;border-radius:50px;z-index:100;backdrop-filter:blur(12px);}
+.deck-nav button{background:none;border:1px solid rgba(198,163,91,0.3);color:rgba(255,255,255,0.6);padding:0.4rem 1rem;border-radius:20px;font-size:0.72rem;cursor:pointer;font-family:var(--body);transition:all 0.2s;}
+.deck-nav button:hover,.deck-nav button.active{background:var(--gold);color:var(--navy);border-color:var(--gold);font-weight:600;}
+.deck-nav .nav-label{color:var(--gold);font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;align-self:center;margin-right:0.5rem;}
+@media print{.deck-nav{display:none;}}
+
+/* Slide base */
+.slide{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:4rem 2rem;position:relative;overflow:hidden;}
+.slide-inner{max-width:960px;width:100%;position:relative;z-index:1;}
+
+/* Slide 1 — Cover */
+.slide-cover{background:linear-gradient(135deg,#0a1628 0%,#112240 100%);color:#fff;}
+.slide-cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(198,163,91,0.06),transparent 60%);pointer-events:none;}
+.cover-tag{display:inline-flex;background:rgba(198,163,91,0.15);color:var(--gold);font-size:0.65rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;padding:6px 18px;border-radius:30px;margin-bottom:2rem;}
+.cover-title{font-family:var(--heading);font-size:3.5rem;font-weight:900;line-height:1.1;margin-bottom:1rem;}
+.cover-title em{font-style:italic;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cover-sub{color:rgba(255,255,255,0.5);font-size:1.05rem;line-height:1.6;max-width:600px;margin-bottom:2.5rem;}
+.cover-meta{display:flex;gap:2rem;color:rgba(255,255,255,0.35);font-size:0.78rem;}
+.cover-logo{font-family:var(--heading);font-size:2rem;font-weight:900;color:#fff;margin-bottom:0.5rem;}
+.cover-logo span{color:var(--gold);}
+
+/* Slide generic styles */
+.slide-light{background:#fff;}
+.slide-cream{background:var(--cream);}
+.slide-dark{background:linear-gradient(135deg,#0a1628 0%,#112240 100%);color:#fff;}
+.s-tag{display:inline-flex;background:rgba(198,163,91,0.12);color:var(--gold);font-size:0.6rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;padding:5px 14px;border-radius:30px;margin-bottom:1rem;}
+.s-tag-dark{background:rgba(198,163,91,0.2);}
+.s-title{font-family:var(--heading);font-size:2.4rem;font-weight:900;line-height:1.15;margin-bottom:0.5rem;color:var(--navy);}
+.s-title em{font-style:italic;color:var(--rust);}
+.s-title-white{color:#fff;}
+.s-title-white em{color:var(--gold);}
+.s-lead{color:var(--text-mid);font-size:0.9rem;line-height:1.6;max-width:640px;margin-bottom:2.5rem;}
+.s-lead-light{color:rgba(255,255,255,0.55);}
+
+/* Grid cards */
+.card-grid{display:grid;gap:1.5rem;}
+.card-grid-3{grid-template-columns:repeat(3,1fr);}
+.card-grid-2{grid-template-columns:repeat(2,1fr);}
+.card{background:#fff;border:1px solid rgba(0,0,0,0.06);border-radius:16px;padding:2rem;}
+.card-dark{background:rgba(255,255,255,0.04);border:1px solid rgba(198,163,91,0.2);}
+.card .icon{font-size:2rem;margin-bottom:1rem;}
+.card h3{font-family:var(--heading);font-size:1.05rem;margin-bottom:0.5rem;color:var(--navy);}
+.card-dark h3{color:#fff;}
+.card p{font-size:0.82rem;color:var(--text-mid);line-height:1.55;}
+.card-dark p{color:rgba(255,255,255,0.5);}
+.card .highlight{color:var(--gold);font-weight:700;font-size:0.75rem;margin-top:0.8rem;text-transform:uppercase;letter-spacing:0.08em;}
+
+/* Stats row */
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:1.5rem;text-align:center;margin:2.5rem 0;}
+.stat .num{font-family:var(--heading);font-size:2.4rem;font-weight:900;color:var(--navy);line-height:1;}
+.stat-gold .num{background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat .lbl{font-size:0.68rem;color:var(--text-mid);text-transform:uppercase;letter-spacing:0.1em;margin-top:0.3rem;}
+.stat-gold .lbl{color:rgba(255,255,255,0.4);}
+
+/* Table */
+.s-table{width:100%;border-collapse:collapse;margin-top:1.5rem;}
+.s-table th{background:var(--navy);color:#fff;font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;padding:0.8rem 1rem;text-align:left;}
+.s-table td{padding:0.7rem 1rem;font-size:0.82rem;border-bottom:1px solid rgba(0,0,0,0.06);}
+.s-table tr:nth-child(even){background:var(--cream);}
+.s-table .gold{color:var(--gold);font-weight:600;}
+.s-table .green{color:#27AE60;font-weight:600;}
+
+/* Process steps */
+.process-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:2rem;}
+.step{text-align:center;position:relative;}
+.step::after{content:'→';position:absolute;right:-0.7rem;top:1.2rem;color:var(--gold);font-size:1.2rem;}
+.step:last-child::after{display:none;}
+.step .num{width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--navy);font-weight:700;font-size:0.9rem;display:flex;align-items:center;justify-content:center;margin:0 auto 0.8rem;}
+.step h4{font-family:var(--heading);font-size:0.85rem;margin-bottom:0.3rem;}
+.step p{font-size:0.7rem;color:var(--text-mid);line-height:1.4;}
+
+/* CTA slide */
+.cta-big{text-align:center;}
+.cta-big h2{font-family:var(--heading);font-size:2.8rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:1rem;}
+.cta-big h2 em{font-style:italic;color:var(--gold);}
+.cta-big p{color:rgba(255,255,255,0.5);font-size:1rem;max-width:500px;margin:0 auto 2rem;}
+.cta-contact{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;}
+.cta-contact div{background:rgba(255,255,255,0.06);border:1px solid rgba(198,163,91,0.2);border-radius:12px;padding:1.2rem 2rem;text-align:center;}
+.cta-contact .label{font-size:0.65rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;}
+.cta-contact .value{font-size:1rem;color:#fff;font-weight:600;}
+
+/* Comparison bar */
+.compare-bar{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;}
+.compare-bar .label{width:140px;font-size:0.82rem;font-weight:500;color:var(--navy);text-align:right;}
+.compare-bar .bar-track{flex:1;height:28px;background:var(--cream);border-radius:8px;position:relative;overflow:hidden;}
+.compare-bar .bar-india{height:100%;background:linear-gradient(90deg,var(--gold),#e8c367);border-radius:8px;display:flex;align-items:center;padding:0 10px;font-size:0.7rem;font-weight:700;color:var(--navy);}
+.compare-bar .bar-abroad{position:absolute;top:0;right:0;height:100%;display:flex;align-items:center;padding:0 10px;font-size:0.68rem;color:var(--text-mid);}
+
+@media(max-width:768px){
+.card-grid-3,.card-grid-2{grid-template-columns:1fr;}
+.stats-row{grid-template-columns:repeat(2,1fr);}
+.process-steps{grid-template-columns:1fr;}
+.step::after{display:none;}
+.cover-title{font-size:2rem;}
+.s-title{font-size:1.6rem;}
+}
+@media print{
+.slide{min-height:auto;page-break-after:always;padding:2rem;}
+.slide:last-child{page-break-after:avoid;}
+body{font-size:10pt;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="deck-nav">
+  <span class="nav-label">Slide</span>
+  <button class="active" onclick="goSlide(0)">Cover</button>
+  <button onclick="goSlide(1)">Problem</button>
+  <button onclick="goSlide(2)">Solution</button>
+  <button onclick="goSlide(3)">Market</button>
+  <button onclick="goSlide(4)">For You</button>
+  <button onclick="goSlide(5)">Pricing</button>
+  <button onclick="goSlide(6)">How</button>
+  <button onclick="goSlide(7)">Tech</button>
+  <button onclick="goSlide(8)">Traction</button>
+  <button onclick="goSlide(9)">Terms</button>
+  <button onclick="goSlide(10)">CTA</button>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 1: COVER -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="slide slide-cover" id="s0">
+  <div class="slide-inner">
+    <div class="cover-logo">Heal<span>India</span></div>
+    <div class="cover-tag">Hospital & Doctor Partnership Proposal</div>
+    <h1 class="cover-title">Grow Your International<br>Patient Base — <em>Effortlessly</em></h1>
+    <p class="cover-sub">BharatHeals brings pre-qualified, high-value international patients directly to your hospital. Zero marketing cost. Zero hassle. We handle everything from visa to discharge.</p>
+    <div class="cover-meta">
+      <span>Confidential &middot; 2026</span>
+      <span>www.bharatheals.com</span>
+      <span>care@bharatheals.com</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 2: THE PROBLEM -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="slide slide-light" id="s1">
+  <div class="slide-inner">
+    <div class="s-tag">The Problem</div>
+    <h2 class="s-title">Why Hospitals Struggle to<br>Attract <em>International Patients</em></h2>
+    <p class="s-lead">India's hospitals are world-class. But reaching international patients is hard, expensive, and fragmented.</p>
+    <div class="card-grid card-grid-3">
+      <div class="card">
+        <div class="icon">&#128176;</div>
+        <h3>High Marketing Cost</h3>
+        <p>International digital advertising across Google, Meta, and medical tourism portals costs $50,000-$200,000/year with unpredictable ROI.</p>
+      </div>
+      <div class="card">
+        <div class="icon">&#127760;</div>
+        <h3>Language & Trust Barriers</h3>
+        <p>Patients in Saudi Arabia, UK, or USA don't know which Indian hospital to trust. They need a credible intermediary who speaks their language.</p>
+      </div>
+      <div class="card">
+        <div class="icon">&#9992;&#65039;</div>
+        <h3>Coordination Complexity</h3>
+        <p>Visa, flights, accommodation, airport pickup, dietary needs, companion care — hospitals shouldn't have to manage travel logistics.</p>
+      </div>
+      <div class="card">
+        <div class="icon">&#128100;</div>
+        <h3>Patient Drop-Off</h3>
+        <p>Without a dedicated coordinator, 60-70% of international enquiries never convert. Patients get confused and go elsewhere.</p>
+      </div>
+      <div class="card">
+        <div class="icon">&#128202;</div>
+        <h3>No Data or Feedback Loop</h3>
+        <p>Most hospitals don't track international patient satisfaction, source markets, or treatment preferences — missing growth opportunities.</p>
+      </div>
+      <div class="card">
+        <div class="icon">&#128274;</div>
+        <h3>Reputation Risk</h3>
+        <p>One bad international patient experience goes viral. Without proactive support and follow-up, negative reviews damage your brand globally.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 3: OUR SOLUTION -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="slide slide-dark" id="s2">
+  <div class="slide-inner">
+    <div class="s-tag s-tag-dark">Our Solution</div>
+    <h2 class="s-title s-title-white">We Bring You <em>Ready-to-Treat</em><br>International Patients</h2>
+    <p class="s-lead s-lead-light">BharatHeals is an end-to-end medical tourism platform that brings pre-qualified patients from 50+ countries directly to your hospital — with everything handled.</p>
+    <div class="card-grid card-grid-3">
+      <div class="card card-dark">
+        <div class="icon">&#128269;</div>
+        <h3>Patient Discovery</h3>
+        <p>We run targeted campaigns across Google, Meta, and YouTube in 15+ countries. Patients find us, we match them to your hospital.</p>
+        <div class="highlight">You spend $0 on marketing</div>
+      </div>
+      <div class="card card-dark">
+        <div class="icon">&#129302;</div>
+        <h3>AI Pre-Screening</h3>
+        <p>Our AI agent collects symptoms, medical history, and preferences — then recommends the right hospital and doctor match.</p>
+        <div class="highlight">Pre-qualified leads only</div>
+      </div>
+      <div class="card card-dark">
+        <div class="icon">&#128222;</div>
+        <h3>Free Consultation</h3>
+        <p>Our named medical consultants (ex-nurses, MBBS) speak to the patient, explain options, build trust, and confirm treatment intent.</p>
+        <div class="highlight">70%+ conversion rate</div>
+      </div>
+      <div class="card card-dark">
+        <div class="icon">&#128706;</div>
+        <h3>Visa & Travel</h3>
+        <p>We handle e-Medical Visa, flights, accommodation, airport pickup, SIM card — the patient arrives at your door ready for treatment.</p>
+        <div class="highlight">Zero logistics burden on you</div>
+      </div>
+      <div class="card card-dark">
+        <div class="icon">&#129489;&#8205;&#9877;&#65039;</div>
+        <h3>On-Ground Coordinator</h3>
+        <p>A bilingual care coordinator accompanies the patient to every appointment, translates medical instructions, and is available 24/7.</p>
+        <div class="highlight">Patient feels at home</div>
+      </div>
+      <div class="card card-dark">
+        <div class="icon">&#128200;</div>
+        <h3>Post-Op & Follow-Up</h3>
+        <p>We manage telemedicine follow-ups, patient satisfaction surveys, and online reviews — building your international reputation.</p>
+        <div class="highlight">97% satisfaction rate</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 4: MARKET SIZE -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="slide slide-cream" id="s3">
+  <div class="slide-inner">
+    <div class="s-tag">Market Opportunity</div>
+    <h2 class="s-title">A $28 Billion Opportunity<br>for <em>Indian Hospitals</em></h2>
+    <p class="s-lead">India's medical tourism market is projected to reach $28B by 2030. International patient volume is growing 22.5% year-over-year.</p>
+    <div class="stats-row">
+      <div class="stat"><div class="num">$88B</div><div class="lbl">Global Market (2025)</div></div>
+      <div class="stat"><div class="num">$28B</div><div class="lbl">India Target (2030)</div></div>
+      <div class="stat"><div class="num">22.5%</div><div class="lbl">India CAGR</div></div>
+      <div class="stat"><div class="num">2M+</div><div class="lbl">Annual Med Tourists</div></div>
+      <div class="stat"><div class="num">50+</div><div class="lbl">Source Countries</div></div>
+    </div>
+    <h3 style="font-family:var(--heading);margin:2rem 0 1rem;color:var(--navy);">Cost Advantage: India vs Abroad</h3>
+    <div class="compare-bar"><div class="label">Hair Transplant</div><div class="bar-track"><div class="bar-india" style="width:12%;">$1,800</div><div class="bar-abroad">USA: $15,000</div></div></div>
+    <div class="compare-bar"><div class="label">Knee Replacement</div><div class="bar-track"><div class="bar-india" style="width:14%;">$7,000</div><div class="bar-abroad">USA: $50,000</div></div></div>
+    <div class="compare-bar"><div class="label">Cardiac Bypass</div><div class="bar-track"><div class="bar-india" style="width:6%;">$7,500</div><div class="bar-abroad">USA: $120,000</div></div></div>
+    <div class="compare-bar"><div class="label">Dental Implants</div><div class="bar-track"><div class="bar-india" style="width:17%;">$4,200</div><div class="bar-abroad">USA: $25,000</div></div></div>
+    <div class="compare-bar"><div class="label">IVF (per cycle)</div><div class="bar-track"><div class="bar-india" style="width:21%;">$3,200</div><div class="bar-abroad">USA: $15,000</div></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 5: WHAT'S IN IT FOR YOU -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="slide slide-light" id="s4">
+  <div class="slide-inner">
+    <div class="s-tag">For Your Hospital</div>
+    <h2 class="s-title">What <em>You Get</em> from<br>a BharatHeals Partnership</h2>
+    <p class="s-lead">We bring the patients. You deliver the care. It's a simple, risk-free model.</p>
+    <div class="card-grid card-grid-2">
+      <div class="card" style="border-left:3px solid var(--gold);">
+        <h3>&#128200; Incremental Revenue</h3>
+        <p>International patients are incremental to your existing domestic patient base. They fill unused capacity and generate higher Average Revenue Per Patient (ARPP) — typically 2-3x domestic patients.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--gold);">
+        <h3>&#128176; Zero Marketing Spend</h3>
+        <p>We invest in Google Ads, Meta campaigns, SEO, YouTube content, and medical tourism aggregators. You pay nothing upfront — we earn only when a patient completes treatment at your hospital.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--gold);">
+        <h3>&#127758; Global Brand Building</h3>
+        <p>Every international patient who has a great experience becomes an ambassador. We manage post-treatment reviews on Google, Trustpilot, and our platform — building your global reputation.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--gold);">
+        <h3>&#128202; Data & Insights</h3>
+        <p>We share quarterly reports: source country analytics, treatment demand trends, patient satisfaction scores, competitor benchmarking, and growth opportunities for your specialties.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--gold);">
+        <h3>&#128187; Telemedicine Integration</h3>
+        <p>Our platform facilitates pre-consultation video calls between your doctors and patients abroad — building trust before they fly. Additional telemedicine revenue for your doctors.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--gold);">
+        <h3>&#129309; Hassle-Free Operations</h3>
+        <p>We handle everything non-clinical: visa, travel, accommodation, airport pickup, translation, dietary requirements, companion care. Your team focuses purely on medical excellence.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 6: PRICING COMPARISON -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="slide slide-cream" id="s5">
+  <div class="slide-inner">
+    <div class="s-tag">Revenue Potential</div>
+    <h2 class="s-title">Revenue Impact for <em>Your Hospital</em></h2>
+    <p class="s-lead">Here's what a BharatHeals partnership looks like financially — based on real data from our existing hospital partners.</p>
+    <table class="s-table">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>Patients / Year</th>
+          <th>Avg. Treatment Value</th>
+          <th>Gross Revenue</th>
+          <th>Commission (17.5%)</th>
+          <th>Net Revenue to Hospital</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Conservative</td><td>50</td><td>$7,500</td><td class="gold">$375,000</td><td>$65,625</td><td class="green">$309,375</td></tr>
+        <tr><td>Moderate</td><td>150</td><td>$8,000</td><td class="gold">$1,200,000</td><td>$210,000</td><td class="green">$990,000</td></tr>
+        <tr><td>Aggressive</td><td>400</td><td>$8,500</td><td class="gold">$3,400,000</td><td>$510,000</td><td class="green">$2,890,000</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:2rem;padding:1.5rem;background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,0.06);">
+      <h3 style="font-family:var(--heading);font-size:1rem;margin-bottom:0.5rem;color:var(--navy);">For Your Doctors</h3>
+      <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.6;">Each doctor on the platform earns additional revenue from: (a) higher-paying international cases, (b) telemedicine pre-consultation fees ($50-100/call), and (c) enhanced professional reputation through verified international patient reviews. Estimated additional income: <strong style="color:var(--gold);">$5,000-$30,000/year per doctor</strong> depending on specialty and volume.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 7: HOW IT WORKS -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="slide slide-light" id="s6">
+  <div class="slide-inner">
+    <div class="s-tag">The Process</div>
+    <h2 class="s-title">How It <em>Works</em></h2>
+    <p class="s-lead">From patient enquiry to safe return home — here's the complete journey we manage for you.</p>
+    <div class="process-steps">
+      <div class="step"><div class="num">1</div><h4>Patient Enquiry</h4><p>Patient finds us online, chats with AI, or calls. We collect medical history & preferences.</p></div>
+      <div class="step"><div class="num">2</div><h4>Hospital Match</h4><p>We match the patient to the best hospital & doctor based on specialty, location, and budget.</p></div>
+      <div class="step"><div class="num">3</div><h4>Consultation</h4><p>Our consultant + telemedicine call with your doctor. Patient confirms treatment & travel dates.</p></div>
+      <div class="step"><div class="num">4</div><h4>Travel & Arrive</h4><p>We handle visa, flights, hotel, airport pickup. Patient arrives at your hospital ready to treat.</p></div>
+      <div class="step"><div class="num">5</div><h4>Treat & Follow-Up</h4><p>You deliver the treatment. We manage post-op coordination, telemedicine follow-ups, and reviews.</p></div>
+    </div>
+    <div style="margin-top:3rem;padding:2rem;background:var(--cream);border-radius:16px;display:grid;grid-template-columns:1fr 1fr;gap:2rem;">
+      <div>
+        <h3 style="font-family:var(--heading);font-size:1rem;color:var(--navy);margin-bottom:0.5rem;">What You Do</h3>
+        <ul style="list-style:none;font-size:0.82rem;color:var(--text-mid);line-height:2;">
+          <li>&#10003; Provide treatment estimates</li>
+          <li>&#10003; Conduct telemedicine pre-consult</li>
+          <li>&#10003; Deliver excellent medical care</li>
+          <li>&#10003; Share discharge summary</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-family:var(--heading);font-size:1rem;color:var(--navy);margin-bottom:0.5rem;">What We Handle</h3>
+        <ul style="list-style:none;font-size:0.82rem;color:var(--text-mid);line-height:2;">
+          <li>&#10003; Patient acquisition & marketing</li>
+          <li>&#10003; Visa, flights, accommodation</li>
+          <li>&#10003; Airport pickup & transfers</li>
+          <li>&#10003; On-ground coordinator (24/7)</li>
+          <li>&#10003; Translation & dietary needs</li>
+          <li>&#10003; Post-op follow-up & reviews</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 8: TECHNOLOGY -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="slide slide-dark" id="s7">
+  <div class="slide-inner">
+    <div class="s-tag s-tag-dark">Our Technology</div>
+    <h2 class="s-title s-title-white">AI-Powered Platform<br>That <em>Converts Better</em></h2>
+    <p class="s-lead s-lead-light">Our technology is our competitive moat. Patients get instant answers, personalised plans, and downloadable PDFs — 24/7, in any timezone.</p>
+    <div class="card-grid card-grid-3">
+      <div class="card card-dark">
+        <div class="icon">&#129302;</div>
+        <h3>AI Chat Agent</h3>
+        <p>Powered by advanced AI (Claude). Answers treatment questions, generates instant plans, and creates personalised PDF documents for patients.</p>
+      </div>
+      <div class="card card-dark">
+        <div class="icon">&#128202;</div>
+        <h3>Cost Comparison Engine</h3>
+        <p>Patients compare India prices vs their home country in real-time. Interactive calculator converts across 8 currencies.</p>
+      </div>
+      <div class="card card-dark">
+        <div class="icon">&#128196;</div>
+        <h3>Journey Planner</h3>
+        <p>Step-by-step journey planning tool that maps out treatment timeline, travel logistics, accommodation, and estimated costs.</p>
+      </div>
+      <div class="card card-dark">
+        <div class="icon">&#128100;</div>
+        <h3>Doctor Profiles</h3>
+        <p>Rich, verified profiles for each doctor — credentials, experience, reviews, success rates. Patients choose with confidence.</p>
+      </div>
+      <div class="card card-dark">
+        <div class="icon">&#128187;</div>
+        <h3>Telemedicine Bridge</h3>
+        <p>Built-in video consultation scheduling. Your doctors meet patients face-to-face before they fly — building trust and commitment.</p>
+      </div>
+      <div class="card card-dark">
+        <div class="icon">&#128241;</div>
+        <h3>Patient Dashboard</h3>
+        <p>Logged-in patients track their entire journey: appointments, documents, coordinator contact, package details, and progress timeline.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 9: TRACTION -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="slide slide-cream" id="s8">
+  <div class="slide-inner">
+    <div class="s-tag">Our Traction</div>
+    <h2 class="s-title">Proven Track Record<br>with <em>Real Results</em></h2>
+    <p class="s-lead">We're not a pitch — we're an operating platform with real patients, real partners, and real outcomes.</p>
+    <div class="stats-row">
+      <div class="stat"><div class="num">10,000+</div><div class="lbl">Patients Treated</div></div>
+      <div class="stat"><div class="num">50+</div><div class="lbl">Countries Served</div></div>
+      <div class="stat"><div class="num">44</div><div class="lbl">JCI Hospital Partners</div></div>
+      <div class="stat"><div class="num">97%</div><div class="lbl">Patient Satisfaction</div></div>
+      <div class="stat"><div class="num">$120M+</div><div class="lbl">Patient Savings</div></div>
+    </div>
+    <h3 style="font-family:var(--heading);font-size:1.1rem;color:var(--navy);margin:2rem 0 1rem;">Current Hospital Partners</h3>
+    <table class="s-table">
+      <thead><tr><th>Hospital</th><th>Cities</th><th>Accreditation</th><th>Key Specialties</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Apollo Hospitals</strong></td><td>Chennai, Delhi, Hyderabad, Mumbai</td><td>JCI + NABH</td><td>Cardiac, Oncology, Transplant</td></tr>
+        <tr><td><strong>Fortis Healthcare</strong></td><td>Gurugram, Bangalore, Mumbai</td><td>JCI + NABH</td><td>Cardiac, Neuro, Fertility</td></tr>
+        <tr><td><strong>Medanta</strong></td><td>Gurugram, Lucknow</td><td>JCI + NABH</td><td>Cardiac, Oncology, Ortho</td></tr>
+        <tr><td><strong>Max Healthcare</strong></td><td>Delhi, Noida, Mohali</td><td>JCI + NABH</td><td>Robotic Surgery, Cardiac</td></tr>
+        <tr><td><strong>Kokilaben Ambani</strong></td><td>Mumbai</td><td>JCI + NABH</td><td>CyberKnife, Oncology</td></tr>
+        <tr><td><strong>Manipal Hospitals</strong></td><td>Bangalore, Delhi, Kolkata</td><td>NABH</td><td>Stem Cell, Bone Marrow</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 10: PARTNERSHIP TERMS -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="slide slide-light" id="s9">
+  <div class="slide-inner">
+    <div class="s-tag">Partnership Terms</div>
+    <h2 class="s-title">Simple, <em>Risk-Free</em> Terms</h2>
+    <p class="s-lead">No joining fee. No minimum commitment. We earn only when you earn.</p>
+    <table class="s-table">
+      <thead><tr><th>Tier</th><th>Patients / Year</th><th>Commission</th><th>Payment Terms</th><th>Extras</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Standard</strong></td><td>1-50</td><td class="gold">20%</td><td>Net 30 after discharge</td><td>Quarterly reports, patient reviews</td></tr>
+        <tr><td><strong>Gold</strong></td><td>51-150</td><td class="gold">17.5%</td><td>Net 30 after discharge</td><td>+ Dedicated account manager</td></tr>
+        <tr><td><strong>Platinum</strong></td><td>151-400</td><td class="gold">15%</td><td>Net 15 after discharge</td><td>+ Co-branded marketing campaigns</td></tr>
+        <tr><td><strong>Strategic</strong></td><td>400+</td><td class="gold">12-15%</td><td>Net 15 + quarterly bonus</td><td>+ Joint events, exclusive listings</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:2rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+      <div style="padding:1.5rem;background:var(--cream);border-radius:12px;">
+        <h3 style="font-family:var(--heading);font-size:1rem;color:var(--navy);margin-bottom:0.5rem;">&#10003; What's Included</h3>
+        <ul style="list-style:none;font-size:0.8rem;color:var(--text-mid);line-height:2;">
+          <li>&#8226; Hospital profile on BharatHeals platform</li>
+          <li>&#8226; Doctor profiles with booking buttons</li>
+          <li>&#8226; International patient marketing (paid by us)</li>
+          <li>&#8226; AI chatbot mentioning your hospital</li>
+          <li>&#8226; Patient satisfaction tracking</li>
+          <li>&#8226; Quarterly performance reports</li>
+        </ul>
+      </div>
+      <div style="padding:1.5rem;background:var(--cream);border-radius:12px;">
+        <h3 style="font-family:var(--heading);font-size:1rem;color:var(--navy);margin-bottom:0.5rem;">&#9888;&#65039; What We Ask</h3>
+        <ul style="list-style:none;font-size:0.8rem;color:var(--text-mid);line-height:2;">
+          <li>&#8226; Competitive pricing for international patients</li>
+          <li>&#8226; Dedicated international patient desk contact</li>
+          <li>&#8226; Timely treatment estimates (within 48h)</li>
+          <li>&#8226; Quality assurance & complication transparency</li>
+          <li>&#8226; Permission to use anonymised success stories</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SLIDE 11: CTA -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="slide slide-dark" id="s10">
+  <div class="slide-inner cta-big">
+    <div class="s-tag s-tag-dark">Let's Partner</div>
+    <h2>Ready to Grow Your<br><em>International Practice?</em></h2>
+    <p>Join 44 JCI-accredited hospitals already partnering with BharatHeals. Zero upfront cost. Patients start arriving within 30 days.</p>
+    <div class="cta-contact">
+      <div><div class="label">Email</div><div class="value">partnerships@bharatheals.com</div></div>
+      <div><div class="label">Phone</div><div class="value">+91 123 456 7890</div></div>
+      <div><div class="label">WhatsApp</div><div class="value">+91 98765 43210</div></div>
+      <div><div class="label">Website</div><div class="value">www.bharatheals.com</div></div>
+    </div>
+    <div style="margin-top:3rem;color:rgba(255,255,255,0.25);font-size:0.72rem;">
+      <p>Confidential &middot; BharatHeals Pvt. Ltd. &middot; 2026</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const btns = document.querySelectorAll('.deck-nav button');
+function goSlide(i){slides[i].scrollIntoView({behavior:'smooth'});btns.forEach(b=>b.classList.remove('active'));btns[i].classList.add('active');}
+const obs = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const idx=[...slides].indexOf(e.target);btns.forEach(b=>b.classList.remove('active'));if(btns[idx])btns[idx].classList.add('active');}});},{threshold:0.5});
+slides.forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>

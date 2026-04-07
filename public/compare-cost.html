@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compare Treatment Costs Globally — BharatHeals</title>
+<meta name="description" content="Compare medical procedure prices across multiple countries — USA, UK, Thailand, Turkey, Singapore, Malaysia, India, and more. See how much you save with BharatHeals.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css?v=20260405b">
+<style>
+  .compare-hero-wide p { max-width: 640px; }
+  .treatment-cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5% 3rem;
+  }
+  @media (max-width: 1100px) {
+    .treatment-cards { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 700px) {
+    .treatment-cards { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 420px) {
+    .treatment-cards { grid-template-columns: 1fr; }
+  }
+  .treatment-card {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 8px;
+    padding: 1.35rem 1.1rem;
+    cursor: pointer;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    text-align: left;
+  }
+  .treatment-card:hover {
+    border-color: rgba(201,168,76,0.45);
+    box-shadow: 0 12px 40px rgba(11,22,40,0.08);
+    transform: translateY(-2px);
+  }
+  .treatment-card.active {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 1px var(--gold), 0 16px 48px rgba(201,168,76,0.15);
+  }
+  .treatment-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+  .treatment-card .treat-rating {
+    font-size: 0.8rem;
+    color: var(--text-mid);
+    letter-spacing: 0.04em;
+  }
+  .treatment-card .treat-rating strong { color: var(--gold); }
+  .treatment-card .treat-hint {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--rust);
+    margin-top: 0.75rem;
+  }
+  .compare-result-section {
+    background: var(--cream);
+    padding: 3rem 5% 4rem;
+    min-height: 200px;
+  }
+  .compare-result-inner { max-width: 1000px; margin: 0 auto; }
+  .compare-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-mid);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+  }
+  .compare-result-head {
+    margin-bottom: 1.75rem;
+    text-align: center;
+  }
+  .compare-result-head h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    color: var(--navy);
+  }
+  .compare-result-head h2 em { color: var(--gold); font-style: italic; }
+  .compare-result-meta {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-mid);
+  }
+  .compare-result-meta .stars { color: var(--gold); letter-spacing: 0.1em; }
+  .compare-chart-panel {
+    background: var(--navy);
+    border-radius: 8px;
+    padding: 1.75rem 1.5rem 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+  .compare-cost-page .cost-bar-label {
+    width: 2.25rem;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .compare-cost-page .cost-bar-short {
+    font-size: 0.62rem;
+    color: rgba(255,255,255,0.45);
+    width: 36px;
+    text-align: right;
+    flex-shrink: 0;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .compare-cost-page .cost-bar-row { gap: 0.5rem; align-items: center; margin-bottom: 0.55rem; }
+  .compare-cost-page .cost-bar-amount {
+    width: auto;
+    min-width: 5.5rem;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.15rem;
+  }
+  .compare-cost-page .cost-bar-price { font-size: 0.72rem; color: rgba(255,255,255,0.85); white-space: nowrap; }
+  .compare-cost-page .save-badge {
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.45rem;
+    border-radius: 2px;
+    background: rgba(46,125,91,0.35);
+    color: #a8e0c5;
+    white-space: nowrap;
+  }
+  .compare-cost-page .save-badge.muted {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.35);
+  }
+  .compare-cost-page .row-india {
+    background: rgba(201,168,76,0.12);
+    border-radius: 4px;
+    padding: 0.15rem 0;
+    margin: 0 -0.25rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+  .compare-cost-page .row-india .cost-bar-fill.fill-in { box-shadow: 0 0 12px rgba(201,168,76,0.35); }
+  .compare-table-wrap {
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.06);
+    margin-bottom: 2rem;
+  }
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  .compare-table th {
+    text-align: left;
+    padding: 0.85rem 1rem;
+    background: var(--ivory);
+    color: var(--navy);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .compare-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    color: var(--text-dark);
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr.row-india td {
+    background: linear-gradient(90deg, rgba(201,168,76,0.22) 0%, rgba(201,168,76,0.12) 100%);
+    font-weight: 500;
+  }
+  .compare-table tr.row-na td { color: var(--text-mid); }
+  .pkg-table-wrap {
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.06);
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .pkg-table-wrap h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    padding: 1.25rem 1.25rem 0;
+    color: var(--navy);
+  }
+  .pkg-table-wrap h3 em { color: var(--gold); font-style: italic; }
+  .pkg-sub {
+    padding: 0.35rem 1.25rem 1rem;
+    font-size: 0.8rem;
+    color: var(--text-mid);
+  }
+  .pkg-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .pkg-table th {
+    text-align: left;
+    padding: 0.75rem 1.25rem;
+    background: var(--navy);
+    color: rgba(255,255,255,0.9);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .pkg-table td { padding: 0.85rem 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.05); }
+  .pkg-table tr:last-child td { border-bottom: none; }
+  .pkg-price { font-weight: 600; color: var(--gold); white-space: nowrap; }
+  .compare-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+  .nav-links a.nav-compare-hi { color: var(--gold); }
+  .compare-loading {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-mid);
+    font-size: 0.9rem;
+  }
+</style>
+</head>
+<body class="compare-cost-page">
+
+<nav id="mainNav">
+  <a href="/" class="nav-logo">Bharat<span>Heals</span></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about.html">About Us</a></li>
+    <li><a href="/#specialties">Treatments</a></li>
+    <li><a href="/compare-cost.html">Compare Costs</a></li>
+    <li><a href="/chat.html">AI Agent</a></li>
+    <li><a href="/plan-journey.html">Plan Journey</a></li>
+    <li><a href="/doctors.html">Doctors</a></li>
+    <li><a href="/hospitals.html">Hospitals</a></li>
+    <li><a href="/team.html">Team</a></li>
+    <li><a href="javascript:void(0)" class="nav-cta" onclick="openConsultModal()">Free Consultation</a></li>
+    <li><a href="/login.html">Account</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMobile()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-menu" onclick="toggleMobile()">&times;</button>
+  <a href="/" onclick="toggleMobile()">Home</a>
+  <a href="/about.html" onclick="toggleMobile()">About Us</a>
+  <a href="/#specialties" onclick="toggleMobile()">Treatments</a>
+  <a href="/compare-cost.html" onclick="toggleMobile()">Compare Costs</a>
+  <a href="/chat.html" onclick="toggleMobile()">AI Agent</a>
+  <a href="/plan-journey.html" onclick="toggleMobile()">Plan Journey</a>
+  <a href="/doctors.html" onclick="toggleMobile()">Doctors</a>
+  <a href="/hospitals.html" onclick="toggleMobile()">Hospitals</a>
+  <a href="/team.html" onclick="toggleMobile()">Team</a>
+  <a href="javascript:void(0)" onclick="toggleMobile(); openConsultModal();" style="color:var(--gold);">Free Consultation</a>
+  <a href="/login.html" onclick="toggleMobile()">Account</a>
+</div>
+
+<div class="calc-page-hero compare-hero-wide">
+  <h1>Compare Treatment Costs <em>Globally</em></h1>
+  <p>See indicative prices in a common reference currency across eight markets — and discover why India offers the same quality for a fraction of the cost.</p>
+</div>
+
+<section style="background:var(--ivory); padding-top:0.5rem;">
+  <div class="treatment-cards" id="treatmentCards" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));">
+    <div class="treatment-card active" data-id="hair-transplant" data-name="Hair Transplant" data-rating="4.8" onclick="selectTreatment(this)">
+      <h3>💇 Hair Transplant</h3>
+      <div class="treat-rating">Rating <strong>4.8</strong> / 5</div>
+    </div>
+    <div class="treatment-card" data-id="dental-implants" data-name="Dental Implants" data-rating="4.7" onclick="selectTreatment(this)">
+      <h3>🦷 Dental Implants</h3>
+      <div class="treat-rating">Rating <strong>4.7</strong> / 5</div>
+    </div>
+    <div class="treatment-card" data-id="cosmetic-surgery" data-name="Cosmetic Surgery" data-rating="4.8" onclick="selectTreatment(this)">
+      <h3>✨ Cosmetic Surgery</h3>
+      <div class="treat-rating">Rating <strong>4.8</strong> / 5</div>
+    </div>
+    <div class="treatment-card" data-id="ivf" data-name="IVF" data-rating="4.9" onclick="selectTreatment(this)">
+      <h3>👶 IVF</h3>
+      <div class="treat-rating">Rating <strong>4.9</strong> / 5</div>
+    </div>
+    <div class="treatment-card" data-id="knee-replacement" data-name="Knee / Hip Replacement" data-rating="4.8" onclick="selectTreatment(this)">
+      <h3>🦴 Knee / Hip Replacement</h3>
+      <div class="treat-rating">Rating <strong>4.8</strong> / 5</div>
+    </div>
+    <div class="treatment-card" data-id="second-opinion" data-name="Second Opinion" data-rating="4.8" onclick="selectTreatment(this)">
+      <h3>📋 Second Opinion</h3>
+      <div class="treat-rating">Rating <strong>4.8</strong> / 5</div>
+    </div>
+  </div>
+
+  <div style="max-width:1200px; margin:0 auto; padding:0 5% 2rem;">
+    <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-mid); margin-bottom:0.8rem;">Coming Soon</p>
+    <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+      <span style="background:#fff; border:1px solid rgba(0,0,0,0.06); border-radius:30px; padding:0.4rem 1rem; font-size:0.75rem; color:var(--text-mid);">👁️ LASIK & Eye Care</span>
+      <span style="background:#fff; border:1px solid rgba(0,0,0,0.06); border-radius:30px; padding:0.4rem 1rem; font-size:0.75rem; color:var(--text-mid);">🧠 Spine & Neuro</span>
+      <span style="background:#fff; border:1px solid rgba(0,0,0,0.06); border-radius:30px; padding:0.4rem 1rem; font-size:0.75rem; color:var(--text-mid);">🎗️ Cancer Treatment</span>
+      <span style="background:#fff; border:1px solid rgba(0,0,0,0.06); border-radius:30px; padding:0.4rem 1rem; font-size:0.75rem; color:var(--text-mid);">🩺 Executive Health Check</span>
+    </div>
+  </div>
+</section>
+
+<section class="compare-result-section">
+  <div class="compare-result-inner">
+    <div id="compareResult">
+      <div class="compare-loading" id="compareLoading">Loading comparison…</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom">
+      <span>&copy; 2026 BharatHeals. All rights reserved. Indicative prices only; not a medical quote.</span>
+      <div class="accred-logos"><span class="accred-badge">JCI Partner</span><span class="accred-badge">NABH Accredited</span></div>
+    </div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="consultModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Book a <em>Free Consultation</em></h2>
+      <p>Our expert medical consultant will guide you through everything — treatment, costs in your currency, hospital, travel.</p>
+      <button class="modal-close" onclick="closeConsultModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="consultForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consName">Full Name *</label>
+            <input type="text" id="consName" name="name" required placeholder="John Smith">
+          </div>
+          <div class="form-group">
+            <label for="consEmail">Email *</label>
+            <input type="email" id="consEmail" name="email" required placeholder="john@example.com">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consPhone">Phone / WhatsApp</label>
+            <input type="tel" id="consPhone" name="phone" placeholder="+1 555 000 0000">
+          </div>
+          <div class="form-group">
+            <label for="consCountry">City, Country</label>
+            <input type="text" id="consCountry" name="country" placeholder="City, country">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="consTreatment">Treatment / Specialty</label>
+            <select id="consTreatment" name="treatment">
+              <option value="">Select a treatment...</option>
+              <option value="Hair Transplant">Hair Transplant</option>
+              <option value="Dental Treatment">Dental Treatment</option>
+              <option value="Cosmetic Surgery">Cosmetic Surgery</option>
+              <option value="Fertility & IVF">Fertility & IVF</option>
+              <option value="Bariatric Surgery">Bariatric Surgery</option>
+              <option value="LASIK & Eye Care">LASIK & Eye Care</option>
+              <option value="Spine & Neuro">Spine & Neuro</option>
+              <option value="Cancer Treatment">Cancer Treatment</option>
+              <option value="Organ Transplant">Organ Transplant</option>
+              <option value="Surrogacy">Surrogacy</option>
+              <option value="Ayurveda & Wellness">Ayurveda & Wellness</option>
+              <option value="Executive Health Check">Executive Health Check</option>
+              <option value="Second Opinion">Second Opinion</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consDate">Preferred Consultation Date</label>
+            <input type="date" id="consDate" name="preferred_date">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="consMessage">Tell us about your condition</label>
+            <textarea id="consMessage" name="message" placeholder="Brief description of your medical needs, any diagnosis or reports you have..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="modal-submit" id="consultSubmitBtn">Book My Free Consultation &rarr;</button>
+      </form>
+      <div class="form-success" id="consultSuccess">
+        <div class="check-circle">&#10003;</div>
+        <h3>Consultation Booked!</h3>
+        <p>Our medical consultant will contact you within 24 hours via your preferred method to discuss treatment options, hospital selection, and costs in your preferred currency.</p>
+      </div>
+      <p class="modal-note">&#128274; 100% confidential. No spam. Our consultant will reach out within 24 hours.</p>
+    </div>
+  </div>
+</div>
+
+<div class="whatsapp-widget">
+  <div class="whatsapp-tooltip">Chat with us on WhatsApp</div>
+  <a href="https://wa.me/919999999999?text=Hi%20BharatHeals%2C%20I%27d%20like%20to%20chat%20with%20your%20AI%20medical%20concierge%20about%20treatment%20costs." target="_blank" rel="noopener" class="whatsapp-btn" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.128 6.744 3.046 9.378L1.054 31.29l6.118-1.958A15.92 15.92 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.302 22.602c-.39 1.1-1.932 2.014-3.164 2.28-.844.18-1.946.324-5.656-1.216-4.748-1.968-7.804-6.792-8.038-7.108-.226-.316-1.878-2.502-1.878-4.772 0-2.27 1.188-3.386 1.61-3.85.39-.428 1.024-.624 1.63-.624.196 0 .374.01.532.018.468.02.702.048 1.012.784.386.922 1.328 3.236 1.444 3.47.118.234.236.55.078.866-.15.324-.282.526-.516.81-.234.284-.458.502-.692.77-.216.246-.458.51-.196.998.262.484 1.166 1.922 2.502 3.114 1.72 1.534 3.168 2.01 3.618 2.234.352.176.77.148 1.044-.136.352-.362.786-.964 1.228-1.558.314-.424.712-.476 1.098-.314.39.156 2.468 1.164 2.892 1.376.424.214.706.318.81.498.104.18.104 1.044-.286 2.144z"/></svg>
+  </a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/js/app.js?v=20260405b"></script>
+<script>
+(function () {
+  'use strict';
+
+  var FLAG = { 'Australia': '🌐', 'Reference': '🌐', 'USA': '🇺🇸', 'UK': '🇬🇧', 'Thailand': '🇹🇭', 'Turkey': '🇹🇷', 'Singapore': '🇸🇬', 'Malaysia': '🇲🇾', 'India': '🇮🇳' };
+  var SHORT = { 'Australia': 'REF', 'Reference': 'REF', 'USA': 'US', 'UK': 'UK', 'Thailand': 'TH', 'Turkey': 'TR', 'Singapore': 'SG', 'Malaysia': 'MY', 'India': 'IN' };
+
+  function moneyFmt(n) {
+    if (n === null || n === undefined || isNaN(n)) return '—';
+    return '$' + Number(n).toLocaleString('en-US');
+  }
+
+  function savingsPct(countryPrice, indiaPrice) {
+    if (countryPrice == null || indiaPrice == null || !countryPrice || countryPrice <= indiaPrice) return null;
+    return Math.round((countryPrice - indiaPrice) / countryPrice * 100);
+  }
+
+  function buildRowsFromSpec(spec) {
+    var india = spec.india;
+    return spec.rows.map(function (r) {
+      var price = r.price;
+      var sav = price != null ? savingsPct(price, india) : null;
+      return { country: r.c, flag: FLAG[r.c] || '', price: price, savings: sav };
+    });
+  }
+
+  var FALLBACK = {
+    'hair-transplant': {
+      treatment: 'Hair Transplant',
+      rating: 4.8,
+      indiaPrice: 1500,
+      data: buildRowsFromSpec({
+        india: 1500,
+        rows: [
+          { c: 'Reference', price: 16000 }, { c: 'USA', price: 15000 }, { c: 'UK', price: 12000 },
+          { c: 'Thailand', price: 5000 }, { c: 'Turkey', price: 3500 }, { c: 'Singapore', price: 8000 },
+          { c: 'Malaysia', price: 4000 }, { c: 'India', price: 1500 }
+        ]
+      }),
+      packages: [
+        { name: 'FUE — 2000 grafts', detail: 'Hairline restoration, hotel & transfers', price: 1200 },
+        { name: 'FUE — 3000 grafts', detail: 'Crown + hairline, JCI hospital', price: 1500 },
+        { name: 'DHI — 3500 grafts', detail: 'Premium implant pen technique', price: 2200 },
+        { name: 'Mega session — 5000+', detail: 'Advanced density, extended stay', price: 3000 }
+      ]
+    },
+    'dental-implants': {
+      treatment: 'Dental Implants',
+      rating: 4.7,
+      indiaPrice: 500,
+      data: buildRowsFromSpec({
+        india: 500,
+        rows: [
+          { c: 'Reference', price: 5500 }, { c: 'USA', price: 5000 }, { c: 'UK', price: 3500 },
+          { c: 'Thailand', price: 1800 }, { c: 'Turkey', price: 1200 }, { c: 'Singapore', price: 3000 },
+          { c: 'Malaysia', price: 1500 }, { c: 'India', price: 500 }
+        ]
+      }),
+      packages: [
+        { name: 'Single implant + crown', detail: 'Titanium, international brand', price: 500 },
+        { name: 'All-on-4 (per arch)', detail: 'Fixed teeth in 3–5 days', price: 3500 },
+        { name: 'Full mouth rehab', detail: 'Implants + zirconia bridges', price: 5000 }
+      ]
+    },
+    'cosmetic-surgery': {
+      treatment: 'Cosmetic Surgery',
+      rating: 4.8,
+      indiaPrice: 2500,
+      data: buildRowsFromSpec({
+        india: 2500,
+        rows: [
+          { c: 'Reference', price: 12000 }, { c: 'USA', price: 10000 }, { c: 'UK', price: 8000 },
+          { c: 'Thailand', price: 4000 }, { c: 'Turkey', price: 3000 }, { c: 'Singapore', price: 7000 },
+          { c: 'Malaysia', price: 3500 }, { c: 'India', price: 2500 }
+        ]
+      }),
+      packages: [
+        { name: 'Rhinoplasty package', detail: 'Surgeon fee, hospital, 2 nights', price: 2500 },
+        { name: 'Breast augmentation', detail: 'Mentor / Motiva implants', price: 3800 },
+        { name: 'Mommy makeover', detail: 'Combined procedures, concierge', price: 8900 }
+      ]
+    },
+    'ivf': {
+      treatment: 'IVF',
+      rating: 4.9,
+      indiaPrice: 2500,
+      data: buildRowsFromSpec({
+        india: 2500,
+        rows: [
+          { c: 'Reference', price: 12000 }, { c: 'USA', price: 15000 }, { c: 'UK', price: 8000 },
+          { c: 'Thailand', price: 5000 }, { c: 'Turkey', price: 4000 }, { c: 'Singapore', price: 10000 },
+          { c: 'Malaysia', price: 5000 }, { c: 'India', price: 2500 }
+        ]
+      }),
+      packages: [
+        { name: 'IVF cycle (standard)', detail: 'Stimulation, retrieval, transfer', price: 2500 },
+        { name: 'IVF + ICSI', detail: 'Embryology lab, freezing 1 yr', price: 3200 },
+        { name: 'Donor egg program', detail: 'Screening, legal, coordination', price: 8500 }
+      ]
+    },
+    'knee-replacement': {
+      treatment: 'Knee / Hip Replacement',
+      rating: 4.8,
+      indiaPrice: 6000,
+      data: buildRowsFromSpec({
+        india: 6000,
+        rows: [
+          { c: 'Reference', price: 45000 }, { c: 'USA', price: 50000 }, { c: 'UK', price: 15000 },
+          { c: 'Thailand', price: 12000 }, { c: 'Turkey', price: 9000 }, { c: 'Singapore', price: 20000 },
+          { c: 'Malaysia', price: 10000 }, { c: 'India', price: 6000 }
+        ]
+      }),
+      packages: [
+        { name: 'Total Knee Replacement', detail: 'Imported implant, JCI hospital, 7 nights', price: 6000 },
+        { name: 'Bilateral Knee Replacement', detail: 'Both knees, extended stay', price: 10000 },
+        { name: 'Hip Replacement', detail: 'Ceramic/titanium, robotic-assisted', price: 7000 },
+        { name: 'Partial Knee Replacement', detail: 'Minimally invasive, faster recovery', price: 4500 }
+      ]
+    },
+    'lasik-eye': {
+      treatment: 'LASIK & Eye Care',
+      rating: 4.8,
+      indiaPrice: 800,
+      data: buildRowsFromSpec({
+        india: 800,
+        rows: [
+          { c: 'Reference', price: 5000 }, { c: 'USA', price: 4000 }, { c: 'UK', price: 3500 },
+          { c: 'Thailand', price: 2000 }, { c: 'Turkey', price: 1500 }, { c: 'Singapore', price: 3500 },
+          { c: 'Malaysia', price: 1800 }, { c: 'India', price: 800 }
+        ]
+      }),
+      packages: [
+        { name: 'LASIK (both eyes)', detail: 'Bladeless, Zeiss/Alcon laser', price: 800 },
+        { name: 'SMILE Surgery (both eyes)', detail: 'Minimally invasive', price: 1200 },
+        { name: 'Cataract Surgery (per eye)', detail: 'Premium IOL, phaco', price: 1500 },
+        { name: 'ICL Implant (both eyes)', detail: 'For high prescriptions', price: 2500 }
+      ]
+    },
+    'spine-neuro': {
+      treatment: 'Spine & Neurosurgery',
+      rating: 4.8,
+      indiaPrice: 5000,
+      data: buildRowsFromSpec({
+        india: 5000,
+        rows: [
+          { c: 'Reference', price: 40000 }, { c: 'USA', price: 50000 }, { c: 'UK', price: 30000 },
+          { c: 'Thailand', price: 15000 }, { c: 'Turkey', price: 10000 }, { c: 'Singapore', price: 25000 },
+          { c: 'Malaysia', price: 12000 }, { c: 'India', price: 5000 }
+        ]
+      }),
+      packages: [
+        { name: 'Spinal Fusion (single level)', detail: 'Robotic-assisted, JCI hospital', price: 5000 },
+        { name: 'Disc Replacement', detail: 'Artificial disc, faster recovery', price: 6500 },
+        { name: 'Brain Tumour Excision', detail: 'Neuro-navigation guided', price: 8000 },
+        { name: 'Deep Brain Stimulation', detail: 'For Parkinson\'s/movement disorders', price: 12000 }
+      ]
+    },
+    'cancer-treatment': {
+      treatment: 'Cancer Treatment',
+      rating: 4.9,
+      indiaPrice: 3000,
+      data: buildRowsFromSpec({
+        india: 3000,
+        rows: [
+          { c: 'Reference', price: 50000 }, { c: 'USA', price: 80000 }, { c: 'UK', price: 40000 },
+          { c: 'Thailand', price: 18000 }, { c: 'Turkey', price: 12000 }, { c: 'Singapore', price: 35000 },
+          { c: 'Malaysia', price: 15000 }, { c: 'India', price: 3000 }
+        ]
+      }),
+      packages: [
+        { name: 'CyberKnife Treatment', detail: 'Non-invasive radiation, outpatient', price: 3000 },
+        { name: 'Chemotherapy (per cycle)', detail: 'International-protocol drugs', price: 800 },
+        { name: 'Immunotherapy (per cycle)', detail: 'Keytruda/Opdivo equivalent', price: 2000 },
+        { name: 'Bone Marrow Transplant', detail: 'Allogeneic/autologous, full package', price: 25000 }
+      ]
+    },
+    'executive-health-check': {
+      treatment: 'Executive Health Check',
+      rating: 4.7,
+      indiaPrice: 450,
+      data: buildRowsFromSpec({
+        india: 450,
+        rows: [
+          { c: 'Reference', price: 2500 }, { c: 'USA', price: 3000 }, { c: 'UK', price: 2000 },
+          { c: 'Thailand', price: 800 }, { c: 'Turkey', price: 600 }, { c: 'Singapore', price: 1500 },
+          { c: 'Malaysia', price: 500 }, { c: 'India', price: 450 }
+        ]
+      }),
+      packages: [
+        { name: 'Essential Health Screen', detail: '70+ tests, cardiac, diabetes, thyroid', price: 250 },
+        { name: 'Executive Full Body', detail: '150+ tests, MRI, echo, stress test', price: 450 },
+        { name: 'Platinum Genetic Screen', detail: 'Full body + genetic markers + cancer', price: 900 }
+      ]
+    },
+    'second-opinion': {
+      treatment: 'Second Opinion',
+      rating: 4.8,
+      indiaPrice: 150,
+      data: buildRowsFromSpec({
+        india: 150,
+        rows: [
+          { c: 'Reference', price: 600 }, { c: 'USA', price: 750 }, { c: 'UK', price: 500 },
+          { c: 'Thailand', price: 250 }, { c: 'Turkey', price: 200 }, { c: 'Singapore', price: 400 },
+          { c: 'Malaysia', price: 200 }, { c: 'India', price: 150 }
+        ]
+      }),
+      packages: [
+        { name: 'Standard Second Opinion', detail: 'Record review + written report from specialist', price: 150 },
+        { name: 'Specialist Video Consult', detail: '30-min video call with top specialist', price: 150 },
+        { name: 'Multi-Specialist Panel Review', detail: 'Panel of 2-3 specialists + detailed report', price: 300 }
+      ]
+    }
+  };
+
+  // Read treatment from URL param (?treatment=bariatric-surgery)
+  var urlParams = new URLSearchParams(window.location.search);
+  var paramTreatment = urlParams.get('treatment');
+  var currentTreatmentId = (paramTreatment && (FALLBACK[paramTreatment] || document.querySelector('.treatment-card[data-id="' + paramTreatment + '"]'))) ? paramTreatment : 'hair-transplant';
+  var currentTreatmentName = 'Hair Transplant';
+
+  // Activate the right card on page load
+  if (currentTreatmentId !== 'hair-transplant') {
+    document.querySelectorAll('.treatment-card').forEach(function(c) { c.classList.remove('active'); });
+    var targetCard = document.querySelector('.treatment-card[data-id="' + currentTreatmentId + '"]');
+    if (targetCard) {
+      targetCard.classList.add('active');
+      currentTreatmentName = targetCard.getAttribute('data-name');
+      targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  }
+
+  window.selectTreatment = function (el) {
+    document.querySelectorAll('.treatment-card').forEach(function (c) { c.classList.remove('active'); });
+    el.classList.add('active');
+    currentTreatmentId = el.getAttribute('data-id');
+    currentTreatmentName = el.getAttribute('data-name');
+    loadCompare(currentTreatmentId);
+  };
+
+  function normalizeApiPayload(body, treatmentId) {
+    if (!body || !body.success || !body.data) return null;
+    var india = body.indiaPrice;
+    if (india == null) {
+      var indRow = body.data.filter(function (d) { return (d.country || '').toLowerCase() === 'india'; })[0];
+      if (indRow && indRow.price != null) india = indRow.price;
+    }
+    var data = body.data.map(function (d) {
+      var price = d.price;
+      var sav = d.savings;
+      if (sav == null && price != null && india != null) sav = savingsPct(price, india);
+      return {
+        country: d.country,
+        flag: d.flag || FLAG[d.country] || '',
+        price: price,
+        savings: sav
+      };
+    });
+    var card = document.querySelector('.treatment-card[data-id="' + treatmentId + '"]');
+    var cardRating = card ? parseFloat(card.getAttribute('data-rating')) : NaN;
+    return {
+      treatment: body.treatment || (FALLBACK[treatmentId] && FALLBACK[treatmentId].treatment) || currentTreatmentName,
+      rating: !isNaN(cardRating) ? cardRating : 4.8,
+      indiaPrice: india,
+      data: data,
+      packages: body.packages || (FALLBACK[treatmentId] && FALLBACK[treatmentId].packages) || []
+    };
+  }
+
+  function render(payload) {
+    var el = document.getElementById('compareResult');
+
+    var rating = payload.rating;
+    var stars = '★★★★★';
+    var maxP = 0;
+    payload.data.forEach(function (d) {
+      if (d.price != null && !isNaN(d.price)) maxP = Math.max(maxP, d.price);
+    });
+    if (!maxP) maxP = 1;
+
+    var barsHtml = payload.data.map(function (d) {
+      var isIndia = d.country === 'India';
+      var pct = d.price != null ? Math.round(d.price / maxP * 100) : 0;
+      var rowClass = isIndia ? 'cost-bar-row row-india' : 'cost-bar-row';
+      var fillClass = isIndia ? 'cost-bar-fill fill-in' : 'cost-bar-fill fill-au';
+      var badge = '';
+      if (d.price == null) {
+        badge = '<span class="save-badge muted">N/A</span>';
+      } else if (!isIndia && d.savings != null) {
+        badge = '<span class="save-badge">You save ' + d.savings + '%</span>';
+      } else if (isIndia) {
+        badge = '<span class="save-badge muted">Best value</span>';
+      }
+      return (
+        '<div class="' + rowClass + '">' +
+          '<div class="cost-bar-label">' + (d.flag || '') + '</div>' +
+          '<div class="cost-bar-short">' + (SHORT[d.country] || '') + '</div>' +
+          '<div class="cost-bar-track"><div class="' + fillClass + '" data-width="' + pct + '" style="width:' + pct + '%"></div></div>' +
+          '<div class="cost-bar-amount">' +
+            '<span class="cost-bar-price">' + moneyFmt(d.price) + '</span>' +
+            badge +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+
+    var tableRows = payload.data.map(function (d) {
+      var isIndia = d.country === 'India';
+      var isNA = d.price == null;
+      var trClass = isIndia ? 'row-india' : (isNA ? 'row-na' : '');
+      var saveCell = '—';
+      if (!isNA && !isIndia && d.savings != null) saveCell = 'You save ' + d.savings + '% vs India';
+      if (isIndia) saveCell = 'Baseline';
+      return (
+        '<tr class="' + trClass + '">' +
+          '<td>' + (d.flag || '') + ' ' + d.country + '</td>' +
+          '<td>' + moneyFmt(d.price) + '</td>' +
+          '<td>' + saveCell + '</td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    var pkgRows = (payload.packages || []).map(function (p) {
+      return (
+        '<tr><td><strong>' + escapeHtml(p.name) + '</strong><br><span style="color:var(--text-mid);font-size:0.8rem;">' + escapeHtml(p.detail || '') + '</span></td>' +
+        '<td class="pkg-price">' + moneyFmt(p.price) + '</td></tr>'
+      );
+    }).join('');
+
+    el.innerHTML =
+      '<div class="compare-result-head">' +
+        '<h2>' + escapeHtml(payload.treatment) + ' — <em>global price snapshot</em></h2>' +
+        '<div class="compare-result-meta"><span class="stars">' + stars + '</span> Patient rating <strong>' + rating + '</strong> / 5 · Indicative amounts ($)</div>' +
+      '</div>' +
+      '<div class="compare-chart-panel">' +
+        '<div class="cost-title" style="margin-bottom:1rem;">Price comparison by country</div>' +
+        '<div class="cost-bars" id="costCompare">' + barsHtml + '</div>' +
+      '</div>' +
+      '<div class="compare-table-wrap">' +
+        '<table class="compare-table">' +
+          '<thead><tr><th>Country</th><th>Indicative price</th><th>vs India</th></tr></thead>' +
+          '<tbody>' + tableRows + '</tbody>' +
+        '</table>' +
+      '</div>' +
+      '<div class="pkg-table-wrap">' +
+        '<h3>India <em>package options</em></h3>' +
+        '<p class="pkg-sub">Representative all-inclusive style packages at partner hospitals — final quotes after medical review.</p>' +
+        '<table class="pkg-table">' +
+          '<thead><tr><th>Package</th><th>From ($)</th></tr></thead>' +
+          '<tbody>' + pkgRows + '</tbody>' +
+        '</table>' +
+      '</div>' +
+      '<div class="compare-cta-row">' +
+        '<button type="button" class="btn-primary" onclick="openConsultModal(\'' + escapeAttr(currentTreatmentName) + '\')">Book Free Consultation</button>' +
+        '<a class="btn-outline-dark" href="https://wa.me/919999999999?text=' + encodeURIComponent('Hi BharatHeals, I want to chat with your AI agent about ' + currentTreatmentName + ' costs.') + '" target="_blank" rel="noopener">Chat with AI Agent</a>' +
+      '</div>';
+
+    var chart = document.getElementById('costCompare');
+    if (chart) {
+      requestAnimationFrame(function () {
+        chart.querySelectorAll('.cost-bar-fill').forEach(function (bar) {
+          var w = bar.getAttribute('data-width');
+          bar.style.width = '0';
+          requestAnimationFrame(function () { bar.style.width = w + '%'; });
+        });
+      });
+    }
+  }
+
+  function escapeHtml(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  }
+  function escapeAttr(s) {
+    return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  }
+
+  function loadCompare(treatmentId) {
+    var el = document.getElementById('compareResult');
+    el.innerHTML = '<div class="compare-loading">Loading comparison…</div>';
+    fetch('/api/compare?treatment=' + encodeURIComponent(treatmentId))
+      .then(function (r) { return r.json().catch(function () { return {}; }); })
+      .then(function (body) {
+        var norm = normalizeApiPayload(body, treatmentId);
+        if (norm) {
+          var fb = FALLBACK[treatmentId];
+          if (!norm.packages || !norm.packages.length) norm.packages = fb ? fb.packages : [];
+          render(norm);
+          return;
+        }
+        var fb = FALLBACK[treatmentId];
+        if (fb) {
+          render(fb);
+        } else {
+          el.innerHTML = '<div class="compare-empty">No data for this treatment.</div>';
+        }
+      })
+      .catch(function () {
+        var fb = FALLBACK[treatmentId];
+        if (fb) {
+          render(fb);
+        } else {
+          el.innerHTML = '<div class="compare-empty">Could not load data.</div>';
+          showToast('Network error.', 'error');
+        }
+      });
+  }
+
+  loadCompare(currentTreatmentId);
+})();
+</script>
+<script src="/js/ai-widget.js?v=20260405b"></script>
+</body>
+</html>

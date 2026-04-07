@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Assistant — BharatHeals</title>
+<meta name="description" content="Chat with BharatHeals's AI medical tourism assistant to explore treatments, compare costs, and build a personalised plan.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css?v=20260405b">
+<style>
+  .chat-page { min-height: 100vh; padding-top: 72px; display: flex; flex-direction: column; background: linear-gradient(180deg, var(--ivory) 0%, var(--cream) 100%); }
+  .chat-shell { flex: 1; display: flex; max-width: 1400px; margin: 0 auto; width: 100%; position: relative; }
+  .chat-sidebar-toggle {
+    display: none; position: fixed; bottom: 88px; left: 16px; z-index: 50;
+    background: var(--navy); color: var(--gold); border: 1px solid var(--gold);
+    padding: 0.55rem 1rem; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+    border-radius: 2px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    box-shadow: 0 8px 24px rgba(11,22,40,0.25);
+  }
+  .chat-sidebar {
+    width: 300px; flex-shrink: 0; background: var(--navy);
+    border-right: 1px solid rgba(201,168,76,0.25);
+    display: flex; flex-direction: column; padding: 1.5rem 1.25rem;
+    transition: transform 0.35s ease;
+  }
+  .chat-sidebar-head {
+    font-family: 'Playfair Display', serif; color: var(--gold-light);
+    font-size: 1.15rem; margin-bottom: 1.25rem; line-height: 1.35;
+  }
+  .chat-quick-btn {
+    display: block; width: 100%; text-align: left;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(201,168,76,0.2);
+    color: rgba(255,255,255,0.92); padding: 0.75rem 1rem; margin-bottom: 0.5rem;
+    border-radius: 2px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .chat-quick-btn:hover { background: rgba(201,168,76,0.15); border-color: var(--gold); color: #fff; }
+  .chat-main { flex: 1; display: flex; flex-direction: column; min-width: 0; background: var(--ivory); }
+  .chat-header-bar {
+    padding: 1rem 1.5rem; border-bottom: 1px solid rgba(11,22,40,0.08);
+    background: rgba(247,243,236,0.95); backdrop-filter: blur(8px);
+  }
+  .chat-header-bar h1 {
+    font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--navy);
+    font-weight: 400;
+  }
+  .chat-header-bar p { font-size: 0.75rem; color: var(--text-mid); margin-top: 0.25rem; }
+  .chat-messages {
+    flex: 1; overflow-y: auto; padding: 1.25rem 1.5rem 1rem;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .chat-msg { max-width: 85%; animation: chatFade 0.35s ease; }
+  @keyframes chatFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .chat-msg.bot { align-self: flex-start; }
+  .chat-msg.user { align-self: flex-end; }
+  .chat-bubble {
+    padding: 1rem 1.15rem; border-radius: 12px; font-size: 0.88rem; line-height: 1.55;
+    box-shadow: 0 4px 20px rgba(11,22,40,0.06);
+  }
+  .chat-msg.bot .chat-bubble {
+    background: #fff; border: 1px solid rgba(11,22,40,0.06);
+    border-bottom-left-radius: 4px; color: var(--text-dark);
+  }
+  .chat-msg.user .chat-bubble {
+    background: var(--navy); color: #fff;
+    border-bottom-right-radius: 4px;
+  }
+  .chat-bubble strong { color: var(--navy); font-weight: 600; }
+  .chat-msg.user .chat-bubble strong { color: var(--gold-light); }
+  .chat-bubble ul { margin: 0.5rem 0 0 1.1rem; }
+  .chat-bubble li { margin: 0.25rem 0; }
+  .chat-plan-actions {
+    display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.85rem;
+  }
+  .chat-plan-actions button { font-size: 0.72rem; padding: 0.55rem 1rem; }
+  .chat-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; padding: 0 1.5rem 0.75rem; }
+  .chat-chip {
+    background: #fff; border: 1px solid rgba(201,168,76,0.45); color: var(--navy);
+    padding: 0.45rem 0.85rem; border-radius: 100px; font-size: 0.75rem; cursor: pointer;
+    transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+  }
+  .chat-chip:hover { background: var(--gold); border-color: var(--gold); }
+  .chat-input-row {
+    padding: 1rem 1.5rem 1.5rem; border-top: 1px solid rgba(11,22,40,0.08);
+    background: var(--ivory); display: flex; gap: 0.65rem; align-items: flex-end;
+  }
+  .chat-input-row textarea {
+    flex: 1; min-height: 48px; max-height: 120px; resize: none;
+    border: 1px solid rgba(11,22,40,0.12); border-radius: 8px; padding: 0.85rem 1rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+  }
+  .chat-input-row textarea:focus { outline: none; border-color: var(--gold); }
+  .chat-send {
+    background: var(--gold); color: var(--navy); border: none;
+    padding: 0.85rem 1.25rem; border-radius: 8px; cursor: pointer;
+    font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    font-size: 0.72rem; font-family: 'DM Sans', sans-serif;
+  }
+  .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
+  .chat-typing {
+    align-self: flex-start; display: none; padding: 0.5rem 0;
+  }
+  .chat-typing.active { display: flex; align-items: center; gap: 6px; }
+  .chat-typing span {
+    width: 8px; height: 8px; background: var(--gold); border-radius: 50%;
+    animation: chatBounce 1.2s ease infinite;
+  }
+  .chat-typing span:nth-child(2) { animation-delay: 0.15s; }
+  .chat-typing span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes chatBounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+    40% { transform: translateY(-6px); opacity: 1; }
+  }
+  .chat-sidebar-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(11,22,40,0.45); z-index: 48;
+  }
+  .chat-sidebar-overlay.active { display: block; }
+  @media (max-width: 900px) {
+    .chat-sidebar-toggle { display: block; }
+    .chat-sidebar {
+      position: fixed; top: 72px; left: 0; bottom: 0; z-index: 49;
+      transform: translateX(-100%); box-shadow: 8px 0 32px rgba(0,0,0,0.2);
+    }
+    .chat-sidebar.open { transform: translateX(0); }
+  }
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="/" class="nav-logo">Bharat<span>Heals</span></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about.html">About Us</a></li>
+    <li><a href="/#specialties">Treatments</a></li>
+    <li><a href="/compare-cost.html">Compare Costs</a></li>
+    <li><a href="/chat.html">AI Agent</a></li>
+    <li><a href="/plan-journey.html">Plan Journey</a></li>
+    <li><a href="/doctors.html">Doctors</a></li>
+    <li><a href="/hospitals.html">Hospitals</a></li>
+    <li><a href="/team.html">Team</a></li>
+    <li><a href="javascript:void(0)" class="nav-cta" onclick="openConsultModal()">Free Consultation</a></li>
+    <li><a href="/login.html">Account</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMobile()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-menu" onclick="toggleMobile()">&times;</button>
+  <a href="/" onclick="toggleMobile()">Home</a>
+  <a href="/about.html" onclick="toggleMobile()">About Us</a>
+  <a href="/#specialties" onclick="toggleMobile()">Treatments</a>
+  <a href="/compare-cost.html" onclick="toggleMobile()">Compare Costs</a>
+  <a href="/chat.html" onclick="toggleMobile()">AI Agent</a>
+  <a href="/plan-journey.html" onclick="toggleMobile()">Plan Journey</a>
+  <a href="/doctors.html" onclick="toggleMobile()">Doctors</a>
+  <a href="/hospitals.html" onclick="toggleMobile()">Hospitals</a>
+  <a href="/team.html" onclick="toggleMobile()">Team</a>
+  <a href="javascript:void(0)" onclick="toggleMobile(); openConsultModal();" style="color:var(--gold);">Free Consultation</a>
+  <a href="/login.html" onclick="toggleMobile()">Account</a>
+</div>
+
+<button type="button" class="chat-sidebar-toggle" id="sidebarToggle" aria-label="Open topics">Topics</button>
+<div class="chat-sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="chat-page">
+  <div class="chat-shell">
+    <aside class="chat-sidebar" id="chatSidebar">
+      <div class="chat-sidebar-head">How can we help you today?</div>
+      <button type="button" class="chat-quick-btn" data-msg="I need a hair transplant">I need a hair transplant</button>
+      <button type="button" class="chat-quick-btn" data-msg="I want dental treatment">I want dental treatment</button>
+      <button type="button" class="chat-quick-btn" data-msg="I'm considering cosmetic surgery">I'm considering cosmetic surgery</button>
+      <button type="button" class="chat-quick-btn" data-msg="I need fertility / IVF help">I need fertility / IVF help</button>
+      <button type="button" class="chat-quick-btn" data-msg="Tell me about surrogacy law in India">Surrogacy law in India</button>
+    </aside>
+    <div class="chat-main">
+      <div class="chat-header-bar">
+        <h1>BharatHeals AI Assistant</h1>
+        <p>Explore treatments, compare savings, and receive a draft plan — then book a human consultant anytime.</p>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-typing" id="chatTyping" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="chat-chips" id="chatChips"></div>
+      <div class="chat-input-row">
+        <textarea id="chatInput" rows="1" placeholder="Type your message…" aria-label="Message"></textarea>
+        <button type="button" class="chat-send" id="chatSend">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="consultModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Book a <em>Free Consultation</em></h2>
+      <p>Our expert medical consultant will guide you through everything — treatment, costs in your currency, hospital, travel.</p>
+      <button class="modal-close" onclick="closeConsultModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="consultForm">
+        <input type="hidden" id="consConsultant" name="consultant" value="">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consName">Full Name *</label>
+            <input type="text" id="consName" name="name" required placeholder="John Smith">
+          </div>
+          <div class="form-group">
+            <label for="consEmail">Email *</label>
+            <input type="email" id="consEmail" name="email" required placeholder="john@example.com">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consPhone">Phone / WhatsApp</label>
+            <input type="tel" id="consPhone" name="phone" placeholder="+1 555 000 0000">
+          </div>
+          <div class="form-group">
+            <label for="consCountry">City, Country</label>
+            <input type="text" id="consCountry" name="country" placeholder="City, country">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="consTreatment">Treatment / Specialty</label>
+            <select id="consTreatment" name="treatment">
+              <option value="">Select a treatment...</option>
+              <option value="Hair Transplant">Hair Transplant</option>
+              <option value="Dental Treatment">Dental Treatment</option>
+              <option value="Cosmetic Surgery">Cosmetic Surgery</option>
+              <option value="Fertility & IVF">Fertility & IVF</option>
+              <option value="Bariatric Surgery">Bariatric Surgery</option>
+              <option value="LASIK & Eye Care">LASIK & Eye Care</option>
+              <option value="Spine & Neuro">Spine & Neuro</option>
+              <option value="Cancer Treatment">Cancer Treatment</option>
+              <option value="Organ Transplant">Organ Transplant</option>
+              <option value="Surrogacy">Surrogacy</option>
+              <option value="Ayurveda & Wellness">Ayurveda & Wellness</option>
+              <option value="Executive Health Check">Executive Health Check</option>
+              <option value="Second Opinion">Second Opinion</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consDate">Preferred Consultation Date</label>
+            <input type="date" id="consDate" name="preferred_date">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="consMessage">Tell us about your condition</label>
+            <textarea id="consMessage" name="message" placeholder="Brief description of your medical needs, any diagnosis or reports you have..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="modal-submit" id="consultSubmitBtn">Book My Free Consultation &rarr;</button>
+      </form>
+      <div class="form-success" id="consultSuccess">
+        <div class="check-circle">&#10003;</div>
+        <h3>Consultation Booked!</h3>
+        <p>Our medical consultant will contact you within 24 hours via your preferred method to discuss treatment options, hospital selection, and costs in your preferred currency.</p>
+      </div>
+      <p class="modal-note">&#128274; 100% confidential. No spam. Our consultant will reach out within 24 hours.</p>
+    </div>
+  </div>
+</div>
+
+<div class="whatsapp-widget">
+  <div class="whatsapp-tooltip">Chat with us on WhatsApp</div>
+  <a href="https://wa.me/919999999999?text=Hi%20BharatHeals%2C%20I%27m%20interested%20in%20medical%20treatment%20in%20India." target="_blank" rel="noopener" class="whatsapp-btn" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.128 6.744 3.046 9.378L1.054 31.29l6.118-1.958A15.92 15.92 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.302 22.602c-.39 1.1-1.932 2.014-3.164 2.28-.844.18-1.946.324-5.656-1.216-4.748-1.968-7.804-6.792-8.038-7.108-.226-.316-1.878-2.502-1.878-4.772 0-2.27 1.188-3.386 1.61-3.85.39-.428 1.024-.624 1.63-.624.196 0 .374.01.532.018.468.02.702.048 1.012.784.386.922 1.328 3.236 1.444 3.47.118.234.236.55.078.866-.15.324-.282.526-.516.81-.234.284-.458.502-.692.77-.216.246-.458.51-.196.998.262.484 1.166 1.922 2.502 3.114 1.72 1.534 3.168 2.01 3.618 2.234.352.176.77.148 1.044-.136.352-.362.786-.964 1.228-1.558.314-.424.712-.476 1.098-.314.39.156 2.468 1.164 2.892 1.376.424.214.706.318.81.498.104.18.104 1.044-.286 2.144z"/></svg>
+  </a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<script src="/js/app.js?v=20260405b"></script>
+<script>
+(function () {
+  'use strict';
+
+  var sessionId = null;
+  var chatContext = { step: null, treatment: null, timeline: null, budget: null };
+  var flowPhase = 'treatment';
+  var lastPlan = null;
+
+  var treatmentMap = {
+    'I need a hair transplant': 'Hair Transplant Surgery',
+    'I want dental treatment': 'Dental Implants',
+    'I\'m considering cosmetic surgery': 'Cosmetic Surgery',
+    'I need fertility / IVF help': 'IVF (In-Vitro Fertilization)',
+    'Tell me about surrogacy law in India': 'Surrogacy'
+  };
+
+  function inferTreatment(text) {
+    var t = text.toLowerCase();
+    if (t.indexOf('hair') !== -1 || t.indexOf('bald') !== -1 || t.indexOf('transplant') !== -1) return 'Hair Transplant Surgery';
+    if (t.indexOf('dental') !== -1 || t.indexOf('teeth') !== -1 || t.indexOf('implant') !== -1 || t.indexOf('veneer') !== -1) return 'Dental Implants';
+    if (t.indexOf('cosmetic') !== -1 || t.indexOf('plastic') !== -1 || t.indexOf('rhinoplasty') !== -1 || t.indexOf('lipo') !== -1) return 'Cosmetic Surgery';
+    if (t.indexOf('ivf') !== -1 || t.indexOf('fertility') !== -1 || t.indexOf('conceive') !== -1) return 'IVF (In-Vitro Fertilization)';
+    if (t.indexOf('surrogacy') !== -1 || t.indexOf('surrogate') !== -1) return 'Surrogacy';
+    return null;
+  }
+
+  var messagesEl = document.getElementById('chatMessages');
+  var chipsEl = document.getElementById('chatChips');
+  var inputEl = document.getElementById('chatInput');
+  var sendBtn = document.getElementById('chatSend');
+  var typingEl = document.getElementById('chatTyping');
+
+  function formatMarkdown(text) {
+    if (!text) return '';
+    var esc = text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    var lines = esc.split('\n');
+    var html = '';
+    var inList = false;
+    lines.forEach(function (line) {
+      var trimmed = line.trim();
+      if (trimmed.indexOf('• ') === 0 || trimmed.indexOf('- ') === 0) {
+        if (!inList) { html += '<ul>'; inList = true; }
+        html += '<li>' + trimmed.replace(/^[•\-]\s*/, '') + '</li>';
+      } else {
+        if (inList) { html += '</ul>'; inList = false; }
+        if (trimmed) html += '<p>' + trimmed + '</p>';
+        else html += '<br>';
+      }
+    });
+    if (inList) html += '</ul>';
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    return html;
+  }
+
+  function appendMessage(role, html, extraNodes) {
+    var wrap = document.createElement('div');
+    wrap.className = 'chat-msg ' + (role === 'user' ? 'user' : 'bot');
+    var bubble = document.createElement('div');
+    bubble.className = 'chat-bubble';
+    bubble.innerHTML = html;
+    wrap.appendChild(bubble);
+    if (extraNodes && extraNodes.length) {
+      extraNodes.forEach(function (n) { wrap.appendChild(n); });
+    }
+    messagesEl.appendChild(wrap);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function setChips(suggestions) {
+    chipsEl.innerHTML = '';
+    if (!suggestions || !suggestions.length) return;
+    suggestions.forEach(function (s) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chat-chip';
+      b.textContent = s;
+      b.addEventListener('click', function () { onChipOrSend(s); });
+      chipsEl.appendChild(b);
+    });
+  }
+
+  function setTyping(on) {
+    typingEl.classList.toggle('active', on);
+    typingEl.setAttribute('aria-hidden', on ? 'false' : 'true');
+    sendBtn.disabled = on;
+    if (on) messagesEl.appendChild(typingEl);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function buildPlanActionBar(plan) {
+    var bar = document.createElement('div');
+    bar.className = 'chat-plan-actions';
+    var pdfBtn = document.createElement('button');
+    pdfBtn.type = 'button';
+    pdfBtn.className = 'btn-primary';
+    pdfBtn.textContent = 'Download PDF Plan';
+    pdfBtn.addEventListener('click', function () { downloadChatPdf(plan); });
+    var bookBtn = document.createElement('button');
+    bookBtn.type = 'button';
+    bookBtn.className = 'btn-outline-dark';
+    bookBtn.textContent = 'Book Consultant';
+    bookBtn.addEventListener('click', function () {
+      var t = mapTreatmentToSelect(plan.treatment);
+      openConsultModalWrapped(t, plan.consultant || '');
+    });
+    bar.appendChild(pdfBtn);
+    bar.appendChild(bookBtn);
+    return bar;
+  }
+
+  function mapTreatmentToSelect(name) {
+    if (!name) return '';
+    var n = name.toLowerCase();
+    if (n.indexOf('hair') !== -1) return 'Hair Transplant';
+    if (n.indexOf('dental') !== -1) return 'Dental Treatment';
+    if (n.indexOf('cosmetic') !== -1) return 'Other';
+    if (n.indexOf('ivf') !== -1 || n.indexOf('fertilization') !== -1) return 'Fertility & IVF';
+    if (n.indexOf('surrogacy') !== -1) return 'Fertility & IVF';
+    return 'Other';
+  }
+
+  function downloadChatPdf(plan) {
+    if (!window.jspdf || !plan) {
+      showToast('PDF library not ready.', 'error');
+      return;
+    }
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    var y = 18;
+    var pageW = doc.internal.pageSize.getWidth();
+    var margin = 18;
+    doc.setFillColor(11, 22, 40);
+    doc.rect(0, 0, pageW, 28, 'F');
+    doc.setTextColor(232, 201, 122);
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text('BharatHeals', margin, 18);
+    doc.setFontSize(9);
+    doc.setTextColor(255, 255, 255);
+    doc.text('Personalised Treatment Plan (Indicative)', margin, 24);
+    doc.setTextColor(30, 30, 50);
+    y = 36;
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Treatment', margin, y);
+    y += 6;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.text(String(plan.treatment || ''), margin, y);
+    y += 10;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Estimated costs', margin, y);
+    y += 6;
+    doc.setFont('helvetica', 'normal');
+    doc.text('India (indicative): ' + String(plan.estimatedCost || ''), margin, y);
+    y += 5;
+    doc.text('Reference market: ' + String(plan.auCost || ''), margin, y);
+    y += 5;
+    doc.text('Approx. savings: ' + String(plan.savings || ''), margin, y);
+    y += 10;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Care team', margin, y);
+    y += 6;
+    doc.setFont('helvetica', 'normal');
+    doc.text('Hospital: ' + String(plan.hospital || ''), margin, y);
+    y += 5;
+    doc.text('Suggested specialist: ' + String(plan.doctor || ''), margin, y);
+    y += 5;
+    doc.text('Stay: ' + String(plan.duration || plan.stay || '') + '  |  Recovery: ' + String(plan.recovery || ''), margin, y);
+    y += 10;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Your journey (step-by-step)', margin, y);
+    y += 6;
+    doc.setFont('helvetica', 'normal');
+    var steps = plan.steps || [];
+    steps.forEach(function (st) {
+      var line = (st.day ? st.day + ': ' : '') + (st.task || '') + (st.detail ? ' — ' + st.detail : '');
+      var split = doc.splitTextToSize(line, pageW - margin * 2);
+      if (y > 270) { doc.addPage(); y = 20; }
+      doc.text(split, margin, y);
+      y += split.length * 5 + 2;
+    });
+    y += 6;
+    if (y > 240) { doc.addPage(); y = 20; }
+    doc.setFont('helvetica', 'bold');
+    doc.text('Consultant recommendation', margin, y);
+    y += 6;
+    doc.setFont('helvetica', 'normal');
+    doc.text(String(plan.consultant || 'Our medical tourism team'), margin, y);
+    y += 14;
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 120);
+    var disc = doc.splitTextToSize(
+      'Disclaimer: This document is for informational planning only and does not constitute medical advice. Costs, hospitals, and doctors are indicative. Always seek advice from a licensed clinician before making health decisions.',
+      pageW - margin * 2
+    );
+    doc.text(disc, margin, y);
+    doc.save('BharatHeals-treatment-plan.pdf');
+    showToast('PDF downloaded.', 'success');
+  }
+
+  function advanceFlowAfterSend(userText) {
+    if (flowPhase === 'treatment') {
+      var picked = treatmentMap[userText] || inferTreatment(userText);
+      if (picked) {
+        chatContext.treatment = picked;
+        flowPhase = 'details';
+        chatContext.step = 'details';
+      }
+      return;
+    }
+    if (flowPhase === 'details') {
+      flowPhase = 'timeline';
+      chatContext.step = 'timeline';
+      return;
+    }
+    if (flowPhase === 'timeline') {
+      chatContext.timeline = userText;
+      flowPhase = 'budget';
+      chatContext.step = 'budget';
+      return;
+    }
+    if (flowPhase === 'budget') {
+      chatContext.budget = userText;
+      flowPhase = 'done';
+      return;
+    }
+  }
+
+  function apiContextForRequest(userMessage) {
+    if (flowPhase === 'treatment') return {};
+    if (flowPhase === 'details') return { step: 'details', treatment: chatContext.treatment };
+    if (flowPhase === 'timeline') {
+      return { step: 'timeline', treatment: chatContext.treatment, timeline: chatContext.timeline || userMessage };
+    }
+    if (flowPhase === 'budget') {
+      return { step: 'budget', treatment: chatContext.treatment, timeline: chatContext.timeline, budget: userMessage || chatContext.budget };
+    }
+    return { step: 'budget', treatment: chatContext.treatment, timeline: chatContext.timeline, budget: chatContext.budget };
+  }
+
+  function handleSpecialChips(text) {
+    if (text === 'Download PDF Plan' && lastPlan) {
+      downloadChatPdf(lastPlan);
+      return true;
+    }
+    if (text.indexOf('Book Consultant:') === 0) {
+      var name = text.replace(/^Book Consultant:\s*/, '').trim();
+      openConsultModalWrapped(mapTreatmentToSelect(lastPlan && lastPlan.treatment), name);
+      return true;
+    }
+    if (text === 'Compare costs with other countries') {
+      window.location.href = '/compare-cost.html';
+      return true;
+    }
+    if (text === 'Start over') {
+      sessionId = null;
+      chatContext = { step: null, treatment: null, timeline: null, budget: null };
+      flowPhase = 'treatment';
+      lastPlan = null;
+      messagesEl.innerHTML = '';
+      chipsEl.innerHTML = '';
+      showWelcome();
+      showToast('Started a new conversation.', 'success');
+      return true;
+    }
+    return false;
+  }
+
+  function onChipOrSend(text) {
+    var t = (text || '').trim();
+    if (!t) return;
+    if (handleSpecialChips(t)) return;
+    appendMessage('user', formatMarkdown(t));
+    sendToApi(t);
+  }
+
+  function sendToApi(userMessage) {
+    var ctxPayload = apiContextForRequest(userMessage);
+    setTyping(true);
+
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        session_id: sessionId,
+        message: userMessage,
+        context: ctxPayload
+      })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        setTyping(false);
+        if (!data.success) {
+          showToast(data.error || 'Chat failed.', 'error');
+          return;
+        }
+        sessionId = data.session_id;
+        var replyHtml = formatMarkdown(data.reply || '');
+        var extras = [];
+        if (data.plan) {
+          lastPlan = data.plan;
+          extras.push(buildPlanActionBar(data.plan));
+        }
+        appendMessage('bot', replyHtml, extras);
+        setChips(data.suggestions || []);
+        advanceFlowAfterSend(userMessage);
+      })
+      .catch(function () {
+        setTyping(false);
+        showToast('Network error. Try again.', 'error');
+      });
+  }
+
+  function showWelcome() {
+    var welcome = 'Welcome to BharatHeals! \uD83C\uDFE5 I\'m your AI medical tourism assistant. I can help you explore treatments, compare costs, and create a personalised treatment plan. What treatment are you interested in?';
+    appendMessage('bot', formatMarkdown(welcome));
+  }
+
+  sendBtn.addEventListener('click', function () {
+    var t = inputEl.value.trim();
+    if (!t) return;
+    inputEl.value = '';
+    if (handleSpecialChips(t)) return;
+    appendMessage('user', formatMarkdown(t));
+    sendToApi(t);
+  });
+
+  inputEl.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendBtn.click();
+    }
+  });
+
+  document.querySelectorAll('.chat-quick-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var msg = btn.getAttribute('data-msg');
+      document.getElementById('chatSidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('active');
+      onChipOrSend(msg);
+    });
+  });
+
+  var origOpen = window.openConsultModal;
+  window.openConsultModalWrapped = function (treatment, consultantName) {
+    var h = document.getElementById('consConsultant');
+    if (h) h.value = consultantName || '';
+    origOpen(treatment);
+  };
+  window.openConsultModal = function (treatment) {
+    var h = document.getElementById('consConsultant');
+    if (h && arguments.length < 2) h.value = '';
+    origOpen(treatment);
+  };
+
+  document.getElementById('sidebarToggle').addEventListener('click', function () {
+    document.getElementById('chatSidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('active');
+  });
+  document.getElementById('sidebarOverlay').addEventListener('click', function () {
+    document.getElementById('chatSidebar').classList.remove('open');
+    this.classList.remove('active');
+  });
+
+  showWelcome();
+})();
+</script>
+<script src="/js/ai-widget.js?v=20260405b"></script>
+</body>
+</html>

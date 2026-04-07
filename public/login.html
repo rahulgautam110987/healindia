@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — BharatHeals | Medical Tourism Worldwide</title>
+<meta name="description" content="Create your BharatHeals account or sign in to manage consultations, quotes, and your medical journey to India.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css?v=20260405b">
+<style>
+  .auth-page {
+    min-height: 100vh;
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+  }
+  .auth-page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 80% 20%, rgba(201,168,76,0.12) 0%, transparent 55%),
+      linear-gradient(165deg, #0B1628 0%, #112240 45%, #0B2040 100%);
+    pointer-events: none;
+  }
+  .auth-page-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 460px;
+    margin: 0 auto;
+    padding: 7rem 1.25rem 4rem;
+  }
+  .auth-card {
+    background: rgba(255,255,255,0.98);
+    border-radius: 8px;
+    border: 1px solid rgba(201,168,76,0.25);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+  .auth-card-header {
+    text-align: center;
+    padding: 2rem 1.75rem 1.25rem;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .auth-card-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.75rem;
+    color: var(--navy);
+    margin-bottom: 0.35rem;
+  }
+  .auth-card-header h1 em {
+    color: var(--gold);
+    font-style: italic;
+  }
+  .auth-card-header p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--text-mid);
+  }
+  .auth-tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  .auth-tab {
+    flex: 1;
+    padding: 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: none;
+    background: rgba(247,243,236,0.6);
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: background 0.25s, color 0.25s;
+  }
+  .auth-tab:hover { color: var(--navy); }
+  .auth-tab.active {
+    background: #fff;
+    color: var(--navy);
+    box-shadow: inset 0 -2px 0 var(--gold);
+  }
+  .auth-panel { display: none; padding: 1.75rem 1.75rem 2rem; }
+  .auth-panel.active { display: block; }
+  .auth-panel .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  @media (max-width: 520px) {
+    .auth-panel .form-row { grid-template-columns: 1fr; }
+  }
+  .auth-foot {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.55);
+  }
+  .auth-foot a { color: var(--gold-light); text-decoration: none; }
+  .auth-foot a:hover { text-decoration: underline; }
+</style>
+</head>
+<body class="auth-page">
+<script>
+  try {
+    var u = JSON.parse(localStorage.getItem('bharatheals_user'));
+    if (u && u.name && localStorage.getItem('bharatheals_token')) {
+      window.location.replace('/');
+    }
+  } catch(e) {}
+</script>
+
+<nav id="mainNav">
+  <a href="/" class="nav-logo">Bharat<span>Heals</span></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about.html">About Us</a></li>
+    <li><a href="/#specialties">Treatments</a></li>
+    <li><a href="/compare-cost.html">Compare Costs</a></li>
+    <li><a href="/chat.html">AI Agent</a></li>
+    <li><a href="/plan-journey.html">Plan Journey</a></li>
+    <li><a href="/doctors.html">Doctors</a></li>
+    <li><a href="/hospitals.html">Hospitals</a></li>
+    <li><a href="/team.html">Team</a></li>
+    <li><a href="javascript:void(0)" class="nav-cta" onclick="openConsultModal()">Free Consultation</a></li>
+    <li><a href="/login.html">Account</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMobile()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-menu" onclick="toggleMobile()">&times;</button>
+  <a href="/" onclick="toggleMobile()">Home</a>
+  <a href="/about.html" onclick="toggleMobile()">About Us</a>
+  <a href="/#specialties" onclick="toggleMobile()">Treatments</a>
+  <a href="/compare-cost.html" onclick="toggleMobile()">Compare Costs</a>
+  <a href="/chat.html" onclick="toggleMobile()">AI Agent</a>
+  <a href="/plan-journey.html" onclick="toggleMobile()">Plan Journey</a>
+  <a href="/doctors.html" onclick="toggleMobile()">Doctors</a>
+  <a href="/hospitals.html" onclick="toggleMobile()">Hospitals</a>
+  <a href="/team.html" onclick="toggleMobile()">Team</a>
+  <a href="javascript:void(0)" onclick="toggleMobile(); openConsultModal();" style="color:var(--gold);">Free Consultation</a>
+  <a href="/login.html" onclick="toggleMobile()">Account</a>
+</div>
+
+<div class="auth-page-inner">
+  <div class="auth-card">
+    <div class="auth-card-header">
+      <h1>Welcome to <em>BharatHeals</em></h1>
+      <p>Sign in or create an account to save quotes and track your care journey.</p>
+    </div>
+    <div class="auth-tabs" role="tablist">
+      <button type="button" class="auth-tab active" id="tabLogin" role="tab" aria-selected="true" aria-controls="panelLogin" onclick="setAuthTab('login')">Login</button>
+      <button type="button" class="auth-tab" id="tabSignup" role="tab" aria-selected="false" aria-controls="panelSignup" onclick="setAuthTab('signup')">Sign Up</button>
+    </div>
+
+    <div class="auth-panel active" id="panelLogin" role="tabpanel" aria-labelledby="tabLogin">
+      <button type="button" id="googleLoginBtn" onclick="googleSignIn()" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px 16px;border-radius:10px;border:1.5px solid rgba(66,133,244,0.3);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;background:#fff;color:#333;transition:all 0.2s;margin-bottom:1rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Continue with Google
+      </button>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem;font-size:12px;color:#999;text-transform:uppercase;letter-spacing:0.08em;">
+        <span style="flex:1;height:1px;background:rgba(0,0,0,0.08);"></span><span>or sign in with email</span><span style="flex:1;height:1px;background:rgba(0,0,0,0.08);"></span>
+      </div>
+      <form id="loginForm" novalidate>
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" name="email" required autocomplete="email" placeholder="you@example.com">
+        </div>
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" name="password" required autocomplete="current-password" placeholder="Your password">
+        </div>
+        <button type="submit" class="modal-submit" id="loginSubmit">Sign In &rarr;</button>
+      </form>
+    </div>
+
+    <div class="auth-panel" id="panelSignup" role="tabpanel" aria-labelledby="tabSignup" hidden>
+      <button type="button" onclick="googleSignIn()" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px 16px;border-radius:10px;border:1.5px solid rgba(66,133,244,0.3);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;background:#fff;color:#333;transition:all 0.2s;margin-bottom:1rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Sign up with Google
+      </button>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem;font-size:12px;color:#999;text-transform:uppercase;letter-spacing:0.08em;">
+        <span style="flex:1;height:1px;background:rgba(0,0,0,0.08);"></span><span>or create account with email</span><span style="flex:1;height:1px;background:rgba(0,0,0,0.08);"></span>
+      </div>
+      <form id="signupForm" novalidate>
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label for="signupName">Full name</label>
+          <input type="text" id="signupName" name="name" required autocomplete="name" placeholder="Jane Smith">
+        </div>
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label for="signupEmail">Email</label>
+          <input type="email" id="signupEmail" name="email" required autocomplete="email" placeholder="you@example.com">
+        </div>
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label for="signupPassword">Password</label>
+          <input type="password" id="signupPassword" name="password" required autocomplete="new-password" placeholder="At least 6 characters" minlength="6">
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label for="signupPhone">Phone <span style="text-transform:none;letter-spacing:0;color:var(--text-mid);">(optional)</span></label>
+            <input type="tel" id="signupPhone" name="phone" autocomplete="tel" placeholder="+1 555 000 0000">
+          </div>
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label for="signupCountry">Country</label>
+            <select id="signupCountry" name="country" required>
+              <option value="" selected disabled>Select country</option>
+              <option value="Saudi Arabia">Saudi Arabia</option>
+              <option value="United Arab Emirates">United Arab Emirates</option>
+              <option value="Kuwait">Kuwait</option>
+              <option value="Oman">Oman</option>
+              <option value="Qatar">Qatar</option>
+              <option value="Bahrain">Bahrain</option>
+              <option value="United States">United States</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="Canada">Canada</option>
+              <option value="Australia">Australia</option>
+              <option value="New Zealand">New Zealand</option>
+              <option value="Singapore">Singapore</option>
+              <option value="Nigeria">Nigeria</option>
+              <option value="Kenya">Kenya</option>
+              <option value="Bangladesh">Bangladesh</option>
+              <option value="India">India</option>
+              <option value="Iraq">Iraq</option>
+              <option value="Afghanistan">Afghanistan</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="modal-submit" id="signupSubmit">Create Account &rarr;</button>
+      </form>
+    </div>
+  </div>
+  <p class="auth-foot">Need help? <a href="javascript:void(0)" onclick="openConsultModal()">Book a free consultation</a> &middot; <a href="/">Back to home</a></p>
+</div>
+
+<div class="modal-overlay" id="consultModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Book a <em>Free Consultation</em></h2>
+      <p>Our expert medical consultant will guide you through everything — treatment, costs in your currency, hospital, travel.</p>
+      <button class="modal-close" onclick="closeConsultModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="consultForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consName">Full Name *</label>
+            <input type="text" id="consName" name="name" required placeholder="John Smith">
+          </div>
+          <div class="form-group">
+            <label for="consEmail">Email *</label>
+            <input type="email" id="consEmail" name="email" required placeholder="john@example.com">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consPhone">Phone / WhatsApp</label>
+            <input type="tel" id="consPhone" name="phone" placeholder="+1 555 000 0000">
+          </div>
+          <div class="form-group">
+            <label for="consCountry">City, Country</label>
+            <input type="text" id="consCountry" name="country" placeholder="City, country">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="consTreatment">Treatment / Specialty</label>
+            <select id="consTreatment" name="treatment">
+              <option value="">Select a treatment...</option>
+              <option value="Hair Transplant">Hair Transplant</option>
+              <option value="Dental Treatment">Dental Treatment</option>
+              <option value="Cosmetic Surgery">Cosmetic Surgery</option>
+              <option value="Fertility & IVF">Fertility & IVF</option>
+              <option value="Bariatric Surgery">Bariatric Surgery</option>
+              <option value="LASIK & Eye Care">LASIK & Eye Care</option>
+              <option value="Spine & Neuro">Spine & Neuro</option>
+              <option value="Cancer Treatment">Cancer Treatment</option>
+              <option value="Organ Transplant">Organ Transplant</option>
+              <option value="Surrogacy">Surrogacy</option>
+              <option value="Ayurveda & Wellness">Ayurveda & Wellness</option>
+              <option value="Executive Health Check">Executive Health Check</option>
+              <option value="Second Opinion">Second Opinion</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consDate">Preferred Consultation Date</label>
+            <input type="date" id="consDate" name="preferred_date">
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="consMessage">Tell us about your condition</label>
+            <textarea id="consMessage" name="message" placeholder="Brief description of your medical needs, any diagnosis or reports you have..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="modal-submit" id="consultSubmitBtn">Book My Free Consultation &rarr;</button>
+      </form>
+      <div class="form-success" id="consultSuccess">
+        <div class="check-circle">&#10003;</div>
+        <h3>Consultation Booked!</h3>
+        <p>Our medical consultant will contact you within 24 hours via your preferred method to discuss treatment options, hospital selection, and costs in your preferred currency.</p>
+      </div>
+      <p class="modal-note">&#128274; 100% confidential. No spam. Our consultant will reach out within 24 hours.</p>
+    </div>
+  </div>
+</div>
+
+<div class="whatsapp-widget">
+  <div class="whatsapp-tooltip">Chat with us on WhatsApp</div>
+  <a href="https://wa.me/919999999999?text=Hi%20BharatHeals%2C%20I%27m%20interested%20in%20medical%20treatment%20in%20India." target="_blank" rel="noopener" class="whatsapp-btn" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.128 6.744 3.046 9.378L1.054 31.29l6.118-1.958A15.92 15.92 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.302 22.602c-.39 1.1-1.932 2.014-3.164 2.28-.844.18-1.946.324-5.656-1.216-4.748-1.968-7.804-6.792-8.038-7.108-.226-.316-1.878-2.502-1.878-4.772 0-2.27 1.188-3.386 1.61-3.85.39-.428 1.024-.624 1.63-.624.196 0 .374.01.532.018.468.02.702.048 1.012.784.386.922 1.328 3.236 1.444 3.47.118.234.236.55.078.866-.15.324-.282.526-.516.81-.234.284-.458.502-.692.77-.216.246-.458.51-.196.998.262.484 1.166 1.922 2.502 3.114 1.72 1.534 3.168 2.01 3.618 2.234.352.176.77.148 1.044-.136.352-.362.786-.964 1.228-1.558.314-.424.712-.476 1.098-.314.39.156 2.468 1.164 2.892 1.376.424.214.706.318.81.498.104.18.104 1.044-.286 2.144z"/></svg>
+  </a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="/js/app.js?v=20260405b"></script>
+<script>
+(function () {
+  'use strict';
+
+  var GOOGLE_CLIENT_ID = '101062784639-jb5vq7v931cudb3119of16q1cdrhiq2u.apps.googleusercontent.com';
+  var googleTokenClient = null;
+
+  function initGoogleTokenClient() {
+    if (typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2) {
+      setTimeout(initGoogleTokenClient, 300);
+      return;
+    }
+    googleTokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: GOOGLE_CLIENT_ID,
+      scope: 'openid email profile',
+      callback: handleGoogleTokenResponse
+    });
+  }
+  setTimeout(initGoogleTokenClient, 200);
+
+  window.googleSignIn = function() {
+    if (!googleTokenClient) {
+      showToast('Google SDK loading, please wait...', 'error');
+      initGoogleTokenClient();
+      return;
+    }
+    googleTokenClient.requestAccessToken();
+  };
+
+  function handleGoogleTokenResponse(tokenResponse) {
+    console.log('[BharatHeals] Google token response:', tokenResponse);
+    if (tokenResponse.error) {
+      console.error('[BharatHeals] Google error:', tokenResponse.error);
+      showToast('Google sign-in was cancelled or failed.', 'error');
+      return;
+    }
+    if (!tokenResponse.access_token) {
+      console.error('[BharatHeals] No access_token in response');
+      showToast('Google did not return a valid token.', 'error');
+      return;
+    }
+    showToast('Signing in with Google...', 'success');
+    fetch('/api/auth/social', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ provider: 'google', token: tokenResponse.access_token })
+    })
+    .then(function(r) {
+      console.log('[BharatHeals] Backend status:', r.status);
+      return r.json();
+    })
+    .then(function(result) {
+      console.log('[BharatHeals] Backend result:', result);
+      if (result.success && result.token) {
+        localStorage.setItem('bharatheals_token', result.token);
+        localStorage.setItem('bharatheals_user', JSON.stringify(result.user));
+        console.log('[BharatHeals] User stored, redirecting to /');
+        window.location.href = '/';
+      } else {
+        showToast(result.error || 'Google sign-in failed.', 'error');
+      }
+    })
+    .catch(function(e) { console.error('[BharatHeals] Auth error:', e); showToast('Connection error. Please try again.', 'error'); });
+  }
+
+  function setAuthTab(which) {
+    var loginTab = document.getElementById('tabLogin');
+    var signupTab = document.getElementById('tabSignup');
+    var loginPanel = document.getElementById('panelLogin');
+    var signupPanel = document.getElementById('panelSignup');
+    var isLogin = which === 'login';
+    loginTab.classList.toggle('active', isLogin);
+    signupTab.classList.toggle('active', !isLogin);
+    loginTab.setAttribute('aria-selected', isLogin);
+    signupTab.setAttribute('aria-selected', !isLogin);
+    loginPanel.classList.toggle('active', isLogin);
+    signupPanel.classList.toggle('active', !isLogin);
+    loginPanel.hidden = !isLogin;
+    signupPanel.hidden = isLogin;
+  }
+  window.setAuthTab = setAuthTab;
+
+  function handleAuthSuccess(result) {
+    if (result.token) localStorage.setItem('bharatheals_token', result.token);
+    if (result.user) localStorage.setItem('bharatheals_user', JSON.stringify(result.user));
+    localStorage.removeItem('bharatheals_welcomed');
+    window.location.href = '/';
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var btn = document.getElementById('loginSubmit');
+    var email = document.getElementById('loginEmail').value.trim();
+    var password = document.getElementById('loginPassword').value;
+    if (!email || !password) {
+      showToast('Please enter your email and password.', 'error');
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'Signing in…';
+    fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, password: password })
+    })
+      .then(function (r) {
+        return r.text().then(function (text) {
+          var j = {};
+          try { j = text ? JSON.parse(text) : {}; } catch (err) { j = {}; }
+          return { ok: r.ok, status: r.status, body: j };
+        });
+      })
+      .then(function (res) {
+        if (res.body && res.body.success && res.body.token) {
+          handleAuthSuccess(res.body);
+        } else {
+          var msg = (res.body && (res.body.error || res.body.message)) || 'Invalid email or password.';
+          showToast(msg, 'error');
+        }
+      })
+      .catch(function () {
+        showToast('Network error. Please try again.', 'error');
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.textContent = 'Sign In \u2192';
+      });
+  });
+
+  document.getElementById('signupForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var btn = document.getElementById('signupSubmit');
+    var name = document.getElementById('signupName').value.trim();
+    var email = document.getElementById('signupEmail').value.trim();
+    var password = document.getElementById('signupPassword').value;
+    var phone = document.getElementById('signupPhone').value.trim();
+    var country = document.getElementById('signupCountry').value;
+    if (!name || !email || !password || !country) {
+      showToast('Please complete all required fields, including country.', 'error');
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'Creating account…';
+    fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password,
+        phone: phone || '',
+        country: country
+      })
+    })
+      .then(function (r) {
+        return r.text().then(function (text) {
+          var j = {};
+          try { j = text ? JSON.parse(text) : {}; } catch (err) { j = {}; }
+          return { ok: r.ok, body: j };
+        });
+      })
+      .then(function (res) {
+        if (res.body && res.body.success && res.body.token) {
+          showToast('Account created successfully!', 'success');
+          handleAuthSuccess(res.body);
+        } else {
+          var msg = (res.body && (res.body.error || res.body.message)) || 'Could not create account.';
+          showToast(msg, 'error');
+        }
+      })
+      .catch(function () {
+        showToast('Network error. Please try again.', 'error');
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.textContent = 'Create Account \u2192';
+      });
+  });
+})();
+</script>
+<script src="/js/ai-widget.js?v=20260405b"></script>
+</body>
+</html>
