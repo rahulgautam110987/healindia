@@ -160,7 +160,9 @@ nav.scrolled { padding: 0.8rem 5%; background: rgba(11,22,40,0.97); }
   border-radius: 4px; padding: 1.5rem;
   position: relative; overflow: hidden;
   transition: all 0.3s;
+  opacity: 0; transform: translateY(30px);
 }
+.stat-card.visible { animation: fadeUp 0.8s ease forwards; }
 .stat-card:nth-child(2), .stat-card:nth-child(4) { margin-top: 1.5rem; }
 .stat-card:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); transform: translateY(-4px); }
 .stat-card::before {
@@ -1138,7 +1140,40 @@ footer {
    LUXURY ENHANCEMENTS — appended (concierge / premium brand)
    ============================================================ */
 
-/* Scroll-triggered animations — handled by GSAP ScrollTrigger in app.js */
+/* --- 1. Scroll-ready animations (@keyframes + in-view hooks) --- */
+@keyframes lux-fade-in-up {
+  from { opacity: 0; transform: translate3d(0, 2rem, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes lux-fade-in-left {
+  from { opacity: 0; transform: translate3d(-2rem, 0, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes lux-fade-in-right {
+  from { opacity: 0; transform: translate3d(2rem, 0, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes lux-scale-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+.lux-reveal-up,
+.lux-reveal-left,
+.lux-reveal-right,
+.lux-reveal-scale {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+.lux-reveal-up.lux-in-view { animation: lux-fade-in-up 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.lux-reveal-left.lux-in-view { animation: lux-fade-in-left 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.lux-reveal-right.lux-in-view { animation: lux-fade-in-right 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.lux-reveal-scale.lux-in-view { animation: lux-scale-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+@media (prefers-reduced-motion: reduce) {
+  .lux-reveal-up,
+  .lux-reveal-left,
+  .lux-reveal-right,
+  .lux-reveal-scale { opacity: 1; transform: none; animation: none !important; }
+}
 
 /* --- 2. Glassmorphism on premium cards --- */
 .specialty-card,
@@ -1166,7 +1201,7 @@ footer {
   box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset;
 }
 
-/* --- 3. Premium card micro-interactions (GSAP handles tilt; CSS handles glow) --- */
+/* --- 3. Premium card micro-interactions (tilt, glow, scale) --- */
 .specialties-grid,
 .doctors-grid,
 .hospital-grid,
@@ -1181,6 +1216,7 @@ footer {
 .gallery-card {
   transform-style: preserve-3d;
   transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1),
     border-color 0.45s ease,
     background 0.45s ease;
@@ -1190,10 +1226,21 @@ footer {
 .hospital-card:hover,
 .testimonial-card:hover,
 .gallery-card:hover {
+  transform: translateY(-10px) scale(1.015) rotateX(2.5deg) rotateY(-2deg);
   box-shadow:
     0 28px 56px rgba(11, 22, 40, 0.12),
     0 0 0 1px rgba(201, 168, 76, 0.18),
     0 0 48px rgba(201, 168, 76, 0.12);
+}
+.gallery-card:hover { transform: translateY(-8px) scale(1.012) rotateX(2deg) rotateY(1.5deg); }
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .specialty-card:hover,
+  .doctor-card:hover,
+  .hospital-card:hover,
+  .testimonial-card:hover,
+  .gallery-card:hover {
+    transform: none;
+  }
 }
 
 /* --- 4. Luxury gold shimmer between major sections --- */
@@ -1373,7 +1420,11 @@ nav.scrolled {
   letter-spacing: 0.12em;
 }
 
-/* --- 11. Hero — italic em gradient --- */
+/* --- 11. Hero — italic em gradient + floating stat cards --- */
+@keyframes lux-float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .hero h1 em {
     background: linear-gradient(115deg, var(--gold-light) 0%, var(--gold) 35%, #f0e0b8 55%, var(--gold) 75%, var(--gold-light) 100%);
@@ -1383,7 +1434,11 @@ nav.scrolled {
     -webkit-text-fill-color: transparent;
   }
 }
+.stat-card.visible {
+  animation: fadeUp 0.8s ease forwards, lux-float-soft 5s ease-in-out infinite 0.9s;
+}
 @media (prefers-reduced-motion: reduce) {
+  .stat-card.visible { animation: fadeUp 0.8s ease forwards; }
   .hero h1 em {
     background: none;
     -webkit-text-fill-color: unset;
@@ -1504,7 +1559,17 @@ footer > * {
   color: var(--navy);
 }
 
-/* page entrance now handled by GSAP timeline in app.js */
+/* --- 17. Smooth page load fade-in --- */
+@keyframes lux-page-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+body {
+  animation: lux-page-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none; }
+}
 
 /* --- 18. Premium scrollbar (WebKit + Firefox) --- */
 html {

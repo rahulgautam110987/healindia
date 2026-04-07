@@ -1,470 +1,86 @@
 /* ============================================================
-   BHARATHEALS — SHARED JAVASCRIPT  (v2026-04-07 · GSAP Premium)
+   BHARATHHEALS — SHARED JAVASCRIPT  (v2026-04-05)
    ============================================================ */
-console.log('[BharatHeals] app.js v2026-04-07-gsap loaded');
+console.log('[BharatHeals] app.js v2026-04-05 loaded');
 
 (function () {
   'use strict';
 
-  /* ----------------------------------------------------------
-     0. GSAP SETUP
-  ---------------------------------------------------------- */
-  var hasGsap = typeof gsap !== 'undefined';
-  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var mm;
-
-  if (!hasGsap) {
-    console.warn('[BharatHeals] GSAP not loaded — animations disabled');
-    bootstrapNoGsap();
-  } else {
-    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-    gsap.defaults({ ease: 'power3.out', duration: 0.8 });
-    mm = gsap.matchMedia();
-  }
-
-  /* ----------------------------------------------------------
-     1. NAV SCROLL
-  ---------------------------------------------------------- */
+  // ===== NAV SCROLL =====
   var nav = document.getElementById('mainNav');
-  if (nav && hasGsap) {
-    ScrollTrigger.create({
-      start: 60,
-      onUpdate: function (self) {
-        nav.classList.toggle('scrolled', self.scroll() > 60);
-      }
-    });
-  } else if (nav) {
+  if (nav) {
     window.addEventListener('scroll', function () {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     });
   }
 
-  /* ----------------------------------------------------------
-     2. MOBILE MENU
-  ---------------------------------------------------------- */
+  // ===== MOBILE MENU =====
   window.toggleMobile = function () {
     document.getElementById('mobileMenu').classList.toggle('active');
   };
 
-  /* ----------------------------------------------------------
-     3. HERO ENTRANCE SEQUENCE
-  ---------------------------------------------------------- */
-  var hero = document.querySelector('.hero');
-  if (hero && hasGsap && !prefersReduced) {
-    var tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
-
-    // Split hero heading words for stagger
-    var h1 = hero.querySelector('h1');
-    if (h1) {
-      var origHTML = h1.innerHTML;
-      var lines = origHTML.split(/<em>|<\/em>/);
-      var rebuilt = '';
-      for (var li = 0; li < lines.length; li++) {
-        var isEm = li % 2 === 1;
-        var words = lines[li].trim().split(/\s+/);
-        for (var wi = 0; wi < words.length; wi++) {
-          if (words[wi]) {
-            rebuilt += (isEm ? '<em>' : '') +
-              '<span class="bh-word" style="display:inline-block;opacity:0;transform:translateY(40px)">' +
-              words[wi] + '</span>' +
-              (isEm ? '</em>' : '') + ' ';
-          }
-        }
-      }
-      h1.innerHTML = rebuilt;
-    }
-
-    tl.set(hero, { visibility: 'visible' });
-
-    // Nav entrance
-    tl.from(nav, { y: -80, opacity: 0, duration: 0.6, ease: 'power2.out' }, 0);
-
-    // Eyebrow
-    var eyebrow = hero.querySelector('.hero-eyebrow');
-    if (eyebrow) tl.from(eyebrow, { opacity: 0, x: -30, duration: 0.5 }, 0.2);
-
-    // Words stagger
-    var words = hero.querySelectorAll('.bh-word');
-    if (words.length) {
-      tl.to(words, {
-        opacity: 1, y: 0, duration: 0.6,
-        stagger: 0.06, ease: 'back.out(1.4)'
-      }, 0.35);
-    }
-
-    // Subtitle
-    var heroSub = hero.querySelector('.hero-sub');
-    if (heroSub) tl.from(heroSub, { opacity: 0, y: 20, duration: 0.6 }, 0.7);
-
-    // CTA buttons
-    var heroActions = hero.querySelectorAll('.hero-actions > *');
-    if (heroActions.length) {
-      tl.from(heroActions, { opacity: 0, y: 20, stagger: 0.1, duration: 0.5 }, 0.9);
-    }
-
-    // Stat cards fly in from different directions
-    var statCards = hero.querySelectorAll('.stat-card');
-    if (statCards.length) {
-      gsap.set(statCards, { opacity: 1, transform: 'none' });
-      statCards.forEach(function (card, i) {
-        card.style.opacity = '0';
-        var fromX = (i % 2 === 0) ? 60 : -60;
-        var fromY = (i < 2) ? -40 : 40;
-        tl.from(card, {
-          opacity: 0, x: fromX, y: fromY, scale: 0.85,
-          duration: 0.7, ease: 'back.out(1.2)'
-        }, 1.0 + i * 0.12);
-      });
-    }
-  }
-
-  /* ----------------------------------------------------------
-     4. SCROLL-TRIGGERED SECTION REVEALS
-  ---------------------------------------------------------- */
-  if (hasGsap && !prefersReduced) {
-    // Section headers
-    gsap.utils.toArray('section, .calc-page-hero, .hosp-hero, .pj-hero').forEach(function (section) {
-      var headers = section.querySelectorAll('.section-tag, .section-title, .section-lead');
-      if (headers.length) {
-        gsap.from(headers, {
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 85%',
-            toggleActions: 'play none none none'
-          },
-          y: 40, opacity: 0, duration: 0.7,
-          stagger: 0.12
-        });
+  // ===== INTERSECTION OBSERVER =====
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
       }
     });
+  }, { threshold: 0.15 });
 
-    // Card grids with stagger
-    var gridSelectors = [
-      '.specialties-grid', '.doctors-grid', '.hospital-grid',
-      '.testimonials-grid', '.gallery-grid', '.logistics-grid',
-      '.aus-grid', '.process-steps', '.hosp-list'
-    ];
-    gridSelectors.forEach(function (sel) {
-      gsap.utils.toArray(sel).forEach(function (grid) {
-        var children = grid.children;
-        if (!children.length) return;
-        gsap.from(children, {
-          scrollTrigger: {
-            trigger: grid,
-            start: 'top 85%',
-            toggleActions: 'play none none none'
-          },
-          y: 50, opacity: 0, scale: 0.95, rotateX: 4,
-          duration: 0.65,
-          stagger: { amount: 0.5, from: 'start' }
-        });
-      });
-    });
-
-    // Individual elements
-    gsap.utils.toArray('.why-item, .faq-item, .pricing-card, .trust-bar, .consult-banner, .pj-card').forEach(function (el) {
-      gsap.from(el, {
-        scrollTrigger: { trigger: el, start: 'top 88%' },
-        y: 30, opacity: 0, duration: 0.6
-      });
-    });
-
-    // Process step connector line draw
-    var processLine = document.querySelector('.process-steps::before');
-    var processSection = document.querySelector('.process-steps');
-    if (processSection) {
-      gsap.from(processSection, {
-        scrollTrigger: { trigger: processSection, start: 'top 80%' },
-        '--line-scale': 0, duration: 1.2, ease: 'power2.inOut'
-      });
-    }
-  }
-
-  /* ----------------------------------------------------------
-     5. PARALLAX EFFECTS
-  ---------------------------------------------------------- */
-  if (hasGsap && !prefersReduced) {
-    mm.add('(min-width: 768px)', function () {
-      // Hero background depth
-      var heroBg = document.querySelector('.hero-bg');
-      var heroPattern = document.querySelector('.hero-pattern');
-      if (heroBg) {
-        gsap.to(heroBg, {
-          scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 },
-          y: 120, ease: 'none'
-        });
-      }
-      if (heroPattern) {
-        gsap.to(heroPattern, {
-          scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 },
-          y: 60, ease: 'none'
-        });
-      }
-
-      // Cost comparison parallax
-      var whyVisual = document.querySelector('.why-visual');
-      if (whyVisual) {
-        gsap.to(whyVisual, {
-          scrollTrigger: { trigger: whyVisual, start: 'top bottom', end: 'bottom top', scrub: 1 },
-          y: -40, ease: 'none'
-        });
-      }
-
-      // Consult banner parallax
-      var consultBanner = document.querySelector('.consult-banner');
-      if (consultBanner) {
-        gsap.to(consultBanner.querySelector('.consult-inner'), {
-          scrollTrigger: { trigger: consultBanner, start: 'top bottom', end: 'bottom top', scrub: 1 },
-          y: -20, ease: 'none'
-        });
-      }
-    });
-  }
-
-  /* ----------------------------------------------------------
-     6. ANIMATED NUMBER COUNTERS (site-wide)
-  ---------------------------------------------------------- */
-  if (hasGsap) { // begin GSAP-dependent block
-
-  function animateCounter(el) {
-    if (el.dataset.bhAnimated) return;
-    el.dataset.bhAnimated = '1';
-
-    var target, suffix, prefix, hasDecimal, decimalPlaces, hasCommas;
-
-    // data-target elements (hero stat cards)
-    if (el.dataset.target) {
-      target = parseFloat(el.dataset.target);
-      suffix = el.dataset.suffix || '';
-      prefix = '';
-      hasDecimal = el.dataset.decimal === 'true';
-      decimalPlaces = hasDecimal ? 1 : 0;
-      hasCommas = target >= 1000;
-    } else {
-      // Parse from rendered text
-      var text = el.textContent.trim();
-      var match = text.match(/([\d,.]+)/);
-      if (!match) return;
-      var numStr = match[1].replace(/,/g, '');
-      target = parseFloat(numStr);
-      if (isNaN(target) || target === 0) return;
-      prefix = text.substring(0, text.indexOf(match[1]));
-      suffix = text.substring(text.indexOf(match[1]) + match[1].length);
-      hasDecimal = numStr.indexOf('.') !== -1;
-      decimalPlaces = hasDecimal ? (numStr.split('.')[1] || '').length : 0;
-      hasCommas = match[1].indexOf(',') !== -1;
-    }
-
-    var proxy = { val: 0 };
-    gsap.to(proxy, {
-      val: target,
-      duration: 1.8,
-      ease: 'power2.out',
-      scrollTrigger: { trigger: el, start: 'top 90%' },
-      onUpdate: function () {
-        var v = proxy.val;
-        var formatted;
-        if (hasDecimal) {
-          formatted = v.toFixed(decimalPlaces);
-        } else {
-          formatted = Math.round(v).toString();
-        }
-        if (hasCommas) {
-          formatted = Number(formatted).toLocaleString('en-US', {
-            minimumFractionDigits: decimalPlaces,
-            maximumFractionDigits: decimalPlaces
-          });
-        }
-        el.textContent = prefix + formatted + suffix;
-      }
-    });
-  }
-
-  // Counter selectors — stat cards, impact numbers, hospital meta, doctor stats
-  var counterSelectors = [
-    '.stat-num', '.hosp-stat-item .num', '.hosp-meta-item .num',
-    '.doctor-stat .num', '.pj-stat .num',
-    '.impact-num', '.strip-num'
-  ];
-  counterSelectors.forEach(function (sel) {
-    document.querySelectorAll(sel).forEach(function (el) {
-      animateCounter(el);
-    });
+  document.querySelectorAll('.stat-card, .animate-on-scroll').forEach(function (el, i) {
+    el.style.animationDelay = (i * 0.12) + 's';
+    observer.observe(el);
   });
 
-  /* ----------------------------------------------------------
-     7. COST BAR ANIMATION (GSAP-powered)
-  ---------------------------------------------------------- */
+  // ===== COUNTER ANIMATION =====
+  function animateCounters() {
+    document.querySelectorAll('.stat-num[data-target]').forEach(function (el) {
+      if (el.dataset.animated) return;
+      el.dataset.animated = 'true';
+      var target = parseFloat(el.dataset.target);
+      var suffix = el.dataset.suffix || '';
+      var isDecimal = el.dataset.decimal === 'true';
+      var duration = 1500;
+      var start = performance.now();
+
+      function update(now) {
+        var progress = Math.min((now - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        var current = target * eased;
+        el.textContent = isDecimal ? current.toFixed(1) + suffix : Math.round(current) + suffix;
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    });
+  }
+
+  var heroVisual = document.querySelector('.hero-visual');
+  if (heroVisual) {
+    var counterObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { animateCounters(); counterObs.unobserve(entry.target); }
+      });
+    }, { threshold: 0.3 });
+    counterObs.observe(heroVisual);
+  }
+
+  // ===== COST BAR ANIMATION =====
   var costCompare = document.getElementById('costCompare');
   if (costCompare) {
-    costCompare.querySelectorAll('.cost-bar-fill').forEach(function (bar) {
-      var w = bar.dataset.width;
-      if (w) {
-        gsap.fromTo(bar, { width: '0%' }, {
-          width: w + '%',
-          duration: 1.2,
-          ease: 'power2.out',
-          scrollTrigger: { trigger: costCompare, start: 'top 75%' }
-        });
-      }
-    });
-  }
-
-  /* ----------------------------------------------------------
-     8. TESTIMONIAL CAROUSEL
-  ---------------------------------------------------------- */
-  var testimGrid = document.querySelector('.testimonials-grid');
-  if (testimGrid) {
-    var cards = Array.from(testimGrid.querySelectorAll('.testimonial-card'));
-    if (cards.length > 3) {
-      var currentSet = 0;
-      var setsOf3 = Math.ceil(cards.length / 3);
-      var autoTimer;
-
-      // Create dot navigation
-      var dotsWrap = document.createElement('div');
-      dotsWrap.style.cssText = 'text-align:center;margin-top:1.5rem;display:flex;justify-content:center;gap:0.5rem;';
-      for (var d = 0; d < setsOf3; d++) {
-        var dot = document.createElement('button');
-        dot.style.cssText = 'width:10px;height:10px;border-radius:50%;border:1.5px solid var(--gold);background:' + (d === 0 ? 'var(--gold)' : 'transparent') + ';cursor:pointer;transition:all 0.3s;padding:0;';
-        dot.dataset.idx = d;
-        dot.addEventListener('click', function () { goToSet(parseInt(this.dataset.idx)); });
-        dotsWrap.appendChild(dot);
-      }
-      testimGrid.parentNode.insertBefore(dotsWrap, testimGrid.nextSibling);
-
-      function goToSet(idx) {
-        currentSet = idx;
-        cards.forEach(function (c, i) {
-          var inSet = Math.floor(i / 3) === idx;
-          gsap.to(c, {
-            opacity: inSet ? 1 : 0,
-            scale: inSet ? 1 : 0.92,
-            y: inSet ? 0 : 20,
-            duration: 0.5,
-            ease: 'power2.inOut',
-            onComplete: function () {
-              c.style.display = inSet ? '' : 'none';
-            }
+    var barObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.cost-bar-fill').forEach(function (bar) {
+            bar.style.width = bar.dataset.width + '%';
           });
-          if (inSet) c.style.display = '';
-        });
-        dotsWrap.querySelectorAll('button').forEach(function (dt, di) {
-          dt.style.background = di === idx ? 'var(--gold)' : 'transparent';
-        });
-      }
-
-      function autoRotate() {
-        autoTimer = setInterval(function () {
-          goToSet((currentSet + 1) % setsOf3);
-        }, 5000);
-      }
-
-      testimGrid.addEventListener('mouseenter', function () { clearInterval(autoTimer); });
-      testimGrid.addEventListener('mouseleave', autoRotate);
-
-      goToSet(0);
-      autoRotate();
-    }
-  }
-
-  /* ----------------------------------------------------------
-     9. MAGNETIC HOVER ON BUTTONS
-  ---------------------------------------------------------- */
-  if (hasGsap && !prefersReduced) {
-    mm.add('(hover: hover) and (min-width: 768px)', function () {
-      document.querySelectorAll('.btn-primary, .nav-cta, .consult-btn, .cta-btn').forEach(function (btn) {
-        btn.addEventListener('mousemove', function (e) {
-          var rect = btn.getBoundingClientRect();
-          var x = e.clientX - rect.left - rect.width / 2;
-          var y = e.clientY - rect.top - rect.height / 2;
-          gsap.to(btn, { x: x * 0.25, y: y * 0.25, duration: 0.3, ease: 'power2.out' });
-        });
-        btn.addEventListener('mouseleave', function () {
-          gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
-        });
-      });
-
-      // Cursor-tracking tilt on premium cards
-      document.querySelectorAll('.specialty-card, .doctor-card, .hospital-card, .testimonial-card, .gallery-card').forEach(function (card) {
-        card.addEventListener('mousemove', function (e) {
-          var rect = card.getBoundingClientRect();
-          var cx = e.clientX - rect.left;
-          var cy = e.clientY - rect.top;
-          var px = (cx / rect.width - 0.5) * 2;
-          var py = (cy / rect.height - 0.5) * 2;
-          gsap.to(card, {
-            rotateY: px * 6, rotateX: -py * 6,
-            duration: 0.4, ease: 'power2.out',
-            transformPerspective: 800
-          });
-        });
-        card.addEventListener('mouseleave', function () {
-          gsap.to(card, {
-            rotateY: 0, rotateX: 0, scale: 1,
-            duration: 0.6, ease: 'elastic.out(1, 0.5)'
-          });
-        });
-      });
-    });
-  }
-
-  /* ----------------------------------------------------------
-     10. SMOOTH SCROLL (GSAP ScrollToPlugin or native fallback)
-  ---------------------------------------------------------- */
-  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-    anchor.addEventListener('click', function (e) {
-      var href = this.getAttribute('href');
-      if (href === '#') return;
-      var target = document.querySelector(href);
-      if (target) {
-        e.preventDefault();
-        if (hasGsap) {
-          gsap.to(window, {
-            scrollTo: { y: target, offsetY: 80 },
-            duration: 1,
-            ease: 'power3.inOut'
-          });
-        } else {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          barObs.unobserve(entry.target);
         }
-      }
-    });
-  });
-
-  /* ----------------------------------------------------------
-     11. PAGE ENTRANCE (non-hero pages)
-  ---------------------------------------------------------- */
-  if (hasGsap && !hero && !prefersReduced) {
-    var pageHero = document.querySelector('.calc-page-hero, .hosp-hero, .pj-hero');
-    if (pageHero) {
-      gsap.from(pageHero, { opacity: 0, y: -20, duration: 0.6, delay: 0.1 });
-    }
-    if (nav) {
-      gsap.from(nav, { y: -60, opacity: 0, duration: 0.5 });
-    }
-  }
-
-  /* ----------------------------------------------------------
-     12. SCORE BAR ANIMATION (doctor pages)
-  ---------------------------------------------------------- */
-  document.querySelectorAll('.score-fill').forEach(function (bar) {
-    var w = bar.style.width;
-    if (w) {
-      gsap.fromTo(bar, { width: '0%' }, {
-        width: w,
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: { trigger: bar, start: 'top 90%' }
       });
-    }
-  });
-
-  } // end GSAP-dependent block
-
-  /* ----------------------------------------------------------
-     SHARED UTILITIES (preserved from v1)
-  ---------------------------------------------------------- */
+    }, { threshold: 0.2 });
+    barObs.observe(costCompare);
+  }
 
   // ===== CONSULTATION MODAL =====
   window.openConsultModal = function (treatment) {
@@ -603,6 +219,7 @@ console.log('[BharatHeals] app.js v2026-04-07-gsap loaded');
   if (user) {
     var firstName = user.name ? user.name.split(' ')[0] : 'User';
 
+    // Replace "Account" link in desktop nav with user profile pill
     document.querySelectorAll('.nav-links a[href="/login.html"]').forEach(function (link) {
       var li = link.parentElement;
       if (!li) return;
@@ -634,6 +251,7 @@ console.log('[BharatHeals] app.js v2026-04-07-gsap loaded');
       li.appendChild(pill);
     });
 
+    // Replace "Account" link in mobile menu
     document.querySelectorAll('.mobile-menu a[href="/login.html"]').forEach(function (link) {
       if (user.avatar) {
         link.innerHTML = '<img src="' + user.avatar + '" style="width:22px;height:22px;border-radius:50%;vertical-align:middle;margin-right:6px;border:1.5px solid rgba(198,163,91,0.6);">' +
@@ -649,6 +267,7 @@ console.log('[BharatHeals] app.js v2026-04-07-gsap loaded');
       };
     });
 
+    // Welcome banner below nav
     console.log('[BharatHeals] User logged in:', user.name, user.email);
     var navEl = document.getElementById('mainNav');
     if (navEl) {
@@ -662,11 +281,46 @@ console.log('[BharatHeals] app.js v2026-04-07-gsap loaded');
       navEl.parentNode.insertBefore(banner, navEl.nextSibling);
     }
 
+    // Welcome toast on first load after login
     if (!localStorage.getItem('bharatheals_welcomed')) {
       localStorage.setItem('bharatheals_welcomed', '1');
       setTimeout(function() { showToast('Welcome, ' + firstName + '! You are now signed in.', 'success'); }, 400);
     }
   }
+
+  // ===== SCROLL REVEAL (luxury animations) =====
+  var luxRevealObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('lux-in-view');
+        luxRevealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.lux-reveal-up, .lux-reveal-left, .lux-reveal-right, .lux-reveal-scale').forEach(function (el) {
+    luxRevealObs.observe(el);
+  });
+
+  document.querySelectorAll('.section-tag, .section-title, .section-lead').forEach(function (el) {
+    if (!el.classList.contains('lux-reveal-up')) {
+      el.classList.add('lux-reveal-up');
+      luxRevealObs.observe(el);
+    }
+  });
+
+  // ===== SMOOTH SCROLL =====
+  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+    anchor.addEventListener('click', function (e) {
+      var href = this.getAttribute('href');
+      if (href === '#') return;
+      var target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
 
   // ===== MINI CALCULATOR =====
   var calcSelect = document.getElementById('calcTreatment');
@@ -719,27 +373,6 @@ console.log('[BharatHeals] app.js v2026-04-07-gsap loaded');
 
     calcSelect.addEventListener('change', updateCalc);
     if (calcCurrency) calcCurrency.addEventListener('change', updateCalc);
-  }
-
-  /* ----------------------------------------------------------
-     FALLBACK (no GSAP)
-  ---------------------------------------------------------- */
-  function bootstrapNoGsap() {
-    var nav = document.getElementById('mainNav');
-    if (nav) {
-      window.addEventListener('scroll', function () {
-        nav.classList.toggle('scrolled', window.scrollY > 60);
-      });
-    }
-    window.toggleMobile = function () {
-      document.getElementById('mobileMenu').classList.toggle('active');
-    };
-    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-      a.addEventListener('click', function (e) {
-        var t = document.querySelector(this.getAttribute('href'));
-        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
-      });
-    });
   }
 
 })();
