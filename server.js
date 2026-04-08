@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
@@ -13,16 +14,36 @@ const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'medrouteindia_secret_2026_change_in_production';
 
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
+app.use(compression({ level: 6, threshold: 1024 }));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use((req, res, next) => {
+  res.set('X-Content-Type-Options', 'nosniff');
+  res.set('X-Frame-Options', 'SAMEORIGIN');
+  res.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self)');
+  next();
+});
+
+const ONE_YEAR = 31536000;
+const ONE_WEEK = 604800;
+const ONE_DAY = 86400;
+
 app.use(express.static(path.join(__dirname, 'public'), {
-  etag: false,
+  etag: true,
+  lastModified: true,
   setHeaders: function(res, filePath) {
-    if (filePath.endsWith('.js') || filePath.endsWith('.css')) {
-      res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-      res.set('Pragma', 'no-cache');
-      res.set('Expires', '0');
+    const ext = path.extname(filePath).toLowerCase();
+    if (['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.ico', '.woff', '.woff2', '.ttf', '.eot'].includes(ext)) {
+      res.set('Cache-Control', `public, max-age=${ONE_YEAR}, immutable`);
+    } else if (['.css', '.js'].includes(ext)) {
+      res.set('Cache-Control', `public, max-age=${ONE_WEEK}, stale-while-revalidate=${ONE_DAY}`);
+    } else if (ext === '.html') {
+      res.set('Cache-Control', `public, max-age=${ONE_DAY}, stale-while-revalidate=3600`);
+    } else if (['.xml', '.txt', '.json'].includes(ext)) {
+      res.set('Cache-Control', `public, max-age=${ONE_DAY}`);
     }
   }
 }));
@@ -930,11 +951,27 @@ app.post('/api/ai-agent/stream', aiChatLimiter, async (req, res) => {
   }
 });
 
-// ==================== PAGES ====================
+// ==================== SEO: TRAILING SLASH REDIRECT ====================
+app.use((req, res, next) => {
+  if (req.path !== '/' && req.path.endsWith('/') && !req.path.startsWith('/api/')) {
+    const clean = req.path.slice(0, -1) + (req.url.includes('?') ? '?' + req.url.split('?')[1] : '');
+    return res.redirect(301, clean);
+  }
+  next();
+});
 
-const pages = ['calculator', 'doctors', 'faq', 'compare-cost', 'plan-journey', 'chat', 'login', 'about', 'team', 'build-package', 'dashboard', 'meet-your-doctor'];
-pages.forEach(p => app.get('/' + p, (req, res) => res.sendFile(path.join(__dirname, 'public', p + '.html'))));
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
+// ==================== PAGES (CLEAN URLs) ====================
+
+const pages = ['calculator', 'doctors', 'faq', 'compare-cost', 'plan-journey', 'chat', 'login', 'about', 'team', 'build-package', 'dashboard', 'meet-your-doctor', 'hospitals'];
+pages.forEach(p => app.get('/' + p, (req, res) => {
+  res.set('Link', `<https://www.medrouteindia.com/${p}.html>; rel="canonical"`);
+  res.sendFile(path.join(__dirname, 'public', p + '.html'));
+}));
+
+app.get('*', (req, res) => {
+  res.set('Link', '<https://www.medrouteindia.com/>; rel="canonical"');
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
 
