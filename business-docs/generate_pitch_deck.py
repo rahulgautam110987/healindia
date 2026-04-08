@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BharatHeals — Hospital & Doctor Partnership Pitch Deck (PPTX) v3
+MedRouteIndia — Hospital & Doctor Partnership Pitch Deck (PPTX) v3
 Visual overhaul: icon circles, corner accents, background shapes, dividers.
 Slide 14 reframed as hospital benefits. 21 slides, 16:9 widescreen.
 """
@@ -153,7 +153,7 @@ bg_circle(s, 9.0, -1.5, 6.0, DARK2)
 bg_circle(s, 10.5, 4.5, 4.5, DARK3)
 corner_accents(s)
 
-tx(s, L, 1.0, 5, 0.6, "BharatHeals", 42, WHITE, True)
+tx(s, L, 1.0, 5, 0.6, "MedRouteIndia", 42, WHITE, True)
 shp(s, L, 1.7, 1.8, 0.04, GOLD, MSO_SHAPE.RECTANGLE)
 tx(s, L, 1.9, 6, 0.3, "HOSPITAL & DOCTOR PARTNERSHIP PROPOSAL", 10, GOLD, True)
 
@@ -162,13 +162,13 @@ tx(s, L, 2.6, 7.5, 1.0,
    36, WHITE, True, ls=1.15)
 
 tx(s, L, 3.9, 7, 0.9,
-   "BharatHeals brings pre-qualified, high-value international patients directly to "
+   "MedRouteIndia brings pre-qualified, high-value international patients directly to "
    "your hospital. Zero marketing cost. Zero hassle. We handle everything from "
    "visa to discharge — you focus on what you do best: saving lives.",
    13, DIM, ls=1.5)
 
 tx(s, L, 5.6, 7, 0.3,
-   "Confidential  |  2026  |  www.bharatheals.com  |  partnerships@bharatheals.com",
+   "Confidential  |  2026  |  www.medrouteindia.com  |  partnerships@medrouteindia.com",
    9, RGBColor(0x55, 0x55, 0x55))
 
 for i, (n, lb) in enumerate([
@@ -228,7 +228,7 @@ tag(s, L, 0.5, "Our Solution")
 tx(s, L, 0.9, 10, 0.5,
    "We Bring You Ready-to-Treat International Patients", 30, NAVY, True)
 tx(s, L, 1.5, 8, 0.4,
-   "BharatHeals is an end-to-end medical tourism platform. We find patients, "
+   "MedRouteIndia is an end-to-end medical tourism platform. We find patients, "
    "pre-screen them, and deliver them to your door — with everything handled.", 12, MID, ls=1.4)
 
 for i, (ic, title, desc, hl) in enumerate([
@@ -248,7 +248,7 @@ for i, (ic, title, desc, hl) in enumerate([
      "appointment, translates instructions, manages dietary needs, available 24/7.",
      "Patient feels at home"),
     ("\u2B50", "Reviews & Follow-Up", "We manage 12-month telemedicine follow-ups, satisfaction "
-     "surveys, and online reviews on Google, Trustpilot, and BharatHeals.",
+     "surveys, and online reviews on Google, Trustpilot, and MedRouteIndia.",
      "97% satisfaction, 4.8 Google rating"),
 ]):
     col, row = i % 3, i // 3
@@ -403,7 +403,7 @@ for i, (ic, title, desc, hl) in enumerate([
      "Our partners see an average +0.6 star improvement within 8 months.",
      "Kokilaben: 4.1 \u2192 4.7 stars"),
     ("\U0001F4AC", "Trustpilot & Platform Reviews",
-     "We proactively collect reviews on Trustpilot, Google Maps, and BharatHeals. "
+     "We proactively collect reviews on Trustpilot, Google Maps, and MedRouteIndia. "
      "97% survey response rate. Positive reviews syndicated across "
      "platforms — amplifying your brand visibility for free.",
      "97% survey response rate"),
@@ -522,7 +522,7 @@ ml(s, 7.0, 4.95, 5.3, 2.2, [
     ("\u2713  On-ground bilingual coordinator (24/7)", BLUE),
     ("\u2713  Translation, dietary needs, companion care", BLUE),
     ("\u2713  Post-op telemedicine follow-up (12 months)", BLUE),
-    ("\u2713  Patient reviews on Google, Trustpilot, BharatHeals", BLUE),
+    ("\u2713  Patient reviews on Google, Trustpilot, MedRouteIndia", BLUE),
 ], 9, BLUE, ls=1.5)
 
 
@@ -581,7 +581,7 @@ cases = [
      "$840K net revenue  |  +0.5 Google stars  |  22 referrals"),
     ("\U0001F3E5", "Medanta, Gurugram", "85% conversion rate",
      "Knee replacement and cardiac patients from USA, UK, Australia. "
-     "BharatHeals conversion: 85% vs 30% from other facilitators. "
+     "MedRouteIndia conversion: 85% vs 30% from other facilitators. "
      "Pre-screened patients with complete records. Zero no-shows.",
      "$560K net  |  85% vs 30% conversion  |  0 no-shows"),
     ("\U0001F3E5", "Kokilaben Ambani, Mumbai", "Google 4.1 \u2192 4.7 in 8 months",
@@ -668,7 +668,7 @@ for i, (ic, title, desc) in enumerate([
      "Annual penetration testing. DPO appointed."),
     ("\U0001F6E1\uFE0F", "Malpractice Insurance",
      "Every partner hospital carries malpractice insurance. "
-     "BharatHeals carries additional liability insurance "
+     "MedRouteIndia carries additional liability insurance "
      "covering all facilitated patients."),
     ("\u26A0\uFE0F", "Complication Transparency",
      "Any complication reported within 4 hours. "
@@ -697,7 +697,7 @@ bg_circle(s, -1, 5, 4, DARK3)
 bg_circle(s, 11.5, -1.5, 4, DARK2)
 dark_tag(s, L, 0.5, "Why Partner With Us")
 tx(s, L, 0.9, 11, 0.5,
-   "8 Reasons Your Hospital Should Partner With BharatHeals", 30, WHITE, True)
+   "8 Reasons Your Hospital Should Partner With MedRouteIndia", 30, WHITE, True)
 divider(s, L, 1.45, 4, GOLD_DIM)
 
 benefits = [
@@ -768,7 +768,7 @@ shp(s, L, 4.2, 5.5, 2.7, WHITE)
 icon_circle(s, L + 0.15, 4.3, "\u2705", GREEN, WHITE, 0.35)
 tx(s, L + 0.6, 4.32, 4.5, 0.3, "WHAT'S INCLUDED (FREE)", 12, NAVY, True)
 ml(s, L + 0.2, 4.7, 5, 2.1, [
-    ("\u2713  Hospital profile on BharatHeals platform", GREEN),
+    ("\u2713  Hospital profile on MedRouteIndia platform", GREEN),
     ("\u2713  Doctor profiles with booking buttons", GREEN),
     ("\u2713  All patient marketing (paid by us)", GREEN),
     ("\u2713  AI chatbot recommending your hospital", GREEN),
@@ -804,7 +804,7 @@ for i, (wk, ic, title, items) in enumerate([
         "Sign partnership agreement", "Collect hospital & doctor profiles",
         "Set up hospital admin dashboard", "Assign dedicated account manager"]),
     ("Week 2", "\U0001F517", "Platform\nIntegration", [
-        "Create hospital page on BharatHeals", "Upload doctor profiles & specialties",
+        "Create hospital page on MedRouteIndia", "Upload doctor profiles & specialties",
         "Configure treatment pricing", "Set up telemedicine scheduling"]),
     ("Week 3", "\U0001F4E3", "Marketing\nLaunch", [
         "Hospital featured in AI recommendations", "Targeted ads mentioning your hospital",
@@ -845,7 +845,7 @@ corner_accents(s)
 bg_circle(s, 10, 5, 4, DARK2)
 dark_tag(s, L, 0.5, "Our Team")
 tx(s, L, 0.9, 10, 0.5,
-   "The People Behind BharatHeals", 30, WHITE, True)
+   "The People Behind MedRouteIndia", 30, WHITE, True)
 
 for i, (ic, name, role, bio) in enumerate([
     ("\U0001F468\u200D\U0001F4BC", "Rahul Gautam", "Co-Founder & CEO",
@@ -887,19 +887,19 @@ tx(s, L, 0.9, 10, 0.5,
    "What Our Hospital Partners Say", 30, NAVY, True)
 
 for i, (quote, name, role, hospital) in enumerate([
-    ("\u201CBharatHeals brought us 120 international patients in Year 1 — patients we "
+    ("\u201CMedRouteIndia brought us 120 international patients in Year 1 — patients we "
      "would never have reached. The pre-screening quality means every patient "
      "arrives ready for treatment. Our intl revenue grew from zero to $840K.\u201D",
      "Dr. Rajesh Kapoor", "Director, International Patient Services", "Apollo Hospitals, Delhi"),
     ("\u201CThe AI pre-screening is remarkable. Patients arrive with complete records, "
      "realistic expectations, and confirmed treatment plans. Our conversion from "
-     "BharatHeals referrals is 85% vs 30% from other platforms.\u201D",
+     "MedRouteIndia referrals is 85% vs 30% from other platforms.\u201D",
      "Dr. Anita Sharma", "Head of Orthopaedics", "Medanta, Gurugram"),
-    ("\u201CWhat impressed us most is the post-treatment follow-up. BharatHeals manages "
+    ("\u201CWhat impressed us most is the post-treatment follow-up. MedRouteIndia manages "
      "telemedicine calls and reviews — our Google rating went from 4.1 to 4.7 stars "
      "within 8 months. That visibility drives domestic patients too.\u201D",
      "Suresh Menon", "CEO", "Kokilaben Dhirubhai Ambani Hospital, Mumbai"),
-    ("\u201CUnlike other facilitators who send unqualified leads, BharatHeals sends "
+    ("\u201CUnlike other facilitators who send unqualified leads, MedRouteIndia sends "
      "committed patients with deposits paid. Zero no-shows in 6 months. "
      "Our staff focuses on medicine — they handle everything else.\u201D",
      "Dr. Vikram Singh", "Chief of Cardiac Surgery", "Fortis Healthcare, Gurugram"),
@@ -1009,7 +1009,7 @@ corner_accents(s)
 bg_circle(s, -2, -2, 6, DARK2)
 bg_circle(s, 10, 4, 5, DARK3)
 
-tx(s, 0, 1.3, 13.333, 0.6, "BharatHeals", 42, WHITE, True, PP_ALIGN.CENTER)
+tx(s, 0, 1.3, 13.333, 0.6, "MedRouteIndia", 42, WHITE, True, PP_ALIGN.CENTER)
 shp(s, 5.5, 2.0, 2.333, 0.04, GOLD, MSO_SHAPE.RECTANGLE)
 
 tx(s, 1.5, 2.3, 10.333, 1.0,
@@ -1017,15 +1017,15 @@ tx(s, 1.5, 2.3, 10.333, 1.0,
    36, WHITE, True, PP_ALIGN.CENTER, ls=1.15)
 
 tx(s, 2, 3.5, 9.333, 0.6,
-   "Join 44 JCI-accredited hospitals already partnering with BharatHeals.\n"
+   "Join 44 JCI-accredited hospitals already partnering with MedRouteIndia.\n"
    "Zero upfront cost. First patients within 30 days.", 14,
    DIM, al=PP_ALIGN.CENTER, ls=1.5)
 
 for i, (ic, label, value) in enumerate([
-    ("\u2709\uFE0F", "Email", "partnerships@bharatheals.com"),
+    ("\u2709\uFE0F", "Email", "partnerships@medrouteindia.com"),
     ("\U0001F4DE", "Phone", "+91 123 456 7890"),
     ("\U0001F4AC", "WhatsApp", "+91 98765 43210"),
-    ("\U0001F310", "Website", "www.bharatheals.com/partners"),
+    ("\U0001F310", "Website", "www.medrouteindia.com/partners"),
 ]):
     x = 1.5 + i * 2.8
     shp(s, x, 4.4, 2.5, 0.95, DARK2)
@@ -1038,13 +1038,13 @@ tx(s, 3, 5.75, 7.333, 0.45,
    "NEXT STEP: Schedule a 30-minute partnership call", 14, NAVY, True, PP_ALIGN.CENTER)
 
 tx(s, 0, 6.6, 13.333, 0.3,
-   "Confidential  |  BharatHeals Pvt. Ltd.  |  2026  |  For hospitals & doctors only",
+   "Confidential  |  MedRouteIndia Pvt. Ltd.  |  2026  |  For hospitals & doctors only",
    8, RGBColor(0x44, 0x44, 0x44), al=PP_ALIGN.CENTER)
 
 
 # ── SAVE ──
 out = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                   "BharatHeals_Partnership_Deck.pptx")
+                   "MedRouteIndia_Partnership_Deck.pptx")
 prs.save(out)
 print(f"\u2705 Partnership deck saved: {out}")
 print(f"   Total slides: {len(prs.slides)}")

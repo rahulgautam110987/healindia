@@ -1,4 +1,4 @@
-# BharatHeals — Medical Tourism Platform for Australian Patients
+# MedRouteIndia — Medical Tourism Platform for Australian Patients
 
 A premium, full-stack medical tourism platform connecting Australian (and international) patients with India's finest JCI-accredited hospitals. Features hair transplant, dental treatment, cardiac surgery, orthopedics, IVF, and 10+ specialties.
 
@@ -46,12 +46,12 @@ Open **http://localhost:3000** in your browser.
 ## Project Structure
 
 ```
-BharatHeals/
+MedRouteIndia/
 ├── server.js              # Express backend + API routes + pricing data
 ├── db.js                  # SQLite database setup
 ├── package.json
 ├── data/                  # Auto-created on first run
-│   └── bharatheals.db
+│   └── medrouteindia.db
 ├── public/
 │   ├── index.html         # Homepage (Australia-focused)
 │   ├── calculator.html    # Cost calculator page

@@ -1,7 +1,7 @@
 {
-  "name": "bharatheals",
+  "name": "medrouteindia",
   "version": "1.0.0",
-  "description": "BharatHeals — World-Class Medical Tourism Platform",
+  "description": "MedRouteIndia — World-Class Medical Tourism Platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

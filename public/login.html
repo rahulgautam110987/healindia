@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign In — BharatHeals | Medical Tourism Worldwide</title>
-<meta name="description" content="Create your BharatHeals account or sign in to manage consultations, quotes, and your medical journey to India.">
+<title>Sign In — MedRouteIndia | Medical Tourism Worldwide</title>
+<meta name="description" content="Create your MedRouteIndia account or sign in to manage consultations, quotes, and your medical journey to India.">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/style.css?v=20260405b">
 <style>
@@ -104,15 +104,15 @@
 <body class="auth-page">
 <script>
   try {
-    var u = JSON.parse(localStorage.getItem('bharatheals_user'));
-    if (u && u.name && localStorage.getItem('bharatheals_token')) {
+    var u = JSON.parse(localStorage.getItem('medrouteindia_user'));
+    if (u && u.name && localStorage.getItem('medrouteindia_token')) {
       window.location.replace('/');
     }
   } catch(e) {}
 </script>
 
 <nav id="mainNav">
-  <a href="/" class="nav-logo">Bharat<span>Heals</span></a>
+  <a href="/" class="nav-logo">MedRoute<span>India</span></a>
   <ul class="nav-links">
     <li><a href="/">Home</a></li>
     <li><a href="/about.html">About Us</a></li>
@@ -148,7 +148,7 @@
 <div class="auth-page-inner">
   <div class="auth-card">
     <div class="auth-card-header">
-      <h1>Welcome to <em>BharatHeals</em></h1>
+      <h1>Welcome to <em>MedRouteIndia</em></h1>
       <p>Sign in or create an account to save quotes and track your care journey.</p>
     </div>
     <div class="auth-tabs" role="tablist">
@@ -313,7 +313,7 @@
 
 <div class="whatsapp-widget">
   <div class="whatsapp-tooltip">Chat with us on WhatsApp</div>
-  <a href="https://wa.me/919999999999?text=Hi%20BharatHeals%2C%20I%27m%20interested%20in%20medical%20treatment%20in%20India." target="_blank" rel="noopener" class="whatsapp-btn" aria-label="Chat on WhatsApp">
+  <a href="https://wa.me/919999999999?text=Hi%20MedRouteIndia%2C%20I%27m%20interested%20in%20medical%20treatment%20in%20India." target="_blank" rel="noopener" class="whatsapp-btn" aria-label="Chat on WhatsApp">
     <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.128 6.744 3.046 9.378L1.054 31.29l6.118-1.958A15.92 15.92 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.302 22.602c-.39 1.1-1.932 2.014-3.164 2.28-.844.18-1.946.324-5.656-1.216-4.748-1.968-7.804-6.792-8.038-7.108-.226-.316-1.878-2.502-1.878-4.772 0-2.27 1.188-3.386 1.61-3.85.39-.428 1.024-.624 1.63-.624.196 0 .374.01.532.018.468.02.702.048 1.012.784.386.922 1.328 3.236 1.444 3.47.118.234.236.55.078.866-.15.324-.282.526-.516.81-.234.284-.458.502-.692.77-.216.246-.458.51-.196.998.262.484 1.166 1.922 2.502 3.114 1.72 1.534 3.168 2.01 3.618 2.234.352.176.77.148 1.044-.136.352-.362.786-.964 1.228-1.558.314-.424.712-.476 1.098-.314.39.156 2.468 1.164 2.892 1.376.424.214.706.318.81.498.104.18.104 1.044-.286 2.144z"/></svg>
   </a>
 </div>
@@ -352,14 +352,14 @@
   };
 
   function handleGoogleTokenResponse(tokenResponse) {
-    console.log('[BharatHeals] Google token response:', tokenResponse);
+    console.log('[MedRouteIndia] Google token response:', tokenResponse);
     if (tokenResponse.error) {
-      console.error('[BharatHeals] Google error:', tokenResponse.error);
+      console.error('[MedRouteIndia] Google error:', tokenResponse.error);
       showToast('Google sign-in was cancelled or failed.', 'error');
       return;
     }
     if (!tokenResponse.access_token) {
-      console.error('[BharatHeals] No access_token in response');
+      console.error('[MedRouteIndia] No access_token in response');
       showToast('Google did not return a valid token.', 'error');
       return;
     }
@@ -370,21 +370,21 @@
       body: JSON.stringify({ provider: 'google', token: tokenResponse.access_token })
     })
     .then(function(r) {
-      console.log('[BharatHeals] Backend status:', r.status);
+      console.log('[MedRouteIndia] Backend status:', r.status);
       return r.json();
     })
     .then(function(result) {
-      console.log('[BharatHeals] Backend result:', result);
+      console.log('[MedRouteIndia] Backend result:', result);
       if (result.success && result.token) {
-        localStorage.setItem('bharatheals_token', result.token);
-        localStorage.setItem('bharatheals_user', JSON.stringify(result.user));
-        console.log('[BharatHeals] User stored, redirecting to /');
+        localStorage.setItem('medrouteindia_token', result.token);
+        localStorage.setItem('medrouteindia_user', JSON.stringify(result.user));
+        console.log('[MedRouteIndia] User stored, redirecting to /');
         window.location.href = '/';
       } else {
         showToast(result.error || 'Google sign-in failed.', 'error');
       }
     })
-    .catch(function(e) { console.error('[BharatHeals] Auth error:', e); showToast('Connection error. Please try again.', 'error'); });
+    .catch(function(e) { console.error('[MedRouteIndia] Auth error:', e); showToast('Connection error. Please try again.', 'error'); });
   }
 
   function setAuthTab(which) {
@@ -405,9 +405,9 @@
   window.setAuthTab = setAuthTab;
 
   function handleAuthSuccess(result) {
-    if (result.token) localStorage.setItem('bharatheals_token', result.token);
-    if (result.user) localStorage.setItem('bharatheals_user', JSON.stringify(result.user));
-    localStorage.removeItem('bharatheals_welcomed');
+    if (result.token) localStorage.setItem('medrouteindia_token', result.token);
+    if (result.user) localStorage.setItem('medrouteindia_user', JSON.stringify(result.user));
+    localStorage.removeItem('medrouteindia_welcomed');
     window.location.href = '/';
   }
 

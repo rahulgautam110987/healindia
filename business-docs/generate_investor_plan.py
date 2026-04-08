@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BharatHeals — Investor-Grade Business Plan (Excel)
+MedRouteIndia — Investor-Grade Business Plan (Excel)
 All numbers are FORMULA-BASED. Change any yellow input cell and everything recalculates.
 Dual currency: USD + INR.
 """
@@ -114,7 +114,7 @@ ws.title = "Assumptions"
 ws.sheet_properties.tabColor = GOLD
 set_widths(ws, [38, 16, 16, 16, 16, 16, 16, 30])
 
-title_row(ws, 1, 8, "BHARATHEALS — KEY ASSUMPTIONS & INPUTS")
+title_row(ws, 1, 8, "MEDROUTEINDIA — KEY ASSUMPTIONS & INPUTS")
 ws.cell(2, 1, "⚠️  YELLOW CELLS = EDITABLE INPUTS. Change any yellow cell and all sheets recalculate.").font = Font(name="Calibri", size=9, bold=True, color=RED)
 ws.merge_cells("A2:H2")
 
@@ -988,7 +988,7 @@ for rk in risks:
 
 
 # ── SAVE ──
-out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "BharatHeals_Investor_Business_Plan.xlsx")
+out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "MedRouteIndia_Investor_Business_Plan.xlsx")
 wb.save(out)
 print(f"✅ Investor business plan saved: {out}")
 print(f"   Sheets: {[s.title for s in wb.worksheets]}")

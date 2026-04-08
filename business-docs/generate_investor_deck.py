@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BharatHeals — Investor Pitch Deck (PPTX) v2
+MedRouteIndia — Investor Pitch Deck (PPTX) v2
 Visual overhaul: icon circles, corner accents, background shapes, dividers.
 Slide 15 reframed as competitive moat. 22 slides, 16:9 widescreen.
 """
@@ -153,7 +153,7 @@ bg_circle(s, 9.0, -1.5, 6.0, DARK2)
 bg_circle(s, 10.5, 4.5, 4.5, DARK3)
 corner_accents(s)
 
-tb(s, L, 1.2, 6, 0.7, "BharatHeals", 42, WHITE, True)
+tb(s, L, 1.2, 6, 0.7, "MedRouteIndia", 42, WHITE, True)
 rect(s, L, 2.0, 1.5, 0.04, GOLD, MSO_SHAPE.RECTANGLE)
 tb(s, L, 2.2, 8, 0.4, "SEED ROUND  |  $2M  |  APRIL 2026", 11, GOLD, True)
 
@@ -167,7 +167,7 @@ tb(s, L, 4.8, 7, 0.8,
    13, DIM, ls=1.5)
 
 tb(s, L, 6.2, 7, 0.4,
-   "Confidential  |  For qualified investors only  |  care@bharatheals.com", 9, DIMMER)
+   "Confidential  |  For qualified investors only  |  care@medrouteindia.com", 9, DIMMER)
 
 for i, (n, l) in enumerate([
     ("$88B", "Global Medical\nTourism Market"), ("22.5%", "India Market\nCAGR"),
@@ -221,7 +221,7 @@ tag(s, L, 0.5, "Our Solution", DARK2, GOLD)
 tb(s, L, 0.95, 10, 0.5,
    "The End-to-End Medical Tourism Platform", 32, WHITE, True)
 tb(s, L, 1.5, 8, 0.5,
-   "BharatHeals manages the entire patient journey — from first enquiry to post-treatment "
+   "MedRouteIndia manages the entire patient journey — from first enquiry to post-treatment "
    "follow-up — powered by AI and human expertise.", 12, DIM, ls=1.4)
 
 for i, (ic, title, desc, hl) in enumerate([
@@ -247,14 +247,14 @@ for i, (ic, title, desc, hl) in enumerate([
 divider(s, L, 5.9, CW, GOLD_DIM)
 rect(s, L, 6.05, 5.5, 1.0, RGBColor(0x1A, 0x0A, 0x0A))
 icon_circle(s, L + 0.15, 6.15, "\u2717", RED, WHITE, 0.3)
-tb(s, L + 0.55, 6.12, 4.7, 0.3, "WITHOUT BHARATHEALS", 10, RED, True)
+tb(s, L + 0.55, 6.12, 4.7, 0.3, "WITHOUT MEDROUTEINDIA", 10, RED, True)
 tb(s, L + 0.55, 6.4, 4.7, 0.5,
    "Weeks of research, scam risk, no coordination, no follow-up, high anxiety",
    9, RGBColor(0xAA, 0x66, 0x66), ls=1.4)
 
 rect(s, 7.0, 6.05, 5.5, 1.0, RGBColor(0x0A, 0x1A, 0x0A))
 icon_circle(s, 7.15, 6.15, "\u2713", GREEN, WHITE, 0.3)
-tb(s, 7.55, 6.12, 4.7, 0.3, "WITH BHARATHEALS", 10, GREEN, True)
+tb(s, 7.55, 6.12, 4.7, 0.3, "WITH MEDROUTEINDIA", 10, GREEN, True)
 tb(s, 7.55, 6.4, 4.7, 0.5,
    "AI-guided in 5 min, trusted hospital matched, full concierge, 60-90% savings",
    9, RGBColor(0x66, 0xAA, 0x66), ls=1.4)
@@ -744,7 +744,7 @@ for i, (ic, name, role, bio, creds) in enumerate([
     ("\U0001F468\u200D\U0001F4BC", "Rahul Gautam", "Co-Founder & CEO",
      "Ex-McKinsey  |  Healthcare Practice Lead\nLed strategy for 15+ hospital systems across "
      "India, Middle East, and Africa. MBA from ISB. "
-     "Built BharatHeals from 0 to 10,000 patients.",
+     "Built MedRouteIndia from 0 to 10,000 patients.",
      "McKinsey, ISB, 10+ yrs healthcare strategy"),
     ("\U0001F469\u200D\u2695\uFE0F", "Dr. Priya Nair", "Chief Medical Officer",
      "MBBS, MD  |  Ex-Apollo & Medanta\n15 years clinical experience. Built the quality "
@@ -1135,20 +1135,20 @@ for i, (quote, name, location, treatment) in enumerate([
      "better than anything I could have imagined. The coordinator was "
      "with me from airport to airport.\u201D",
      "Ahmed R.", "Saudi Arabia", "Hair Transplant"),
-    ("\u201CMy NHS waitlist was 18 months for knee replacement. BharatHeals "
+    ("\u201CMy NHS waitlist was 18 months for knee replacement. MedRouteIndia "
      "had me treated in 3 weeks. Same quality surgeon, world-class "
      "hospital, and I saved \u00a328,000.\u201D",
      "James K.", "United Kingdom", "Knee Replacement"),
-    ("\u201CBharatHeals brought us 120 international patients in Year 1 — "
+    ("\u201CMedRouteIndia brought us 120 international patients in Year 1 — "
      "patients we could never have reached. Their AI pre-screening means "
      "every patient arrives ready for treatment.\u201D",
      "Dr. Rajesh Kapoor", "Apollo Hospitals, Delhi", "Hospital Partner"),
-    ("\u201CUnlike other facilitators, BharatHeals sends committed patients with "
+    ("\u201CUnlike other facilitators, MedRouteIndia sends committed patients with "
      "deposits paid. Zero no-shows. The coordinator handles everything — "
      "our staff focuses on medicine.\u201D",
      "Dr. Vikram Singh", "Fortis Healthcare", "Hospital Partner"),
     ("\u201CAfter 3 failed IVF cycles in Australia at $15K each, I tried India "
-     "through BharatHeals. $7,200 for 2 cycles, successful on the 2nd. "
+     "through MedRouteIndia. $7,200 for 2 cycles, successful on the 2nd. "
      "They literally changed my life.\u201D",
      "Maria L.", "Australia", "IVF / Fertility"),
     ("\u201CThe AI chatbot answered all my questions at 2 AM my time. "
@@ -1177,7 +1177,7 @@ corner_accents(s)
 bg_circle(s, -2, -2, 6, DARK2)
 bg_circle(s, 10, 4, 5, DARK3)
 
-tb(s, 0, 1.5, 13.333, 0.7, "BharatHeals", 42, WHITE, True, PP_ALIGN.CENTER)
+tb(s, 0, 1.5, 13.333, 0.7, "MedRouteIndia", 42, WHITE, True, PP_ALIGN.CENTER)
 rect(s, 5.5, 2.25, 2.333, 0.04, GOLD, MSO_SHAPE.RECTANGLE)
 
 tb(s, 1.5, 2.6, 10.333, 1,
@@ -1191,9 +1191,9 @@ tb(s, 2, 3.8, 9.333, 0.6,
 
 for i, (ic, label, value) in enumerate([
     ("\U0001F468\u200D\U0001F4BC", "Rahul Gautam", "CEO & Co-Founder"),
-    ("\u2709\uFE0F", "Email", "rahul@bharatheals.com"),
+    ("\u2709\uFE0F", "Email", "rahul@medrouteindia.com"),
     ("\U0001F4DE", "Phone", "+91 123 456 7890"),
-    ("\U0001F310", "Deck / Data Room", "bharatheals.com/investors"),
+    ("\U0001F310", "Deck / Data Room", "medrouteindia.com/investors"),
 ]):
     x = 1.5 + i * 2.8
     rect(s, x, 4.7, 2.5, 1.0, DARK2)
@@ -1207,13 +1207,13 @@ tb(s, 3, 6.05, 7.333, 0.45,
    14, NAVY, True, PP_ALIGN.CENTER)
 
 tb(s, 0, 6.8, 13.333, 0.3,
-   "Confidential  |  BharatHeals Pvt. Ltd.  |  April 2026  |  For qualified investors only",
+   "Confidential  |  MedRouteIndia Pvt. Ltd.  |  April 2026  |  For qualified investors only",
    8, DIMMER, al=PP_ALIGN.CENTER)
 
 
 # ── SAVE ──
 out = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                   "BharatHeals_Investor_Pitch_Deck.pptx")
+                   "MedRouteIndia_Investor_Pitch_Deck.pptx")
 prs.save(out)
 print(f"\u2705 Investor pitch deck saved: {out}")
 print(f"   Total slides: {len(prs.slides)}")

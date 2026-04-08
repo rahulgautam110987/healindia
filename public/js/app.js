@@ -1,7 +1,7 @@
 /* ============================================================
-   BHARATHHEALS — SHARED JAVASCRIPT  (v2026-04-05)
+   MEDROUTEINDIA — SHARED JAVASCRIPT  (v2026-04-05)
    ============================================================ */
-console.log('[BharatHeals] app.js v2026-04-05 loaded');
+console.log('[MedRouteIndia] app.js v2026-04-05 loaded');
 
 (function () {
   'use strict';
@@ -206,12 +206,12 @@ console.log('[BharatHeals] app.js v2026-04-05 loaded');
   };
 
   // ===== AUTH STATE =====
-  window.getAuthToken = function () { return localStorage.getItem('bharatheals_token'); };
-  window.getAuthUser = function () { try { return JSON.parse(localStorage.getItem('bharatheals_user')); } catch(e) { return null; } };
+  window.getAuthToken = function () { return localStorage.getItem('medrouteindia_token'); };
+  window.getAuthUser = function () { try { return JSON.parse(localStorage.getItem('medrouteindia_user')); } catch(e) { return null; } };
   window.logout = function () {
-    localStorage.removeItem('bharatheals_token');
-    localStorage.removeItem('bharatheals_user');
-    localStorage.removeItem('bharatheals_welcomed');
+    localStorage.removeItem('medrouteindia_token');
+    localStorage.removeItem('medrouteindia_user');
+    localStorage.removeItem('medrouteindia_welcomed');
     window.location.href = '/';
   };
 
@@ -263,12 +263,12 @@ console.log('[BharatHeals] app.js v2026-04-05 loaded');
       link.setAttribute('data-logged-in', 'true');
       link.onclick = function(e) {
         e.preventDefault();
-        if (confirm('Logout from BharatHeals?')) window.logout();
+        if (confirm('Logout from MedRouteIndia?')) window.logout();
       };
     });
 
     // Welcome banner below nav
-    console.log('[BharatHeals] User logged in:', user.name, user.email);
+    console.log('[MedRouteIndia] User logged in:', user.name, user.email);
     var navEl = document.getElementById('mainNav');
     if (navEl) {
       var banner = document.createElement('div');
@@ -282,8 +282,8 @@ console.log('[BharatHeals] app.js v2026-04-05 loaded');
     }
 
     // Welcome toast on first load after login
-    if (!localStorage.getItem('bharatheals_welcomed')) {
-      localStorage.setItem('bharatheals_welcomed', '1');
+    if (!localStorage.getItem('medrouteindia_welcomed')) {
+      localStorage.setItem('medrouteindia_welcomed', '1');
       setTimeout(function() { showToast('Welcome, ' + firstName + '! You are now signed in.', 'success'); }, 400);
     }
   }

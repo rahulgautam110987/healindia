@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BharatHeals — Client Package Cost Calculator (Excel)
+MedRouteIndia — Client Package Cost Calculator (Excel)
 Put your actual costs in yellow cells → get min/max package range in USD + INR.
 Covers: Treatment, Hospital Room, Hotel, Flights, Visa, Transfers, Meals, 
 Coordinator, Insurance, Telemedicine, SIM, Recovery Tourism, Companion, Misc.
@@ -95,7 +95,7 @@ ws.title = "Package Calculator"
 ws.sheet_properties.tabColor = GOLD
 set_widths(ws, [34, 14, 14, 16, 16, 16, 18, 36])
 
-title_row(ws, 1, NCOLS, "BHARATHEALS — CLIENT PACKAGE COST CALCULATOR")
+title_row(ws, 1, NCOLS, "MEDROUTEINDIA — CLIENT PACKAGE COST CALCULATOR")
 r = 2
 ws.merge_cells(f"A{r}:H{r}")
 ws.cell(r, 1, "⚠️  YELLOW = your input. Enter costs in USD columns → INR auto-calculates. Or vice-versa.").font = Font(name="Calibri", size=9, bold=True, color=RED)
@@ -219,9 +219,9 @@ section_row(ws, r, NCOLS, "4. VISA & DOCUMENTATION"); r += 1
 R_VISA = cost_row(ws, r, "e-Medical Visa Fee", 25, 80, 25,
     "India e-Medical Visa: $25 (most countries) — $80 (US/UK)"); r += 1
 R_VISA_ASSIST = cost_row(ws, r, "Visa Assistance Service", 0, 50, 0,
-    "BharatHeals provides free. Premium service $50."); r += 1
+    "MedRouteIndia provides free. Premium service $50."); r += 1
 R_INVITE = cost_row(ws, r, "Hospital Invitation Letter", 0, 0, 0,
-    "Provided free by BharatHeals / hospital"); r += 2
+    "Provided free by MedRouteIndia / hospital"); r += 2
 
 # ── SECTION: TRANSFERS ──
 section_row(ws, r, NCOLS, "5. AIRPORT & LOCAL TRANSFERS"); r += 1
@@ -498,7 +498,7 @@ for t in treatments:
 
 
 # ── SAVE ──
-out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "BharatHeals_Package_Calculator.xlsx")
+out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "MedRouteIndia_Package_Calculator.xlsx")
 wb.save(out)
 print(f"✅ Package calculator saved: {out}")
 print(f"   Sheets: {[s.title for s in wb.worksheets]}")

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate BharatHeals Business Plan Excel workbook with multiple sheets."""
+"""Generate MedRouteIndia Business Plan Excel workbook with multiple sheets."""
 
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side, numbers
@@ -95,16 +95,16 @@ auto_width(ws, cols, 18, 50)
 ws.column_dimensions["A"].width = 28
 ws.column_dimensions["B"].width = 55
 
-style_title_row(ws, 1, cols, "BHARATHEALS — BUSINESS PLAN 2026-2030")
+style_title_row(ws, 1, cols, "MEDROUTEINDIA — BUSINESS PLAN 2026-2030")
 ws.merge_cells("A2:B2")
 ws.cell(row=2, column=1, value="Premium Global Medical Tourism Platform").font = gold_font
 
 r = 4
 sections = [
-    ("Company", "BharatHeals Pvt. Ltd."),
+    ("Company", "MedRouteIndia Pvt. Ltd."),
     ("Founded", "2019"),
     ("Headquarters", "New Delhi, India"),
-    ("Website", "www.bharatheals.com"),
+    ("Website", "www.medrouteindia.com"),
     ("Industry", "Medical Tourism / HealthTech"),
     ("", ""),
     ("MISSION", "Make world-class medical treatment hassle-free and affordable for everyone, regardless of geography or budget."),
@@ -579,6 +579,6 @@ for i, row_data in enumerate(risks):
 
 # ── Save ──
 output_dir = os.path.dirname(os.path.abspath(__file__))
-output_path = os.path.join(output_dir, "BharatHeals_Business_Plan_2026.xlsx")
+output_path = os.path.join(output_dir, "MedRouteIndia_Business_Plan_2026.xlsx")
 wb.save(output_path)
 print(f"✅ Business plan saved to: {output_path}")

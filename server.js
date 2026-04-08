@@ -10,7 +10,7 @@ const { getDb } = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const JWT_SECRET = process.env.JWT_SECRET || 'bharatheals_secret_2026_change_in_production';
+const JWT_SECRET = process.env.JWT_SECRET || 'medrouteindia_secret_2026_change_in_production';
 
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.use(cors());
@@ -94,7 +94,7 @@ const TREATMENTS = {
   },
   'surrogacy': {
     id: 'surrogacy', name: 'Surrogacy (Altruistic)', rating: 4.8, icon: '🤱', category: 'Fertility',
-    description: 'Altruistic surrogacy for eligible Indian citizens under the Surrogacy (Regulation) Act, 2021. Commercial surrogacy is banned in India. Foreign nationals are NOT eligible. BharatHeals provides legal guidance, clinic coordination, and medical support for compliant surrogacy journeys.',
+    description: 'Altruistic surrogacy for eligible Indian citizens under the Surrogacy (Regulation) Act, 2021. Commercial surrogacy is banned in India. Foreign nationals are NOT eligible. MedRouteIndia provides legal guidance, clinic coordination, and medical support for compliant surrogacy journeys.',
     legalNotice: 'IMPORTANT: Under the Surrogacy (Regulation) Act, 2021 — (1) Only altruistic surrogacy is legal. (2) Only Indian married couples (F:23-50, M:26-55) or Indian widows/divorcees (35-45) are eligible. (3) Foreign nationals, NRIs, PIOs, and OCIs cannot commission surrogacy in India. (4) The surrogate must be a close relative, married, aged 25-35, with at least one child. (5) Maximum 3 attempts per surrogate, once-in-lifetime. (6) 36-month insurance mandatory for surrogate.',
     types: ['Eligibility Assessment & Legal Consultation', 'National Surrogacy Board Application', 'Registered Clinic Coordination', 'IVF + Gestational Embryo Transfer', 'Surrogate Health Monitoring & Prenatal Care', 'Delivery Coordination & Parentage Documentation', '36-Month Surrogate Insurance', 'Post-Birth Legal Formalities'],
     prices: { australia: null, usa: null, uk: null, thailand: null, turkey: null, singapore: null, malaysia: null, india: null },
@@ -466,10 +466,10 @@ app.post('/api/chat', optionalAuth, (req, res) => {
         reply = "I understand. **IVF treatment** in India has excellent success rates (55-65%) at world-class fertility centres, at a fraction of typical costs.\n\n**Can you tell me more about your situation?**";
         suggestions = ['First time trying IVF', 'Failed IVF cycles elsewhere', 'Need donor eggs/sperm', 'Want genetic testing (PGT)'];
       } else if (lowerMsg.includes('surrogacy') || lowerMsg.includes('surrogate')) {
-        reply = "**Important Legal Notice:** Under the **Surrogacy (Regulation) Act, 2021**, only **altruistic surrogacy** is legal in India. Commercial surrogacy is banned.\n\n**Who is eligible?**\n- Indian married couples (F: 23-50, M: 26-55) with medical indication and no surviving child\n- Indian widows/divorcees (35-45 yrs) — per 2023 amendment\n\n**NOT eligible:** Foreign nationals, NRIs, PIOs, OCIs, unmarried singles, same-sex couples.\n\nBharatHeals provides **legal consultation, eligibility assessment, registered clinic coordination, and medical support** for eligible Indian citizens.\n\n**How can I help you?**";
+        reply = "**Important Legal Notice:** Under the **Surrogacy (Regulation) Act, 2021**, only **altruistic surrogacy** is legal in India. Commercial surrogacy is banned.\n\n**Who is eligible?**\n- Indian married couples (F: 23-50, M: 26-55) with medical indication and no surviving child\n- Indian widows/divorcees (35-45 yrs) — per 2023 amendment\n\n**NOT eligible:** Foreign nationals, NRIs, PIOs, OCIs, unmarried singles, same-sex couples.\n\nMedRouteIndia provides **legal consultation, eligibility assessment, registered clinic coordination, and medical support** for eligible Indian citizens.\n\n**How can I help you?**";
         suggestions = ['Am I eligible? (Indian citizen)', 'Explain the legal process', 'What does it cost? (medical expenses)', 'Book surrogacy legal consultation'];
       } else {
-        reply = "Welcome to **BharatHeals**! 🏥 I'm your AI medical tourism assistant.\n\nI can help you explore treatments, compare costs, and create a personalised travel plan. **What treatment are you interested in?**";
+        reply = "Welcome to **MedRouteIndia**! 🏥 I'm your AI medical tourism assistant.\n\nI can help you explore treatments, compare costs, and create a personalised travel plan. **What treatment are you interested in?**";
         suggestions = ['Hair Transplant', 'Dental Implants', 'Cosmetic Surgery', 'IVF Treatment', 'Surrogacy Law'];
       }
     } else if (context.step === 'details') {
@@ -594,7 +594,7 @@ const CLAUDE_BASE_URL = process.env.CLAUDE_BASE_URL || 'https://anthropic.prod.a
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY || 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJkaGk3OW9NajBaMThTVEktci1FbGZYUnF6STJrXzhrbWZXSHVWaVZFd19BIn0.eyJleHAiOjE3NzUzOTk0NjgsImlhdCI6MTc3NTM2MzUyMSwiYXV0aF90aW1lIjoxNzc1MzYzNTIwLCJqdGkiOiI3Y2MwYzg0NC1lM2RlLTQ5NWQtOTYxZS1kN2I1ZDQwMGRmYzIiLCJpc3MiOiJodHRwczovL2F1dGgubWNraW5zZXkuaWQvYXV0aC9yZWFsbXMvciIsImF1ZCI6ImJjZDIzNzI4LTNkMjctNDQ3Yy1hMGE5LWVhY2FmMzkzYTZmNSIsInN1YiI6ImI0NDRiYmViLTM2MTctNGNlNy05ZGQyLWRhMmVjYTU0OTI1NyIsInR5cCI6IklEIiwiYXpwIjoiYmNkMjM3MjgtM2QyNy00NDdjLWEwYTktZWFjYWYzOTNhNmY1Iiwic2Vzc2lvbl9zdGF0ZSI6Ijk4MTMwNWZiLTAwZjMtNGQyNi04NzM0LTY1N2Q5NTY2OGNkNSIsImF0X2hhc2giOiI2eGtuVWs3T0w0OGdmX01pd2hENVdRIiwibmFtZSI6IlJhaHVsIEdhdXRhbSIsImdpdmVuX25hbWUiOiJSYWh1bCIsImZhbWlseV9uYW1lIjoiR2F1dGFtIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZjQzNDNkYzc1NmM1ZWUxMCIsImVtYWlsIjoiUmFodWxfR2F1dGFtQG1ja2luc2V5LmNvbSIsImFjciI6IjEiLCJzaWQiOiI5ODEzMDVmYi0wMGYzLTRkMjYtODczNC02NTdkOTU2NjhjZDUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZm1ubyI6IjMyODc1MCIsImdyb3VwcyI6WyI2ZmE3Nzc5MC0wY2RlLTQzY2EtOGRjYS02YTM0OWU5YjRlMTQiLCI3MDdkZTUwMy00MmUwLTQ5N2YtYmE3YS1kZmQzZmM2NDUzMDQiLCJBbGwgRmlybSBVc2VycyIsIjM1MDBhOTYyLWJjODEtNGY2Ni05YzExLTgwZTM0MGEzN2JmYyIsIjc0ZWFiYWQxLWQ4M2EtNDJhMy05MjFjLTA3ZGQ4NDgxNzI3OCJdfQ.IpRvmAG-MxW8QirLjnfPiMaaTmNeNF2FgmebtcEsL4PhMrfd04Sk8GoFH5gvGVBT59eYMv0Fh6E3QohNF-PjHSM1Cnq-RHvIQLnlHNl2p6XOur8n4qu7ujOEjEK8dYLw-Y4pnX1j-WOEtXS5BtIv4KnaKooQ26WtkUh67MMKeIB-YyRARdKLFGIBEBcEjfUutZY2L7njGnX4S4KTn_utYymA2Jd3GPEzea9aioTIpyzrys2ClLhq9jNFlKcDqy9wgYwyHWT1ufpyNSgNc5VWlkXUZnrh9cj4eZmezyUEGTu3V-6AAV5YGz6fXHRZjfExnby_wQxffWBbzLYxCMYlqg';
 const CLAUDE_MODEL = 'claude-haiku-4-5-20251001';
 
-const AI_SYSTEM_PROMPT = `You are BharatHeals' world-class AI medical tourism consultant. You help international patients from around the world explore and plan medical treatment in India. Do NOT assume the patient is from any specific country — ask where they are from if needed.
+const AI_SYSTEM_PROMPT = `You are MedRouteIndia' world-class AI medical tourism consultant. You help international patients from around the world explore and plan medical treatment in India. Do NOT assume the patient is from any specific country — ask where they are from if needed.
 
 YOUR KNOWLEDGE BASE:
 
@@ -694,7 +694,7 @@ IMPORTANT BEHAVIOR RULES:
      "recovery":"X-X days post-procedure",
      "consultant":"Name — Title",
      "consultantPhone":"+91 98XXX XXXXX",
-     "consultantEmail":"name@bharatheals.com",
+     "consultantEmail":"name@medrouteindia.com",
      "travel":{
        "flightEstimate":"$XXX-$XXX round trip",
        "flightDuration":"Xh direct / Xh with 1 stop",
@@ -746,7 +746,7 @@ IMPORTANT BEHAVIOR RULES:
        "timezone":"IST (UTC+5:30)",
        "electricity":"230V, Type C/D plugs — bring universal adapter",
        "safety":"India is generally safe for medical tourists. Hospitals are in well-developed areas.",
-       "emergencyNumbers":"Ambulance: 102/108, Police: 100, BharatHeals 24/7: +91 99999 99999"
+       "emergencyNumbers":"Ambulance: 102/108, Police: 100, MedRouteIndia 24/7: +91 99999 99999"
      },
      "packingChecklist":[
        "Valid passport (6+ months validity)",
@@ -939,7 +939,7 @@ app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.ht
 function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
 
 app.listen(PORT, () => {
-  console.log(`\n  ✦ BharatHeals running at http://localhost:${PORT}`);
+  console.log(`\n  ✦ MedRouteIndia running at http://localhost:${PORT}`);
   console.log(`  ✦ Pages: / | /compare-cost | /plan-journey | /chat | /login | /doctors | /faq`);
   console.log(`  ✦ API: /api/auth | /api/treatments | /api/compare | /api/chat | /api/journey\n`);
 });

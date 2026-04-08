@@ -1,4 +1,4 @@
-# BharatHeals — Explainer Video Script
+# MedRouteIndia — Explainer Video Script
 
 **Duration:** ~2 minutes (120 seconds)
 **Format:** 1920x1080 (Full HD), 30fps
@@ -24,14 +24,14 @@
 
 ## SCENE 2 — BRAND REVEAL (0:15 – 0:25)
 
-**Visual:** Smooth transition to teal/gold gradient. BharatHeals logo fades in large and centered. Tagline animates below.
+**Visual:** Smooth transition to teal/gold gradient. MedRouteIndia logo fades in large and centered. Tagline animates below.
 
 **On-Screen Text:**
-- "BharatHeals" (large, centered)
+- "MedRouteIndia" (large, centered)
 - "Your Bridge to World-Class Healthcare in India" (tagline below)
 
 **Voiceover:**
-"Meet BharatHeals — your bridge to world-class healthcare in India. We make medical tourism hassle-free, safe, and affordable."
+"Meet MedRouteIndia — your bridge to world-class healthcare in India. We make medical tourism hassle-free, safe, and affordable."
 
 ---
 
@@ -78,7 +78,7 @@
 6. "Post-Treatment Follow-Up"
 
 **Voiceover:**
-"BharatHeals handles everything — from visa assistance and flight bookings to premium hotel accommodation, daily transport, and a personal companion who speaks your language. And after your treatment, we stay connected with post-treatment follow-up care."
+"MedRouteIndia handles everything — from visa assistance and flight bookings to premium hotel accommodation, daily transport, and a personal companion who speaks your language. And after your treatment, we stay connected with post-treatment follow-up care."
 
 ---
 
@@ -146,13 +146,13 @@ Delhi • Jaipur • Mumbai • Bangalore • Kolkata • Chennai
 **Visual:** Full-screen brand reveal with website URL, contact email, and CTA button.
 
 **On-Screen Text:**
-- "BharatHeals" (large logo)
-- "www.bharatheals.com"
+- "MedRouteIndia" (large logo)
+- "www.medrouteindia.com"
 - "Book Your Free Consultation Today"
-- "care@bharatheals.com"
+- "care@medrouteindia.com"
 
 **Voiceover:**
-"BharatHeals — world-class healthcare, made accessible. Book your free consultation today at bharatheals.com."
+"MedRouteIndia — world-class healthcare, made accessible. Book your free consultation today at medrouteindia.com."
 
 ---
 

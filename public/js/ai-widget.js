@@ -1,5 +1,5 @@
 /* ============================================================
-   BHARATHHEALS — FLOATING AI AGENT WIDGET
+   MEDROUTEINDIA — FLOATING AI AGENT WIDGET
    Self-contained: injects its own HTML + CSS, manages state.
    Include on any page: <script src="/js/ai-widget.js"></script>
    ============================================================ */
@@ -98,7 +98,7 @@
       <div class="hi-head">
         <div class="hi-head-avatar">AI</div>
         <div class="hi-head-info">
-          <div class="hi-head-name">BharatHeals AI Agent</div>
+          <div class="hi-head-name">MedRouteIndia AI Agent</div>
           <div class="hi-head-status">Powered by Claude AI</div>
         </div>
         <button class="hi-head-close" id="hi-close">&times;</button>
@@ -110,7 +110,7 @@
           <textarea id="hi-input" placeholder="Ask me about treatments, costs, plans..." rows="1"></textarea>
           <button id="hi-send"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
         </div>
-        <div class="hi-footer-note">BharatHeals AI &middot; Responses are indicative, not medical advice</div>
+        <div class="hi-footer-note">MedRouteIndia AI &middot; Responses are indicative, not medical advice</div>
       </div>
     </div>
   `;
@@ -147,7 +147,7 @@
 
   // ── Welcome ──────────────────────────────────────────────
   function showWelcome() {
-    addBotMessage("Welcome to **BharatHeals**! I'm your AI medical tourism assistant, powered by Claude.\n\nI help patients from around the world explore treatments in India, compare costs, build personalised treatment plans, and generate downloadable PDFs.\n\n**What are you looking for today?**");
+    addBotMessage("Welcome to **MedRouteIndia**! I'm your AI medical tourism assistant, powered by Claude.\n\nI help patients from around the world explore treatments in India, compare costs, build personalised treatment plans, and generate downloadable PDFs.\n\n**What are you looking for today?**");
     showSuggestions([
       'Hair Transplant options',
       'Dental Implant costs',
@@ -374,7 +374,7 @@
     var p = currentPlan;
 
     var authUser = null;
-    try { authUser = JSON.parse(localStorage.getItem('bharatheals_user')); } catch(e) {}
+    try { authUser = JSON.parse(localStorage.getItem('medrouteindia_user')); } catch(e) {}
     var patientName = (authUser && authUser.name) ? authUser.name : '';
     var patientEmail = (authUser && authUser.email) ? authUser.email : '';
 
@@ -409,7 +409,7 @@
         fill(NAVY); doc.rect(0, 0, W, 11, 'F');
         fill(GOLD); doc.rect(0, 11, W, 0.6, 'F');
         rgb(GOLD); doc.setFontSize(8); doc.setFont('helvetica', 'bold');
-        doc.text('BharatHeals', M, 7.5);
+        doc.text('MedRouteIndia', M, 7.5);
         rgb([200,200,200]); doc.setFontSize(7); doc.setFont('helvetica', 'normal');
         var headerMid = patientName ? ('Plan for ' + patientName) : 'Your Complete Medical Tourism Guide';
         doc.text(headerMid, W / 2, 7.5, { align: 'center' });
@@ -419,7 +419,7 @@
         fill(NAVY); doc.rect(0, H - 12, W, 12, 'F');
         fill(GOLD); doc.rect(0, H - 12, W, 0.4, 'F');
         rgb([160,160,160]); doc.setFontSize(6); doc.setFont('helvetica', 'normal');
-        doc.text('This is an AI-generated indicative plan. Final costs confirmed after video consultation. BharatHeals | bharatheals.com', W / 2, H - 7, { align: 'center' });
+        doc.text('This is an AI-generated indicative plan. Final costs confirmed after video consultation. MedRouteIndia | medrouteindia.com', W / 2, H - 7, { align: 'center' });
         rgb(GOLD); doc.setFontSize(6.5); doc.setFont('helvetica', 'bold');
         doc.text('Page ' + pageNum, W - M, H - 7, { align: 'right' });
       }
@@ -492,7 +492,7 @@
       doc.setGState(new doc.GState({ opacity: 1 }));
 
       rgb(GOLD); doc.setFontSize(40); doc.setFont('helvetica', 'bold');
-      doc.text('BharatHeals', 24, 45);
+      doc.text('MedRouteIndia', 24, 45);
       rgb([170, 170, 170]); doc.setFontSize(11); doc.setFont('helvetica', 'normal');
       doc.text('Your Complete Medical Tourism Guide', 24, 55);
       fill(GOLD); doc.rect(24, 61, 55, 1, 'F');
@@ -551,7 +551,7 @@
       coverFooter1 += '  |  Prices in USD';
       doc.text(coverFooter1, 24, H - 32);
       rgb(GOLD); doc.setFontSize(8); doc.setFont('helvetica', 'bold');
-      doc.text('bharatheals.com  |  WhatsApp: +91 99999 99999  |  info@bharatheals.com', 24, H - 26);
+      doc.text('medrouteindia.com  |  WhatsApp: +91 99999 99999  |  info@medrouteindia.com', 24, H - 26);
       rgb([130,130,130]); doc.setFontSize(7); doc.setFont('helvetica', 'normal');
       doc.text('Book a free video consultation for a personalised, binding quote', 24, H - 21);
 
@@ -933,7 +933,7 @@
         doc.text('This plan was prepared exclusively for ' + patientName + ' on ' + dateStr, W / 2, y + 30, { align: 'center' });
       }
       rgb(GOLD); doc.setFontSize(8.5); doc.setFont('helvetica', 'bold');
-      var contactLine = 'bharatheals.com';
+      var contactLine = 'medrouteindia.com';
       if (p.consultantPhone) contactLine += '  |  ' + p.consultantPhone;
       contactLine += '  |  WhatsApp: +91 99999 99999';
       if (p.consultantEmail) contactLine += '  |  ' + p.consultantEmail;
@@ -941,7 +941,7 @@
 
       addFooter();
 
-      var fileName = 'BharatHeals-' + (p.treatment || 'Plan').replace(/[^a-zA-Z0-9]/g, '-');
+      var fileName = 'MedRouteIndia-' + (p.treatment || 'Plan').replace(/[^a-zA-Z0-9]/g, '-');
       if (patientName) fileName += '-' + patientName.replace(/[^a-zA-Z0-9]/g, '-');
       doc.save(fileName + '.pdf');
       if (typeof window.showToast === 'function') window.showToast('Your comprehensive treatment & travel guide has been downloaded!', 'success');

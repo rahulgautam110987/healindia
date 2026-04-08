@@ -1,23 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280">
   <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="s-sky" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#0B1628"/>
       <stop offset="100%" stop-color="#162744"/>
     </linearGradient>
-    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="s-gold" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#C9A84C"/>
       <stop offset="100%" stop-color="#E8C367"/>
     </linearGradient>
-    <linearGradient id="bldg" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="s-bldg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#2c4d70"/>
       <stop offset="100%" stop-color="#1a3050"/>
     </linearGradient>
   </defs>
-  <rect width="400" height="280" rx="8" fill="url(#sky)"/>
+  <rect width="400" height="280" rx="8" fill="url(#s-sky)"/>
   <rect x="0" y="218" width="400" height="62" fill="#0d1a2e"/>
   <rect x="0" y="218" width="400" height="2" fill="#C9A84C" opacity="0.3"/>
   <!-- Main building -->
-  <rect x="90" y="95" width="220" height="123" rx="3" fill="url(#bldg)" stroke="#3a6aa8" stroke-width="0.5"/>
+  <rect x="90" y="95" width="220" height="123" rx="3" fill="url(#s-bldg)" stroke="#3a6aa8" stroke-width="0.5"/>
   <!-- Windows -->
   <g fill="#4a8acc" opacity="0.55">
     <rect x="105" y="110" width="15" height="12" rx="1"/>
@@ -87,5 +87,5 @@
   <circle cx="370" cy="210" r="8" fill="#1a4030" opacity="0.5"/>
   <!-- Text -->
   <text x="200" y="246" text-anchor="middle" font-family="Georgia, 'Playfair Display', serif" font-size="21" font-weight="700" fill="url(#gold)">Saket Hospital</text>
-  <text x="200" y="264" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="9" fill="rgba(255,255,255,0.45)" letter-spacing="3">MANSAROVAR ∑ JAIPUR</text>
+  <text x="200" y="264" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="9" fill="rgba(255,255,255,0.45)" letter-spacing="3">MANSAROVAR ù JAIPUR</text>
 </svg>

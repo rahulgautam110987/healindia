@@ -1,7 +1,7 @@
 const Database = require('better-sqlite3');
 const path = require('path');
 const os = require('os');
-const DB_PATH = path.join(os.tmpdir(), 'bharatheals.db');
+const DB_PATH = path.join(os.tmpdir(), 'medrouteindia.db');
 let db;
 
 function getDb() {

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-BharatHeals Explainer Video Generator v3
+MedRouteIndia Explainer Video Generator v3
 - Frame-by-frame animations (slide-in, fade-in, counters, progress bars)
 - Properly synced voiceover per scene (accounts for crossfade overlap)
-- Fixed pronunciation: "Bharat Heals" in VO text
+- Fixed pronunciation: "Med Route India" in VO text
 - Ambient background music
 """
 
@@ -31,7 +31,7 @@ LGRAY      = (180, 190, 200)
 
 BASE       = os.path.dirname(os.path.abspath(__file__))
 VO_DIR     = os.path.join(BASE, "_vo_parts")
-OUT        = os.path.join(BASE, "BharatHeals_Explainer_Video.mp4")
+OUT        = os.path.join(BASE, "MedRouteIndia_Explainer_Video.mp4")
 
 FONT_REG   = "/System/Library/Fonts/HelveticaNeue.ttc"
 FONT_BOLD  = "/System/Library/Fonts/Avenir Next.ttc"
@@ -233,7 +233,7 @@ def scene_hook():
         frame = Image.alpha_composite(frame_rgba, txt_overlay).convert("RGB")
 
         draw2 = ImageDraw.Draw(frame)
-        centered_text(draw2, H - 70, "BharatHeals", fnt(22, light=True), LGRAY)
+        centered_text(draw2, H - 70, "MedRouteIndia", fnt(22, light=True), LGRAY)
         return np.array(frame)
 
     return VideoClip(make_frame, duration=16).with_fps(FPS)
@@ -242,7 +242,7 @@ def scene_hook():
 # ── Scene 2: Brand Reveal (scale + slide) ─────────────────────────────
 
 @register("Brand Reveal", 8, (
-    "Meet Bharat Heals. Your bridge to world-class healthcare in India. "
+    "Meet Med Route India. Your bridge to world-class healthcare in India. "
     "We make medical tourism hassle-free, safe, and affordable."
 ))
 def scene_brand_reveal():
@@ -258,8 +258,8 @@ def scene_brand_reveal():
         logo_alpha = int(255 * p_logo)
         logo_y = int(lerp(H // 2 - 100, H // 2 - 130, p_logo))
         f_logo = fnt(120, bold=True)
-        tw = text_w(d, "BharatHeals", f_logo)
-        d.text(((W - tw) // 2, logo_y), "BharatHeals", font=f_logo,
+        tw = text_w(d, "MedRouteIndia", f_logo)
+        d.text(((W - tw) // 2, logo_y), "MedRouteIndia", font=f_logo,
                fill=(*WHITE, logo_alpha))
 
         p_bar = anim(t, 1.2, 0.6)
@@ -477,7 +477,7 @@ def scene_meet_doctor():
 # ── Scene 5: Services (cards slide from alternating sides) ────────────
 
 @register("Services", 16, (
-    "Bharat Heals handles everything. From visa assistance and flight bookings "
+    "Med Route India handles everything. From visa assistance and flight bookings "
     "to premium hotel accommodation, daily transport, and a personal companion "
     "who speaks your language. After your treatment, we stay connected with "
     "post-treatment follow-up care."
@@ -889,8 +889,8 @@ def scene_payment():
 # ── Scene 10: CTA (converge + pulse) ──────────────────────────────────
 
 @register("CTA", 10, (
-    "Bharat Heals. World-class healthcare, made accessible. "
-    "Book your free consultation today at bharat heals dot com."
+    "Med Route India. World-class healthcare, made accessible. "
+    "Book your free consultation today at med route india dot com."
 ))
 def scene_cta():
     bg = get_bg("cta", (0, 50, 70), NAVY,
@@ -906,9 +906,9 @@ def scene_cta():
         p_logo = anim(t, 0.3, 1.0)
         la = int(255 * p_logo)
         f_logo = fnt(110, bold=True)
-        tw = text_w(d, "BharatHeals", f_logo)
+        tw = text_w(d, "MedRouteIndia", f_logo)
         logo_y = int(lerp(H // 2 - 200, H // 2 - 230, p_logo))
-        d.text(((W - tw) // 2, logo_y), "BharatHeals", font=f_logo,
+        d.text(((W - tw) // 2, logo_y), "MedRouteIndia", font=f_logo,
                fill=(*WHITE, la))
 
         p_bar = anim(t, 1.2, 0.5)
@@ -943,10 +943,10 @@ def scene_cta():
 
         p_url = anim(t, 3.5, 0.5)
         ua = int(255 * p_url)
-        d.text(((W - text_w(d, "www.bharatheals.com", fnt(34))) // 2, H // 2 + 130),
-               "www.bharatheals.com", font=fnt(34), fill=(*LGRAY, ua))
-        d.text(((W - text_w(d, "care@bharatheals.com", fnt(24, light=True))) // 2, H // 2 + 180),
-               "care@bharatheals.com", font=fnt(24, light=True), fill=(*LGRAY, ua))
+        d.text(((W - text_w(d, "www.medrouteindia.com", fnt(34))) // 2, H // 2 + 130),
+               "www.medrouteindia.com", font=fnt(34), fill=(*LGRAY, ua))
+        d.text(((W - text_w(d, "care@medrouteindia.com", fnt(24, light=True))) // 2, H // 2 + 180),
+               "care@medrouteindia.com", font=fnt(24, light=True), fill=(*LGRAY, ua))
 
         p_cities = anim(t, 4.0, 0.5)
         ca = int(255 * p_cities)

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant — BharatHeals</title>
-<meta name="description" content="Chat with BharatHeals's AI medical tourism assistant to explore treatments, compare costs, and build a personalised plan.">
+<title>AI Assistant — MedRouteIndia</title>
+<meta name="description" content="Chat with MedRouteIndia's AI medical tourism assistant to explore treatments, compare costs, and build a personalised plan.">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/style.css?v=20260405b">
 <style>
@@ -128,7 +128,7 @@
 <body>
 
 <nav id="mainNav">
-  <a href="/" class="nav-logo">Bharat<span>Heals</span></a>
+  <a href="/" class="nav-logo">MedRoute<span>India</span></a>
   <ul class="nav-links">
     <li><a href="/">Home</a></li>
     <li><a href="/about.html">About Us</a></li>
@@ -176,7 +176,7 @@
     </aside>
     <div class="chat-main">
       <div class="chat-header-bar">
-        <h1>BharatHeals AI Assistant</h1>
+        <h1>MedRouteIndia AI Assistant</h1>
         <p>Explore treatments, compare savings, and receive a draft plan — then book a human consultant anytime.</p>
       </div>
       <div class="chat-messages" id="chatMessages"></div>
@@ -268,7 +268,7 @@
 
 <div class="whatsapp-widget">
   <div class="whatsapp-tooltip">Chat with us on WhatsApp</div>
-  <a href="https://wa.me/919999999999?text=Hi%20BharatHeals%2C%20I%27m%20interested%20in%20medical%20treatment%20in%20India." target="_blank" rel="noopener" class="whatsapp-btn" aria-label="Chat on WhatsApp">
+  <a href="https://wa.me/919999999999?text=Hi%20MedRouteIndia%2C%20I%27m%20interested%20in%20medical%20treatment%20in%20India." target="_blank" rel="noopener" class="whatsapp-btn" aria-label="Chat on WhatsApp">
     <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.128 6.744 3.046 9.378L1.054 31.29l6.118-1.958A15.92 15.92 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.302 22.602c-.39 1.1-1.932 2.014-3.164 2.28-.844.18-1.946.324-5.656-1.216-4.748-1.968-7.804-6.792-8.038-7.108-.226-.316-1.878-2.502-1.878-4.772 0-2.27 1.188-3.386 1.61-3.85.39-.428 1.024-.624 1.63-.624.196 0 .374.01.532.018.468.02.702.048 1.012.784.386.922 1.328 3.236 1.444 3.47.118.234.236.55.078.866-.15.324-.282.526-.516.81-.234.284-.458.502-.692.77-.216.246-.458.51-.196.998.262.484 1.166 1.922 2.502 3.114 1.72 1.534 3.168 2.01 3.618 2.234.352.176.77.148 1.044-.136.352-.362.786-.964 1.228-1.558.314-.424.712-.476 1.098-.314.39.156 2.468 1.164 2.892 1.376.424.214.706.318.81.498.104.18.104 1.044-.286 2.144z"/></svg>
   </a>
 </div>
@@ -417,7 +417,7 @@
     doc.setTextColor(232, 201, 122);
     doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    doc.text('BharatHeals', margin, 18);
+    doc.text('MedRouteIndia', margin, 18);
     doc.setFontSize(9);
     doc.setTextColor(255, 255, 255);
     doc.text('Personalised Treatment Plan (Indicative)', margin, 24);
@@ -478,7 +478,7 @@
       pageW - margin * 2
     );
     doc.text(disc, margin, y);
-    doc.save('BharatHeals-treatment-plan.pdf');
+    doc.save('MedRouteIndia-treatment-plan.pdf');
     showToast('PDF downloaded.', 'success');
   }
 
@@ -596,7 +596,7 @@
   }
 
   function showWelcome() {
-    var welcome = 'Welcome to BharatHeals! \uD83C\uDFE5 I\'m your AI medical tourism assistant. I can help you explore treatments, compare costs, and create a personalised treatment plan. What treatment are you interested in?';
+    var welcome = 'Welcome to MedRouteIndia! \uD83C\uDFE5 I\'m your AI medical tourism assistant. I can help you explore treatments, compare costs, and create a personalised treatment plan. What treatment are you interested in?';
     appendMessage('bot', formatMarkdown(welcome));
   }
 
